@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Remind</string>
+    <string name="action_settings">General setting</string>
+    <string name="sconosciuto">[UNKNOWN]</string>
+    <string name="notification_return_to">Return to Tape Recorder </string>
+    <string name="invalid_song_service">Error: audio file not found</string>
+    <string name="playing_song_alert">Error: impossible to change/delete a tape when is playing</string>
+     <string name="charging_song_alert">Impossible to load the selected tape: one or more files are not found</string>
+    <string name="search_hint">Search by signature</string>
+    <string name="monitor_setup_unavailable">Load a tape before to access to Monitor Setup</string>
+     <string name="refresh_alert">Nel processo di refresh è stata eliminata/modificata la canzone che era in riproduzione, ciò ha causato la rimozione
+         dell\'opera dal magnetofono, prego ricaricare se ancora presente</string>
+
+    <!-- stringhe per il detail della canzone -->
+    <string name="cd">Content Description</string>
+    <string name="choose_a_song">Select a tape</string>
+    <string name="info_base">GENERAL INFORMATION</string>
+    <string name="general_info">GENERAL INFORMATION</string>
+    <string name="reproduction_settings">IMPOSTAZIONI DI RIPRODUZIONE DA MODIFICARE in AUDIO CONTENT</string>
+    <string name="audio_info">AUDIO INFORMATION</string>
+    <string name="equalization_title">Equalization</string>
+    <string name="speed_title">Replay Tape Speed</string>
+    <string name="number_of_tracks_title2">Number of Tracks (Signal Type)</string>
+    <string name="info_on_tracks">INFORMAZIONI SULLE TRACCE da modificare in ORIGINAL DOCUMENT DESCRIPTION</string>
+    <string name="video">Video</string>
+    <string name="bitdepth">Bitdepth</string>
+    <string name="video_not_available">Video not available</string>
+    <string name="description_button">Description</string>
+    <string name="description_not_available">Description not available</string>
+    <string name="go_back_from_description">Return to details</string>
+    <string name="info_photos">Photos</string>
+    <string name="photos_not_available">Photos not available</string>
+
+    <!-- stringhe per i dialog delle opzioni -->
+    <string name="sure_to_delete_song">Delete tape</string>
+    <string name="delete_is_irreversible">The tape will be delete definitively</string>
+    <string name="edit">EDIT</string>
+    <string name="pass_to_edit_activity">Conferma per passare al men\ù per modificare i dati dell\'opera selezionata</string>
+    <string name="import_setting">IMPORT</string>
+    <string name="pass_to_import_activity">Vuoi passare al menù di importazione?</string>
+    <string name="refresh_setting">REFRESH</string>
+    <string name="pass_to_refresh_activity">Vuoi aggiornare il database controllando i file xml?</string>
+    <string name="unable_to_delete">Impossible to delete the tape</string>
+    <string name="unable_to_edit">Impossible to modify the tape</string>
+
+    <!-- stringhe per il monitor setup -->
+    <string name="monitor_setup_option">Monitor Setup</string>
+    <string name="monitor_setup_label">Monitor Setup</string>
+    <string name="left_channel">LEFT CHANNEL</string>
+    <string name="right_channel">RIGHT CHANNEL</string>
+    <string name="tracks_tipology">Tape type:</string>
+    <string name="tracks_number">Number of tracks:</string>
+    <string name="inversion">Invert channels</string>
+    <string name="xml_correctly_written">Scrittura avvenuta correttamente</string>
+
+    <!-- Stringhe per il menu di impostazioni generali -->
+    <string name="title_activity_settings">Settings</string>
+    <!-- PRIMO HEADER: OPZIONI VISUALIZZAZIONE -->
+    <string name="first_header_activity_settings">Visualization settings</string>
+    <string name="checkbox1_title_activity_settings">TextView</string>
+    <string name="checkbox1_subtitle_activity_settings">Mostra o nascondi la textview</string>
+    <string name="checkbox2_title_activity_settings">Barra di stato</string>
+    <!-- SECONDO HEADER: OPZIONI AVANZATE -->
+    <string name="advanced_options_activity_settings">Attiva o disattiva le opzioni avanzate</string>
+    <string name="second_header_activity_settings">Advanced Setting</string>
+    <string name="checkbox2_subtitle_activity_settings">Mostra o nascondi la barra di stato di un brano</string>
+    <string name="checkbox3_title_activity_settings">Import tape</string>
+    <string name="checkbox3_subtitle_activity_settings">Permette di importare brani</string>
+    <string name="checkbox4_title_activity_settings">Delete tape</string>
+    <string name="checkbox4_subtitle_activity_settings">Permette di eliminare brani</string>
+    <string name="checkbox5_title_activity_settings">Edit tape</string>
+    <string name="checkbox5_subtitle_activity_settings">Permette di modificare i dati di una singola canzone</string>
+    <string name="text1_title_activity_settings">Path</string>
+    <string name="text1_subtitle_activity_settings">Path dove sono salvati gli Xml</string>
+    <string name="path_ok_activity_settings">OK</string>
+    <string name="export_in_xml">Export database in XML</string>
+    <string name="where_we_export0">Where</string>
+    <string name="where_we_export">Path dove verrà esportato il database</string>
+    <!-- OPZIONI LINGUA -->
+    <string name="language_header_settings">SCELTA DELLA LINGUA</string>
+    <string name="choose_a_language">LINGUA</string>
+    <string name="choose_a_language_summary">Seleziona la lingua per l\'applicazione</string>
+    <!-- Stringhe per il menu di impostazioni generali -->
+    <string name="password">Password</string>
+    <string name="password_needed">Inserire password, prego</string>
+    <string name="insert_password">Inserire password attuale, prego</string>
+    <string name="insert_new_password">Inserire la nuova password</string>
+    <string name="password_success">Password cambiata</string>
+    <string name="wrong_password">Password errata, riprovare</string>
+    <string name="external_error">Impossibile leggere l\'external storage</string>
+    <string name="directory_changed">Cartella cambiata con successo</string>
+    <string name="change_password_title">Modifica password</string>
+    <string name="lets_change_the_path">Cambia path</string>
+    <string name="lets_begin_the_import">Procedere all\'esportazione</string>
+    <string name="revert_from_exporting">Annulla</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Annulla</string>
+    <string name="maintenance">Manutenzione tracce</string>
+    <string name="what_is_maintenance">Abilità opzioni di importazione, modifica e cancellazione brani</string>
+
+    <!-- Stringhe per il menu di impostazione singola canzone -->
+    <string name="title_activity_single_song_settings">Impostazioni Brano</string>
+    <string name="title_alert_activity_single_song_settings">ATTENZIONE!</string>
+    <string name="message_alert_activity_single_song_settings">Salvare le modifiche effettuate?</string>
+    <string name="yes_alert_activity_single_song_settings">Si</string>
+    <string name="no_alert_activity_single_song_settings">No</string>
+    <string name="neutral_alert_activity_single_song_settings">Annulla</string>
+    <string name="toast_activity_single_song_settings">Errore: Valore non corretto</string>
+    <string name="toast2_activity_single_song_settings">Dati salvati correttamente</string>
+    <!-- PRIMO HEADER: IMPOSTAZIONI GENERALI -->
+    <string name="first_header_activity_single_song_settings">Impostazioni generali</string>
+    <string name="song_name_activity_single_song_settings">Modifica il nome del brano</string>
+    <string name="song_name_title_activity_single_song_settings">Nome Brano</string>
+    <string name="song_author_activity_single_song_settings">Modifica il nome dell\'autore</string>
+    <string name="song_author_title_activity_single_song_settings">Autore</string>
+    <string name="song_year_activity_single_song_settings">Modifica l\'anno di composizione</string>
+    <string name="song_year_title_activity_single_song_settings">Anno di composizione</string>
+
+    <!-- SECONDO HEADER: IMPOSTAZIONI RIPRODUZIONE -->
+    <string name="second_header_activity_single_song_settings">Impostazioni di riproduzione</string>
+    <string name="song_eq_activity_single_song_settings">Scegli l\'equalizzazione più adatta al brano</string>
+    <string name="song_speed_activity_single_song_settings">Scegli la velocità di riproduzione più adatta al brano</string>
+    <string name="song_tape_activity_single_song_settings">Scegli il tipo di nastro utilizzato per il brano</string>
+
+    <!-- TERZO HEADER: INFORMAZIONI (NO MODIFICHE) -->
+    <string name="third_header_activity_single_song_settings">Informazioni canale sinistro</string>
+    <string name="fourth_header_activity_single_song_settings">Informazioni canale destro</string>
+    <string name="song_channel_activity_single_song_settings">Canale di riproduzione della canzone</string>
+    <!-- Stringhe per il menu di impostazione singola canzone -->
+
+
+    <!-- Stringhe per il menu di importazione brano -->
+    <string name="toast1_activity_first_page_import">Errore: inserire una signature per il brano e/o una provenienza e selezionare i file audio per procedere</string>
+    <string name="toast2_activity_first_page_import">Errore: inserire una signature per il brano e/o una provenienza per procedere</string>
+    <string name="toast3_activity_first_page_import">Errore: selezionare i file audio per procedere</string>
+    <string name="toast4_activity_audio_import">Errore: selezionare un file per procedere</string>
+    <string name="coerence_problem">Errore: si sono selezionati file audio con almeno una tra le seguenti diverse: sample rate, natura stereo, lunghezza, bit depth</string>
+    <string name="unknown_error">Errore di natura sconosciuta</string>
+    <string name="toast_activity_second_page_import">Importazione avvenuta correttamente</string>
+    <string name="import_first_step">Campi obbligatori</string>
+    <string name="import_second_step">Impostazioni di riproduzione</string>
+    <string name="import_third_step">Informazioni generali</string>
+    <string name="track_choice">Scelta delle track</string>
+    <string name="import_optional_step">Informazioni sulle tracce</string>
+    <string name="import_description_step">Descrizione dell\'opera</string>
+    <string name="import_photo_and_video_step">Scelta delle cartelle foto e video</string>
+    <string name="title_equalizzazione_importazione">Equalizzazione</string>
+    <string name="title_velocita_importazione">Velocità di riproduzione</string>
+    <string name="title_nastro_importazione">Nastro</string>
+    <string name="title_canale1_importazione">Filename</string>
+    <string name="canale1_importazione">Nome del file audio legato al canale sinistro</string>
+    <string name="canale2_importazione">Nome del file audio legato al canale destro</string>
+    <string name="trackpath_1">Nome del primo file</string>
+    <string name="trackpath_2">Nome del secondo file</string>
+    <string name="trackpath_3">Nome del terzo file</string>
+    <string name="trackpath_4">Nome del quarto file</string>
+    <string name="title_switch_importazione">Stereo</string>
+    <string name="switch_importazione">Scegli se il brano è stereo o mono</string>
+    <string name="categoria_4_importazione">Immagine del brano</string>
+    <string name="button_forward_importazione">Prosegui</string>
+    <string name="button_backward_importazione">Indietro</string>
+    <string name="action_bar_campi_obbligatori_importazione">Importazione Brano</string>
+    <string name="action_bar_campi_opzionali_importazione">Importazione Brano - Campi Opzionali</string>
+    <string name="message_alert_activity_importazione">Procedere all\'importazione? Premere Annulla per tornare all\'importazione corrente.</string>
+    <string name="toast_activity_cancel_import">Importazione cancellata</string>
+    <string name="nome_canzone_default_importazione">Inserire nome</string>
+    <string name="titolo_canzone_default_importazione">Inserire titolo</string>
+    <string name="anno_canzone_default_importazione">Inserire anno</string>
+    <string name="signature_canzone_default_importazione">Inserire Signature</string>
+    <string name="provenance_canzone_default_importazione">Inserire la provenienza dell\'opera</string>
+    <string name="photos_choice">Scegli Path della cartella foto</string>
+    <string name="video_choice">Scegli Path della cartella video</string>
+
+    <!-- Stringhe per il menu di importazione brano -->
+
+    <string name="action_bar_accept">Conferma il brano selezionato</string>
+    <string name="action_bar_stop">Stoppa la riproduzione</string>
+    <string name="title_activity_library">Tape Library</string>
+    <string name="title_activity_songoptions">Tape settings</string>
+    <string name="name_list">Lista dei brani</string>
+    <string name="optionDelete">Elimina</string>
+    <string name="optionFormulation">Impostazioni</string>
+    <string name="optionRevert">Annulla</string>
+    <string name="author">Autore</string>
+    <string name="newauthor">Nuovo Autore</string>
+    <string name="name">Nome</string>
+    <string name="newname">Nuovo Nome</string>
+    <string name="title_activity_import_song">ImportSongActivity</string>
+    <string name="title_item_list">Items</string>
+    <string name="title_item_detail">Item Detail</string>
+
+    <!-- stringhe per action bar -->
+    <string name="search_option">Cerca brani</string>
+    <string name="edit_option">Modifica info brano</string>
+    <string name="discard_option">Elimina brano</string>
+    <string name="refresh_option">Refresh dati</string>
+
+    <!-- stringa per il menu di importazione -->
+    <string name="import_option">Importa nuovi brani</string>
+    <string name="Title">Titolo: </string>
+    <string name="Author">Autore: </string>
+    <string name="Year">Anno: </string>
+    <string name="song_presentation">Canzone attualmente in riproduzione: </string>
+    <string name="running_song">Nessuna canzone attualmente in riproduzione </string>
+    <string name="title_activity_audio_file_picker">Scelta file audio</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="title_activity_image_picker">Scelta foto</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="sample_rate_title">Sample Rate</string>
+    <string name="sample_rate_summary">Scelta del Sample Rate</string>
+    <string name="number_of_tracks_title">Numero di tracce</string>
+    <string name="number_of_tracks_summary">Scelta del numero di tracce componenti il brano</string>
+    <string name="signature_title">Signature</string>
+    <string name="signature_summary">Modifica la Signature del brano</string>
+    <string name="provenance_title">Provenance</string>
+    <string name="provenance_summary">Modifica la provenienza del brano</string>
+    <string name="tape_width_title">Tape width</string>
+    <string name="tape_width_summary">Modifica il valore della larghezza del nastro</string>
+    <string name="extension_title">Format</string>
+    <string name="extension_summary">Change audio file format</string>
+    <string name="bitdepth_title">Bit Depth</string>
+    <string name="bitdepth_summary">Change bit depth</string>
+    <string name="description_title">Description</string>
+    <string name="description_summary">Aggiungi delle note a corredo del brano</string>
+    <string name="settings_description_summary">Aggiungi/modifica delle note a corredo del brano</string>
+    <string name="photos_title">Cartella foto</string>
+    <string name="photos_summary">Visualizza e modifica il path alla cartella contenente le foto del brano</string>
+    <string name="photos_path_title">Path cartella foto</string>
+    <string name="photos_path_summary">path: </string>
+    <string name="video_path_title">Path cartella video</string>
+    <string name="video_path_summary">path: </string>
+
+    <!-- stringhe menu edit singolo brano -->
+    <string name="other_settings">Altre impostazioni</string>
+
+    <!-- stringhe per il detail della lista -->
+    <string name="detail_description"><b>Dettaglio canzone\n</b></string>
+    <string name="detail_button">Carica nastro</string>
+    <string name="detail_equalization">Equalizzazione: -</string>
+    <string name="detail_speed">Velocità: -</string>
+    <string name="detail_signature">Signature: -</string>
+    <string name="detail_provenance">Provenance: -</string>
+    <string name="detail_duration">Lunghezza: -</string>
+    <string name="detail_extension">Estensione: -</string>
+    <string name="detail_bitdepth">Bit Depth: -</string>
+    <string name="detail_samplerate">Sample Rate: -</string>
+    <string name="detail_numberoftracks">Numero di tracce: -</string>
+    <string name="detail_tapewidth">Largezza nastro: -</string>
+    <string name="detail_tracktype">Tipo di tracce: -</string>
+
+    <!-- stringhe per i bottoni della barra -->
+    <string name="charge_tape">Load tape</string>
+    <string name="more_info">More info</string>
+
+    <!-- stringa per gestione eccezioni nel database -->
+    <string name="invalid">Invalid path</string>
+    
+    <string name="toggle_button_on">ON</string>
+    <string name="toggle_button_off">OFF</string>
+	
+	<!-- stringhe varie -->
+	<string name="venue_title">Venue of digitization</string>
+	<string name="venue_value">CSC - Centro di Sonologia Computazionale</string>
+	<string name="prev_signature_title">Previous Signature(s)</string>
+	<string name="prev_signature">CSC49</string>
+	<string name="original_document">ORIGINAL DOCUMENT DESCRIPTION</string>
+	<string name="signal_type_title">Signal Type</string>
+	<string name="signal_type">Quadraphonic</string>
+	<string name="side_title">Side</string>
+	<string name="side">1</string>
+	<string name="tape_width">1/4 inch</string>
+	<string name="original_equalization_title">Equalization</string>
+	<string name="original_equalization">Unknown</string>
+	<!-- stringhe per Whats'new -->
+	<string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_filemanager">Scegli un file video</string>
+    <string name="title_activity_videoprocessing">Elaborazione e analisi del video</string>
+    <string name="text_confirm_elaboration">Una volta iniziata l\'elaborazione si potrà uscire tranquillamente dall\'applicazione premendo il tasto Home. Se però, si terminerà l\'applicazione, si andrà a bloccare in maniera errata l\'elaborazione.</string>
+    <string name="button_cancel">Annulla</string>
+    <string name="button_confirm">Procedi</string>
+    <string name="text_main_activity">Se il video è già stato elaborato seleziona il progetto sulla destra per vedere le discontinuità rilevate, altrimenti premi sul pulsante qui sotto e seleziona il video desiderato.</string>
+    <string name="title_confirm_elaboration">Sei sicuro di voler procedere?</string>
+    <string name="button_processes_video">Elabora video</string>
+    <string name="button_delete">Elimina</string>
+    <string name="title_confirm_deletion">Sicuro di voler eliminare?</string>
+    <string name="text_confirm_deletion">La cancellazione di quest\'elemento è definitiva. Si potrà ottenere nuovamente la discontinuità solamente tramite una nuova elaborazione del video.</string>
+    <string name="title_already_elaborated">Sei sicuro?</string>
+    <string name="text_already_elaborated">Il video selezionato è già stato elaborato in precedenza. Premi Rielabora se vuoi elaborarlo nuovamente, altrimenti ritorna alla schermata precedente.</string>
+    <string name="button_already_elaborated">Rielabora</string>
+    <string name="text_processingLoading">Video in elaborazione. \n Puoi lasciare questa schermata se lo desideri, riceverai una notifica quando l\'elaborazione sarà terminata.</string>
+    <string name="button_to_open_video">Seleziona un file video</string>
+    <string name="emoticon">Emoticon che indica se l\'elaborazione è completa o incompleta</string>
+    <string name="button_to_open_filemanager">Apri file video</string>
+    <string name="text_select_frame">Seleziona un frame </string>
+    <string name="image_frame">Frame del video</string>
+</resources>

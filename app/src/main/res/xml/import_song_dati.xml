@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- layout per ImportSongActivity -->
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <!-- campi obbligatori: signature e provenienza -->
+    <PreferenceCategory android:title="@string/import_first_step" >
+        <EditTextPreference
+            android:key="Signature"
+            android:summary="@string/signature_summary"
+            android:title="@string/signature_title" />
+        <EditTextPreference
+            android:key="Provenance"
+            android:summary="@string/provenance_summary"
+            android:title="@string/provenance_title" />
+    </PreferenceCategory>
+    
+    <!-- impostazioni di riproduzione: equalizzazione e velocità -->
+    <PreferenceCategory android:title="@string/import_second_step" >
+        <ListPreference
+            android:key="listaEqualizzazioneImportazioneBrano"
+            android:entries="@array/listaEqualizzazioni"
+            android:entryValues="@array/listaEqualizzazioni"
+            android:summary="@string/song_eq_activity_single_song_settings"
+            android:title="@string/title_equalizzazione_importazione" />
+        <ListPreference
+            android:key="listaVelocitaImportazioneBrano"
+            android:entries="@array/listaVelocita"
+            android:entryValues="@array/speed"
+            android:summary="@string/song_speed_activity_single_song_settings"
+            android:title="@string/title_velocita_importazione" />
+    </PreferenceCategory>
+    
+    <!-- scleta delle tracce -->
+    <PreferenceCategory
+        android:key="howManyTracks"
+        android:title="@string/track_choice" >
+       
+        <ListPreference
+            android:key="numberOfTracks"
+            android:entries="@array/number_of_tracks_list"
+            android:entryValues="@array/number_of_tracks"
+            android:summary="@string/number_of_tracks_summary"
+            android:title="@string/number_of_tracks_title" />
+
+        <Preference
+            android:key="Track1"
+            android:summary="@string/trackpath_1"
+            android:title="@string/title_canale1_importazione" />
+        <Preference
+            android:key="Track2"
+            android:summary="@string/trackpath_2"
+            android:title="@string/title_canale1_importazione" />
+        <Preference
+            android:key="Track3"
+            android:summary="@string/trackpath_3"
+            android:title="@string/title_canale1_importazione" />
+        <Preference
+            android:key="Track4"
+            android:summary="@string/trackpath_4"
+            android:title="@string/title_canale1_importazione" />
+    </PreferenceCategory>
+    
+    <!-- informazioni generali: autore, titolo, anno composizione, larghezza nastro -->
+    <PreferenceCategory android:title="@string/import_third_step" >
+         <EditTextPreference
+            android:key="nomeCanzoneImportazioneBrano"
+            android:summary="@string/song_name_activity_single_song_settings"
+            android:title="@string/song_name_title_activity_single_song_settings" />
+        <EditTextPreference
+            android:key="nomeAutoreImportazioneBrano"
+            android:summary="@string/song_author_activity_single_song_settings"
+            android:title="@string/song_author_title_activity_single_song_settings" />
+        <EditTextPreference
+            android:key="annoImportazioneBrano"
+            android:summary="@string/song_year_activity_single_song_settings"
+            android:title="@string/song_year_title_activity_single_song_settings" />
+        <ListPreference
+            android:key="TapeWidth"
+            android:entries="@array/tape_width_list"
+            android:entryValues="@array/tape_width_list"
+            android:summary="@string/tape_width_summary"
+            android:title="@string/tape_width_title" />
+     </PreferenceCategory>
+        
+    <!-- preferenceCategory temporanea, spero di poterla eliminare al più presto 
+     <PreferenceCategory android:title="@string/import_optional_step">
+        <ListPreference
+            android:key="listaSampleRate"
+            android:entries="@array/sample_rate_list"
+            android:entryValues="@array/sample_rate"
+            android:summary="@string/sample_rate_summary"
+            android:title="@string/sample_rate_title" />
+        <ListPreference
+            android:key="Extension"
+            android:entries="@array/extension_list"
+            android:entryValues="@array/extension_list"
+            android:summary="@string/extension_summary"
+            android:title="@string/extension_title" />
+        <ListPreference
+            android:key="BitDepth"
+            android:entries="@array/bit_depth_list"
+            android:entryValues="@array/bit_depth"
+            android:summary="@string/bitdepth_summary"
+            android:title="@string/bitdepth_title" />
+      </PreferenceCategory>-->
+        
+        <!-- note a corredo -->
+      <PreferenceCategory android:title="@string/import_description_step">
+        <EditTextPreference
+            android:key="Description"
+            android:summary="@string/description_summary"
+            android:title="@string/description_title" />
+	</PreferenceCategory>
+	
+      <!-- scelta delle cartelle dove si trovano i file video e photos - si può porre 1 unica cartella 
+      e poi ci pensiamo noi a prenderci le due cartelle -->
+      <PreferenceCategory android:title="@string/import_photo_and_video_step">
+        <Preference
+            android:key="Photos"
+            android:summary="@string/photos_path_summary"
+            android:title="@string/photos_path_title" />   
+            
+        <Preference
+            android:key="Video"
+            android:summary="@string/video_path_summary"
+            android:title="@string/video_path_title" />   
+    </PreferenceCategory>
+    
+    <Preference
+        android:key="bottoniImportareBrano"
+        android:layout="@layout/layout_avanti_indietro_importazione" />
+
+</PreferenceScreen>
+
+
+
+

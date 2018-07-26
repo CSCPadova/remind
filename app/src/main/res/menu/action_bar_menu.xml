@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/ic_action_search"
+        android:actionViewClass="android.support.v7.widget.SearchView"
+        android:icon="@drawable/ic_action_search"
+        android:showAsAction="ifRoom|collapseActionView"
+        android:title="@string/search_option"/>
+    <item
+        android:id="@+id/ic_action_import"
+        android:icon="@drawable/ic_action_new"
+        android:showAsAction="ifRoom"
+        android:title="@string/import_option"/>
+    <item
+        android:id="@+id/ic_action_edit"
+        android:icon="@drawable/ic_action_edit"
+        android:showAsAction="ifRoom"
+        android:title="@string/edit_option"/>
+    <item
+        android:id="@+id/ic_action_discard"
+        android:icon="@drawable/ic_action_discard"
+        android:showAsAction="ifRoom"
+        android:title="@string/discard_option"/>
+    <item
+        android:id="@+id/ic_action_refresh"
+        android:icon="@drawable/ic_action_refresh"
+        android:showAsAction="ifRoom"
+        android:title="@string/refresh_option"/>
+   
+
+</menu>

@@ -1,0 +1,71 @@
+<ViewFlipper xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/flipperDescFragFM"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <!-- FIRST LAYOUT -->
+    <RelativeLayout
+        
+        android:id="@+id/chooseFileLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/imageFolder"
+            android:contentDescription="@string/button_to_open_video"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignWithParentIfMissing="false"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_folder_grey600_48dp" />
+
+        <TextView
+            android:id="@+id/selectFile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imageFolder"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="15dp"
+            android:text="@string/button_to_open_video"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+    </RelativeLayout>
+   
+    <!-- SECOND LAYOUT -->
+ <RelativeLayout
+        android:id="@+id/descriptionLoadedLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/fileName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="16dp"
+            android:textAppearance="?android:attr/textAppearanceLarge"/>
+
+        <TextView
+            android:id="@+id/fileDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/fileName"
+            android:layout_below="@+id/fileName"
+            android:layout_marginTop="17dp"
+            android:lineSpacingExtra="10sp"
+            android:textSize="18sp" />
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="28dp"
+            android:layout_marginEnd="15dp"
+            android:text="@string/button_processes_video" />
+    </RelativeLayout>
+
+
+</ViewFlipper>

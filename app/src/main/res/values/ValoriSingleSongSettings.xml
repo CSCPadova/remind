@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+ <resources>
+   <string-array name="listaEqualizzazioni">
+     <item>CCIR</item>
+     <item>NAB</item>
+     <item>FLAT</item>
+     </string-array>
+     
+     <string-array name="listaVelocita">
+    	 <item>3.75 ips (9.5 cm/s)</item>
+     	<item>7.5 ips (19 cm/s)</item>
+     	<item>15 ips (38 cm/s)</item>
+     	<item>30 ips (76 cm/s)</item>
+     </string-array>
+     
+     <string-array name="speed">
+    	 <item>3.75</item>
+     	<item>7.5</item>
+     	<item>15</item>
+     	<item>30</item>
+     </string-array>
+     
+     <string-array name="sample_rate_list">
+         <item>22050 Hz</item>
+         <item>44100 Hz</item>
+         <item>48000 Hz</item>
+         <item>9600 Hz</item>
+     </string-array>
+     
+     <string-array name="sample_rate">
+         <item>22050</item>
+         <item>44100</item>
+         <item>48000</item>
+         <item>9600</item>
+     </string-array>
+     
+     <string-array name="number_of_tracks_list">
+         <item>1 MONO</item>
+         <item>1 STEREO</item>
+         <item>2 MONO</item>
+         <item>4 MONO</item>
+     </string-array>
+     
+     <!-- causa confusione che farebbe Android, è necessario porre -1 per tracce mono e 1 per tereo
+     altrimenti due 1 avrebbero creato confusione ed errore nel sistema -->
+     <string-array name="number_of_tracks">
+         <item>-1</item>
+         <item>1</item>
+         <item>2</item>
+         <item>4</item>
+     </string-array>
+     
+     <string-array name="tape_width_list">
+         <item>0.25 inch</item>
+         <item>0.50 inch</item>
+         <item>1 inch</item>
+         <item>2 inch</item>
+     </string-array>
+     
+     <string-array name="extension_list">
+         <item>.wav</item>
+     </string-array>
+     
+     <string-array name="bit_depth_list">
+         <item>8 bit</item>
+         <item>16 bit</item>
+         <item>24 bit</item>
+     </string-array>
+     
+     <string-array name="bit_depth">
+         <item>8</item>
+         <item>16</item>
+         <item>24</item>
+     </string-array>
+     
+ </resources>

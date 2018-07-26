@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ViewFlipper xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/flipperFrameDet"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- LAYOUT 0 -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/elaborationStatusInfo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:text="@string/text_select_frame" />
+    </LinearLayout>
+
+    <!-- LAYOUT 1 -->
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="center" >
+
+        <LinearLayout
+            android:id="@+id/frameDetails"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <ImageView
+                android:id="@+id/frameImg"
+                android:contentDescription="@string/image_frame"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp" />
+
+            <TextView
+                android:id="@+id/frameInfo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:textSize="18sp" />
+        </LinearLayout>
+    </ScrollView>
+
+</ViewFlipper>

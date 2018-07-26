@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white" >
+
+    <ImageView
+        android:id="@+id/imageFolder"
+        android:contentDescription="@string/button_to_open_filemanager"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignWithParentIfMissing="false"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/ic_folder_grey600_48dp" />
+
+    <Button
+        android:id="@+id/openVideoButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageFolder"
+        android:layout_centerHorizontal="true"
+        android:text="@string/button_to_open_filemanager" />
+
+    <ProgressBar
+        android:id="@+id/progressBarElaborationProgress"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/imageFolder"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="30dp"
+        android:visibility="invisible" />
+    <TextView
+        android:id="@+id/textViewElaborationProgress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:layout_above="@id/progressBarElaborationProgress"
+        android:layout_marginTop="29dp"
+        android:visibility="invisible" />
+</RelativeLayout>

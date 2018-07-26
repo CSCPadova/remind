@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- layout per la SettingsActivity -->
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+    
+    <!--  significato campi:
+        title:titolo grande
+        summary:racconta che fa
+        key: come id
+        entryValues e entries:due array con quello che ci serve -->
+  <PreferenceCategory
+      android:key="secondaCategoriaImpostazioni"
+   	  android:title="@string/second_header_activity_settings" >
+ <CheckBoxPreference
+     android:key="OpzioniAvanzateImpostazioni"
+     android:summary="@string/advanced_options_activity_settings"
+     android:title="@string/second_header_activity_settings" />
+ 
+ <CheckBoxPreference
+     android:key="Maintenance"
+     android:summary="@string/what_is_maintenance"
+     android:title="@string/maintenance" />
+ <!--  
+   <CheckBoxPreference
+     android:key="ImportareImpostazioni"
+     android:summary="@string/checkbox3_subtitle_activity_settings"
+     android:title="@string/checkbox3_title_activity_settings" 
+     android:defaultValue="true"/>
+   <CheckBoxPreference
+     android:key="EliminareImpostazioni"
+     android:summary="@string/checkbox4_subtitle_activity_settings"
+     android:title="@string/checkbox4_title_activity_settings" />
+   <CheckBoxPreference
+     android:key="ModificareImpostazioni"
+     android:summary="@string/checkbox5_subtitle_activity_settings"
+     android:title="@string/checkbox5_title_activity_settings" />
+  -->
+  <Preference
+     android:key="ChangePassword"
+     android:title="@string/change_password_title" />
+  <Preference
+     android:key="ModificaPathImpostazioni"
+     android:summary="@string/text1_subtitle_activity_settings"
+     android:title="@string/text1_title_activity_settings" />
+  <Preference
+     android:key="ExportDatabaseXml"
+     android:summary="@string/where_we_export"
+     android:title="@string/export_in_xml" />
+ </PreferenceCategory>
+</PreferenceScreen>

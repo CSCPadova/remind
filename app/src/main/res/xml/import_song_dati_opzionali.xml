@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory android:title="@string/import_third_step" >
+        <EditTextPreference
+            android:key="nomeAutoreImportazioneBrano"
+            android:summary="@string/song_author_activity_single_song_settings"
+            android:title="@string/song_author_title_activity_single_song_settings" />
+        <EditTextPreference
+            android:key="annoImportazioneBrano"
+            android:summary="@string/song_year_activity_single_song_settings"
+            android:title="@string/song_year_title_activity_single_song_settings" />
+        
+        <!-- da terminare, attenzione 
+        sistemare number of tracks-->
+        <EditTextPreference
+            android:key="Signature"
+            android:summary="@string/signature_summary"
+            android:title="@string/signature_title" />
+        <EditTextPreference
+            android:key="Provenience"
+            android:summary="@string/provenance_summary"
+            android:title="@string/provenance_title" />
+        <ListPreference
+            android:key="TapeWidth"
+            android:entries="@array/tape_width_list"
+            android:entryValues="@array/tape_width_list"
+            android:summary="@string/tape_width_summary"
+            android:title="@string/tape_width_title" />
+        <ListPreference
+            android:key="Extension"
+            android:entries="@array/extension_list"
+            android:entryValues="@array/extension_list"
+            android:summary="@string/extension_summary"
+            android:title="@string/extension_title" />
+        <ListPreference
+            android:key="BitDepth"
+            android:entries="@array/bit_depth_list"
+            android:entryValues="@array/bit_depth_list"
+            android:summary="@string/bitdepth_summary"
+            android:title="@string/bitdepth_title" />
+        <EditTextPreference
+            android:key="Description"
+            android:summary="@string/description_summary"
+            android:title="@string/description_title" />
+        <CheckBoxPreference
+            android:key="Photos_Checkbox"
+            android:summary="@string/photos_summary"
+            android:title="@string/photos_title" />
+        <Preference
+            android:key="Photos"
+            android:summary="@string/photos_path_summary"
+            android:title="@string/photos_path_title" />
+        
+    </PreferenceCategory>
+    
+    <PreferenceCategory android:title="@string/categoria_4_importazione" >
+        <it.unipd.dei.esp1314.magnetophone.ImageViewPreference android:key="immagineImportazioneBrano" />
+    </PreferenceCategory>
+
+    <Preference
+        android:key="bottoniImportareBrano"
+        android:layout="@layout/layout_avanti_indietro_importazione" />
+
+</PreferenceScreen>

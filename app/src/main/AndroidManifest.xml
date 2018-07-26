@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="unipd.dei.magnetophone">
+
+    <uses-sdk
+        android:minSdkVersion="16"
+        android:targetSdkVersion="19" />
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme"
+        android:largeHeap="true">
+        <service
+            android:name="unipd.dei.magnetophone.MusicService"
+            android:exported="false"
+            android:label="@string/app_name" />
+
+        <activity
+            android:name="unipd.dei.magnetophone.MagnetophoneActivity"
+            android:screenOrientation="landscape" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="unipd.dei.magnetophone.SettingsActivity"
+            android:label="@string/title_activity_settings" >
+        </activity>
+        <activity
+            android:name="unipd.dei.magnetophone.SongList"
+            android:label="@string/title_activity_library" >
+        </activity>
+        <activity
+            android:name="unipd.dei.magnetophone.SingleSongSettingsActivity"
+            android:label="@string/title_activity_single_song_settings" >
+        </activity>
+        <activity
+            android:name="unipd.dei.magnetophone.ImportSongActivity"
+            android:label="@string/title_activity_import_song" >
+        </activity>
+        <activity
+            android:name="unipd.dei.magnetophone.AudioFilePickerActivity"
+            android:label="@string/title_activity_audio_file_picker" >
+        </activity>
+
+        <!-- I didn't find it
+        <activity
+            android:name="unipd.dei.magnetophone.ImageFilePickerActivity"
+            android:label="@string/title_activity_image_picker" >
+        </activity>-->
+
+        <activity
+            android:name="unipd.dei.magnetophone.SongListActivity"
+            android:label="@string/title_activity_library" >
+        </activity>
+        <activity
+            android:name="unipd.dei.magnetophone.SongDetailActivity"
+            android:label="@string/app_name">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".SongListActivity" />
+        </activity>
+        <activity
+            android:name="unipd.dei.magnetophone.MonitorSetupActivity"
+            android:label="@string/monitor_setup_label">
+        </activity>
+        <activity
+            android:name="unipd.dei.magnetophone.SlideShowActivity"
+            android:label="@string/app_name">
+        </activity>
+        <activity android:name="unipd.dei.magnetophone.SearchActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+            <meta-data android:name="android.app.searchable"
+                android:resource="@xml/searchable"/>
+        </activity>
+        <!-- I guess this is not impotant for a primary porting job
+        <activity
+            android:name="unipd.dei.whatsnew.main.MainActivity"
+            android:label="@string/title_activity_main"
+            android:screenOrientation="sensorLandscape" >
+        </activity>
+        <activity
+            android:name="unipd.dei.whatsnew.videoprocessing.VideoProcessingActivity"
+            android:label="@string/title_activity_videoprocessing"
+            android:screenOrientation="sensorLandscape" >
+        </activity>
+        <activity
+            android:name="unipd.dei.whatsnew.filemanager.FileManagerActivity"
+            android:label="@string/title_activity_filemanager"
+            android:screenOrientation="sensorLandscape" >
+        </activity>
+        <service
+            android:name="unipd.dei.whatsnew.videoprocessing.VideoProcessingService"
+            android:exported="false"/>-->
+
+    </application>
+
+</manifest>

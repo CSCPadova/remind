@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/list_element"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/list_item_selector" 
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp" >
+    
+    <!-- 
+    
+     -->
+    <TextView
+         	android:id="@+id/list_signature"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:text=""
+        	android:textStyle="bold"
+        	android:textSize="22sp"/>
+    <TextView
+         	android:id="@+id/list_duration"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:textStyle="italic"
+        	android:text=""
+        	android:textSize="12sp"/>
+    
+
+</LinearLayout>

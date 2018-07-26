@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView 
+	xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ScrlView" 
+    android:layout_width="fill_parent" 
+    android:layout_height="fill_parent"  >
+    
+	<LinearLayout 
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="vertical" >
+	    
+	    <TextView
+		    android:id="@+id/song_description"
+		    style="?android:attr/textAppearanceLarge"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:gravity="left"
+		    android:padding="16dp"
+		    android:text="" />
+	    
+	    <Button
+		    android:id="@+id/go_back_from_description"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_gravity="right"
+		    android:text="@string/go_back_from_description"
+		    android:onClick="goBackFromDescription" />
+	    
+	
+	</LinearLayout>
+</ScrollView>

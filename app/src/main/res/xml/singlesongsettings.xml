@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- descrive il layout delle impostazioni della singola song -->
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory android:title="@string/first_header_activity_single_song_settings" >
+        <EditTextPreference
+            android:key="nomeCanzoneImpostazioniBrano"
+            android:persistent="false"
+            android:summary="@string/song_name_activity_single_song_settings"
+            android:title="@string/song_name_title_activity_single_song_settings" />
+        <EditTextPreference
+            android:key="nomeAutoreImpostazioniBrano"
+            android:persistent="false"
+            android:summary="@string/song_author_activity_single_song_settings"
+            android:title="@string/song_author_title_activity_single_song_settings" />
+        <EditTextPreference
+            android:key="annoImpostazioniBrano"
+            android:persistent="false"
+            android:summary="@string/song_year_activity_single_song_settings"
+            android:title="@string/song_year_title_activity_single_song_settings" />
+    </PreferenceCategory>
+    
+    <PreferenceCategory android:title="@string/second_header_activity_single_song_settings" >
+        <ListPreference
+            android:key="listaEqualizzazioneImpostazioniBrano"
+            android:entries="@array/listaEqualizzazioni"
+            android:entryValues="@array/listaEqualizzazioni"
+            android:persistent="false"
+            android:summary="@string/song_eq_activity_single_song_settings"
+            android:title="@string/title_equalizzazione_importazione" />
+        <ListPreference
+            android:key="listaVelocitaImpostazioniBrano"
+            android:entries="@array/listaVelocita"
+            android:entryValues="@array/speed"
+            android:persistent="false"
+            android:summary="@string/song_speed_activity_single_song_settings"
+            android:title="@string/title_velocita_importazione" />
+    </PreferenceCategory>
+    
+    <PreferenceCategory 
+        android:title="@string/other_settings">
+        <ListPreference
+            android:key="SettingsTapeWidth"
+            android:entries="@array/tape_width_list"
+            android:entryValues="@array/tape_width_list"
+            android:summary="@string/tape_width_summary"
+            android:title="@string/tape_width_title" />
+         <EditTextPreference
+            android:key="SettingsDescription"
+            android:summary="@string/settings_description_summary"
+            android:title="@string/description_title" />
+        
+    </PreferenceCategory>
+
+</PreferenceScreen>

@@ -1,0 +1,47 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="2dp"
+    android:baselineAligned="false"
+    android:divider="?android:attr/dividerHorizontal"
+    android:orientation="horizontal"
+    android:showDividers="middle"
+    tools:context="it.unipd.dei.esp1314.SongListActivity" >
+
+    <!-- <android.support.v4.widget.SlidingPaneLayout
+            android:id="@+id/sliding_pane"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+        <fragment
+                android:id="@+id/song_list"
+                android:name="it.unipd.dei.esp1314.magnetophone.SongListFragment"
+                android:layout_height="match_parent"
+                android:layout_width="180dp"
+                android:layout_gravity="start"
+                tools:layout="@android:layout/list_content" />
+
+        <FrameLayout
+                android:id="@+id/song_detail_container"
+                android:layout_width="600dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"/>
+            
+    </android.support.v4.widget.SlidingPaneLayout> -->
+        
+    <fragment
+        android:id="@+id/song_list"
+        android:name="unipd.dei.magnetophone.SongListFragment"
+        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        tools:layout="@android:layout/list_content" />
+
+    <FrameLayout
+        android:id="@+id/song_detail_container"
+        android:layout_width="0dp"
+        android:layout_weight="3"
+        android:layout_height="match_parent"/>
+
+</LinearLayout>

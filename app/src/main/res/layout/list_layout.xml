@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- layout dell'UI che raffigura la lista -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+   <LinearLayout
+       android:id="@+id/showMusic"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="#99CC00" >
+	
+       <ImageView
+        android:id="@+id/ImageViewImage"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:src="@drawable/defaultimage"/>
+
+       
+       
+       <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:orientation="vertical"
+           android:layout_margin="5dp" >
+           
+           <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:orientation="horizontal"
+           android:layout_margin="5dp" >
+           
+	           <TextView
+	           android:id="@+id/CurrentSong"
+	           android:layout_width="wrap_content"
+	           android:layout_height="match_parent"
+	           android:gravity="center"
+	           android:text="@string/running_song"
+	           android:textSize="15sp"
+	           android:textStyle="bold"/>
+	           
+	           <Button
+			     android:layout_height="wrap_content"
+			     android:layout_width="wrap_content"
+			     android:text="@string/charge_tape"
+			     android:onClick="toMagnetophone" />
+	           
+	           <Button
+			     android:layout_height="wrap_content"
+			     android:layout_width="wrap_content"
+			     android:text="@string/more_info" />
+	           
+	       </LinearLayout>
+	           
+	           <ProgressBar
+	               	android:id="@+id/progressBar"
+	         		android:layout_width="match_parent"
+	         		android:layout_height="wrap_content"
+	         		style="@android:style/Widget.ProgressBar.Horizontal"
+	         		android:layout_marginRight="5dp" />
+           
+       </LinearLayout>
+
+    </LinearLayout>
+   
+   <View
+	    android:layout_width="fill_parent"
+	    android:layout_height="3dp"
+	    android:background="#669900"/>
+   
+   <!-- aggiunta per evitare fragment -->
+   
+    
+   <LinearLayout 
+       android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="1.5">
+       
+		<ListView
+	    	android:id="@+id/listViewDemo"
+	    	android:layout_width="0dp"
+	    	android:layout_height="wrap_content" 
+	    	android:layout_weight="0.8">
+		</ListView>
+		<!-- di seguito descritti i metadati ulteriori della canzone
+		saranno, nel'ordine:
+		
+		•equalizzazione
+		• velocità di riproduzione
+		•nastro
+		etc.
+		 -->
+		<LinearLayout
+		    android:id="@+id/song_detail"
+		    android:layout_width="0dp"
+		    android:layout_height="wrap_content"
+		    android:orientation="vertical"
+		    android:layout_weight="0.7">
+           
+		    <TextView   
+    			android:layout_width="fill_parent"  
+			    android:layout_height="wrap_content"  
+			    android:id="@+id/detail_intro"  
+			    android:text="@string/detail_description"  /> 
+			    
+		    <TextView   
+    			android:layout_width="fill_parent"  
+			    android:layout_height="wrap_content"  
+			    android:id="@+id/detail_equalization"  
+			    android:text="@string/detail_equalization"  /> 
+
+		    <TextView   
+    			android:layout_width="fill_parent"  
+			    android:layout_height="wrap_content"  
+			    android:id="@+id/detail_speed"  
+			    android:text="@string/detail_speed"  /> 
+			    
+		    <TextView   
+    			android:layout_width="fill_parent"  
+			    android:layout_height="wrap_content"  
+			    android:id="@+id/detail_signature"  
+			    android:text="@string/detail_signature"  /> 
+			   
+		    <TextView   
+    			android:layout_width="fill_parent"  
+			    android:layout_height="wrap_content"  
+			    android:id="@+id/detail_provenance"  
+			    android:text="@string/detail_provenance"  /> 
+			    
+		    <TextView   
+    			android:layout_width="fill_parent"  
+			    android:layout_height="wrap_content"  
+			    android:id="@+id/detail_duration"  
+			    android:text="@string/detail_duration"  /> 
+			    
+		    <TextView   
+    			android:layout_width="fill_parent"  
+			    android:layout_height="wrap_content"  
+			    android:id="@+id/detail_extension"  
+			    android:text="@string/detail_extension"  /> 
+			    
+			    
+		    <TextView   
+    			android:layout_width="fill_parent"  
+			    android:layout_height="wrap_content"  
+			    android:id="@+id/detail_bitdepth"  
+			    android:text="@string/detail_bitdepth"  /> 
+			    
+		    <TextView   
+    			android:layout_width="fill_parent"  
+			    android:layout_height="wrap_content"  
+			    android:id="@+id/detail_samplerate"  
+			    android:text="@string/detail_samplerate"  /> 
+			    
+		    <TextView   
+    			android:layout_width="fill_parent"  
+			    android:layout_height="wrap_content"  
+			    android:id="@+id/detail_numberoftracks"  
+			    android:text="@string/detail_numberoftracks"  /> 
+			    
+		    <TextView   
+    			android:layout_width="fill_parent"  
+			    android:layout_height="wrap_content"  
+			    android:id="@+id/detail_tapewidth"  
+			    android:text="@string/detail_tapewidth"  /> 
+			    
+    
+		     </LinearLayout>
+		     
+	</LinearLayout>
+	
+   
+
+</LinearLayout>

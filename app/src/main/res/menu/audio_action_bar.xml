@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/ic_action_stop"
+          android:icon="@drawable/ic_action_stop"
+          android:title="@string/action_bar_stop"
+          android:showAsAction="ifRoom"/>
+    
+    <item android:id="@+id/ic_action_choose_audio"
+          android:icon="@drawable/ic_action_accept"
+          android:title="@string/action_bar_accept"
+          android:showAsAction="ifRoom"/>
+     
+</menu>
