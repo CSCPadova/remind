@@ -7,11 +7,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.support.v7.app.AppCompatActivity;
 
 /**
  * Activity principale dell'applicazione dove viene mostrato il magnetofono
  */
-public class MagnetophoneActivity extends Activity
+public class MagnetophoneActivity extends AppCompatActivity
 {
 	// Istanza della View su cui verrà disegnato il magnetofono
 	private MagnetoCanvasView canvasView = null;
@@ -19,7 +20,7 @@ public class MagnetophoneActivity extends Activity
 	
 	private MusicPlayer player;
 
-	private View decorView;
+	//private View decorView;
 	
 	/**
 	 * onCreate dell'activity
@@ -30,10 +31,8 @@ public class MagnetophoneActivity extends Activity
 		Log.d("MagnetophoneActivity", "oncreate MagnetophoneActivity");
 		setContentView(R.layout.activity_magnetophone);
 
-		// oggetto usato per mantenere nascoste le barre di stato e di navigazione di android
-		decorView = getWindow().getDecorView();
-		//invece di usare questo qui sotto che crasha
 		//getActionBar().hide();
+		getSupportActionBar().hide();
 		
 		canvasView = (MagnetoCanvasView) findViewById(R.id.canvas);
 		videoView  =         (VideoView) findViewById(R.id.video);
@@ -111,19 +110,19 @@ public class MagnetophoneActivity extends Activity
 		}*/
 	}
 
-	@Override
-	public void onWindowFocusChanged(boolean hasFocus) {
-		super.onWindowFocusChanged(hasFocus);
-		// ogni volta che l'activity sarà in primo piano vengono reimpostati tutti i flag in modo
-		// che l'app sia a schermo intero senza la barra di navigazione e senza la barra di stato
-		if (hasFocus) {
-			decorView.setSystemUiVisibility(
-					View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-							| View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-							| View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-							| View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-							| View.SYSTEM_UI_FLAG_FULLSCREEN
-							| View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
-		}
-	}
+	//@Override
+	//public void onWindowFocusChanged(boolean hasFocus) {
+	//	super.onWindowFocusChanged(hasFocus);
+	//	// ogni volta che l'activity sarà in primo piano vengono reimpostati tutti i flag in modo
+	//	// che l'app sia a schermo intero senza la barra di navigazione e senza la barra di stato
+	//	if (hasFocus) {
+	//		decorView.setSystemUiVisibility(
+	//				View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+	//						| View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+	//						| View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+	//						| View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+	//						| View.SYSTEM_UI_FLAG_FULLSCREEN
+	//						| View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+	//	}
+	//}
 }

@@ -25,8 +25,9 @@ public class SongDetailActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_song_detail);
 
+		//TODO commentato per ora
 		// Show the Up button in the action bar.
-		getActionBar().setDisplayHomeAsUpEnabled(true);
+		//getActionBar().setDisplayHomeAsUpEnabled(true);
 
 		
 		// http://developer.android.com/guide/components/fragments.html

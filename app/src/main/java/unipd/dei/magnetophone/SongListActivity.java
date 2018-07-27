@@ -22,6 +22,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -52,7 +53,9 @@ SongListFragment.Callbacks {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_song_twopane);
-		getActionBar().setDisplayHomeAsUpEnabled(true);
+
+		if(getActionBar()!=null)
+			getActionBar().setDisplayHomeAsUpEnabled(true);
 
 		if (findViewById(R.id.song_detail_container) != null) //se siamo con 2 fragment
 		{
