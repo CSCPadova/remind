@@ -20,12 +20,14 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
+import android.support.v7.app.ActionBar;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Toast;
+
 
 /**
  * Activity che gestisce le impostazioni generali del magnetofono. 
@@ -53,12 +55,15 @@ public class SettingsActivity extends PreferenceActivity
 	private static Preference prefPassword;
 	private static XmlImport imp;
 
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		//poniamo la possibilità sulla action bar del tasto indietro
-		getActionBar().setDisplayHomeAsUpEnabled(true);
+
+		//TODO commentato per ora
+		//getActionBar().setDisplayHomeAsUpEnabled(true);
 		
 		imp = new XmlImport(this);
 		//ci creiamo il nostro fragment

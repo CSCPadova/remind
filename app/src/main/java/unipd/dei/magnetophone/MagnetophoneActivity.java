@@ -31,9 +31,9 @@ public class MagnetophoneActivity extends Activity
 		setContentView(R.layout.activity_magnetophone);
 
 		// oggetto usato per mantenere nascoste le barre di stato e di navigazione di android
-		//decorView = getWindow().getDecorView();
+		decorView = getWindow().getDecorView();
 		//invece di usare questo qui sotto che crasha
-		getActionBar().hide();
+		//getActionBar().hide();
 		
 		canvasView = (MagnetoCanvasView) findViewById(R.id.canvas);
 		videoView  =         (VideoView) findViewById(R.id.video);
