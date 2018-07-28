@@ -32,7 +32,8 @@ public class MagnetophoneActivity extends AppCompatActivity
 		setContentView(R.layout.activity_magnetophone);
 
 		//getActionBar().hide();
-		getSupportActionBar().hide();
+		if(getSupportActionBar()!=null)
+			getSupportActionBar().hide();
 		
 		canvasView = (MagnetoCanvasView) findViewById(R.id.canvas);
 		videoView  =         (VideoView) findViewById(R.id.video);

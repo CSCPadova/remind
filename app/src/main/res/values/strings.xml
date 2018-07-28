@@ -7,10 +7,10 @@
     <string name="notification_return_to">Return to Tape Recorder </string>
     <string name="invalid_song_service">Error: audio file not found</string>
     <string name="playing_song_alert">Error: impossible to change/delete a tape when is playing</string>
-     <string name="charging_song_alert">Impossible to load the selected tape: one or more files are not found</string>
+    <string name="charging_song_alert">Impossible to load the selected tape: one or more files are not found</string>
     <string name="search_hint">Search by signature</string>
     <string name="monitor_setup_unavailable">Load a tape before to access to Monitor Setup</string>
-     <string name="refresh_alert">Nel processo di refresh è stata eliminata/modificata la canzone che era in riproduzione, ciò ha causato la rimozione
+    <string name="refresh_alert">Nel processo di refresh è stata eliminata/modificata la canzone che era in riproduzione, ciò ha causato la rimozione
          dell\'opera dal magnetofono, prego ricaricare se ancora presente</string>
 
     <!-- stringhe per il detail della canzone -->
@@ -257,25 +257,25 @@
 
     <!-- stringa per gestione eccezioni nel database -->
     <string name="invalid">Invalid path</string>
-    
+
     <string name="toggle_button_on">ON</string>
     <string name="toggle_button_off">OFF</string>
-	
-	<!-- stringhe varie -->
-	<string name="venue_title">Venue of digitization</string>
-	<string name="venue_value">CSC - Centro di Sonologia Computazionale</string>
-	<string name="prev_signature_title">Previous Signature(s)</string>
-	<string name="prev_signature">CSC49</string>
-	<string name="original_document">ORIGINAL DOCUMENT DESCRIPTION</string>
-	<string name="signal_type_title">Signal Type</string>
-	<string name="signal_type">Quadraphonic</string>
-	<string name="side_title">Side</string>
-	<string name="side">1</string>
-	<string name="tape_width">1/4 inch</string>
-	<string name="original_equalization_title">Equalization</string>
-	<string name="original_equalization">Unknown</string>
-	<!-- stringhe per Whats'new -->
-	<string name="title_activity_main">MainActivity</string>
+
+    <!-- stringhe varie -->
+    <string name="venue_title">Venue of digitization</string>
+    <string name="venue_value">CSC - Centro di Sonologia Computazionale</string>
+    <string name="prev_signature_title">Previous Signature(s)</string>
+    <string name="prev_signature">CSC49</string>
+    <string name="original_document">ORIGINAL DOCUMENT DESCRIPTION</string>
+    <string name="signal_type_title">Signal Type</string>
+    <string name="signal_type">Quadraphonic</string>
+    <string name="side_title">Side</string>
+    <string name="side">1</string>
+    <string name="tape_width">1/4 inch</string>
+    <string name="original_equalization_title">Equalization</string>
+    <string name="original_equalization">Unknown</string>
+    <!-- stringhe per Whats'new -->
+    <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_filemanager">Scegli un file video</string>
     <string name="title_activity_videoprocessing">Elaborazione e analisi del video</string>
     <string name="text_confirm_elaboration">Una volta iniziata l\'elaborazione si potrà uscire tranquillamente dall\'applicazione premendo il tasto Home. Se però, si terminerà l\'applicazione, si andrà a bloccare in maniera errata l\'elaborazione.</string>
@@ -296,4 +296,7 @@
     <string name="button_to_open_filemanager">Apri file video</string>
     <string name="text_select_frame">Seleziona un frame </string>
     <string name="image_frame">Frame del video</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

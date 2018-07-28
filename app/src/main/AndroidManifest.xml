@@ -13,8 +13,9 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme"
+        android:theme="@style/AppTheme.SettingsTheme"
         android:largeHeap="true">
+        <!--android:theme="@style/AppTheme"-->
         <service
             android:name="unipd.dei.magnetophone.MusicService"
             android:exported="false"
@@ -31,6 +32,7 @@
         </activity>
         <activity
             android:name="unipd.dei.magnetophone.SettingsActivity"
+            android:theme="@style/AppTheme.SettingsTheme"
             android:label="@string/title_activity_settings" >
         </activity>
         <activity

@@ -62,4 +62,7 @@
         <item name="android:layout_height">@dimen/lvItemHeight</item>
         <item name="android:scaleType">centerInside</item>
     </style>
+    <style name="AppTheme.SettingsTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
+    </style>
 </resources>

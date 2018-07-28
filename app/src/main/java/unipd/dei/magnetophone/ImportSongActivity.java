@@ -163,7 +163,7 @@ public class ImportSongActivity extends FragmentActivity
 	/**
 	 * Questo fragment mostra le opzioni definite nel file xml ImportSongDatiObbligatori
 	 */
-	public static class ObligatoryFragment extends PreferenceFragment 
+	public static class ObligatoryFragment extends PreferenceFragment
 	{
 		private EditTextPreference prefSignature;
 		private EditTextPreference prefProvenance;
@@ -659,7 +659,7 @@ public class ImportSongActivity extends FragmentActivity
 
 		/** Metodo che chiama l'activity AudioFilePickerActivity per scegliere un file audio, 
 		 * 
-		 * @param Indice del track
+		 * @param index del track
 		 */
 		private void getAudioFile(int index) 
 				throws InvalidParameterException
