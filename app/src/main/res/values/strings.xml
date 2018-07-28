@@ -90,6 +90,7 @@
     <string name="password_success">Password cambiata</string>
     <string name="wrong_password">Password errata, riprovare</string>
     <string name="external_error">Impossibile leggere l\'external storage</string>
+    <string name="external_permission_error">Abilitare i permessi di lettura dell\'external storage</string>
     <string name="directory_changed">Cartella cambiata con successo</string>
     <string name="change_password_title">Modifica password</string>
     <string name="lets_change_the_path">Cambia path</string>

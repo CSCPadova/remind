@@ -7,9 +7,9 @@ package unipd.dei.magnetophone;
 
 import java.util.LinkedList;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.DialogFragment;
+//import android.app.AlertDialog;
+//import android.app.Dialog;
+//import android.app.DialogFragment;
 import android.app.SearchManager;
 import android.content.ComponentName;
 import android.content.Context;
@@ -23,6 +23,9 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatDialog;
+import android.support.v7.app.AppCompatDialogFragment;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -46,7 +49,6 @@ SongListFragment.Callbacks {
 	 */
 	private boolean mTwoPane;
 	private ProgressBar progress;//la mia barra di progresso
-
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -346,24 +348,24 @@ SongListFragment.Callbacks {
 				return true;
 				//IMPORTA
 			case R.id.ic_action_import:
-				DialogFragment importDialog = new AlertImportFragment();
-				importDialog.show(getFragmentManager(), "import_alert");
+				AppCompatDialogFragment importDialog = new AlertImportFragment();
+				importDialog.show(getSupportFragmentManager(), "import_alert");
 				return true;
 				//EDIT
 			case R.id.ic_action_edit:
-				DialogFragment edit = new AlertEditFragment();
-				edit.show(getFragmentManager(), "edit_alert");
+				AppCompatDialogFragment edit = new AlertEditFragment();
+				edit.show(getSupportFragmentManager(), "edit_alert");
 				return true;
 				//ELIMINA
 			case R.id.ic_action_discard:
 				//mostro il popup che si occupa della cosa
-				DialogFragment alert = new AlertDeleteFragment();
-				alert.show(getFragmentManager(), "delete_alert");
+				AppCompatDialogFragment alert = new AlertDeleteFragment();
+				alert.show(getSupportFragmentManager(), "delete_alert");
 				return true;
 				//REFRESH
 			case R.id.ic_action_refresh:
-				DialogFragment refresh = new AlertRefreshFragment();
-				refresh.show(getFragmentManager(), "refresh_alert");
+				AppCompatDialogFragment refresh = new AlertRefreshFragment();
+				refresh.show(getSupportFragmentManager(), "refresh_alert");
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);
@@ -529,10 +531,10 @@ SongListFragment.Callbacks {
 	 * @author dennisdosso
 	 *
 	 */
-	public static class AlertDeleteFragment extends DialogFragment
+	public static class AlertDeleteFragment extends AppCompatDialogFragment
 	{
 		@Override
-		public Dialog onCreateDialog(Bundle SavedInstanceState)
+		public AppCompatDialog onCreateDialog(Bundle SavedInstanceState)
 		{
 			final MusicPlayer player = MusicPlayer.getInstance();
 
@@ -627,10 +629,10 @@ SongListFragment.Callbacks {
 	 * @author dennisdosso
 	 *
 	 */
-	public static class AlertEditFragment extends DialogFragment
+	public static class AlertEditFragment extends AppCompatDialogFragment
 	{
 		@Override
-		public Dialog onCreateDialog(Bundle SavedInstanceState)
+		public AppCompatDialog onCreateDialog(Bundle SavedInstanceState)
 		{
 			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 			final MusicPlayer player = MusicPlayer.getInstance();
@@ -688,10 +690,10 @@ SongListFragment.Callbacks {
 	 * @author dennisdosso
 	 *
 	 */
-	public static class AlertImportFragment extends DialogFragment
+	public static class AlertImportFragment extends AppCompatDialogFragment
 	{
 		@Override
-		public Dialog onCreateDialog(Bundle SavedInstanceState)
+		public AppCompatDialog onCreateDialog(Bundle SavedInstanceState)
 		{
 			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
@@ -722,10 +724,10 @@ SongListFragment.Callbacks {
 	 * @author dennisdosso
 	 *
 	 */
-	public static class AlertRefreshFragment extends DialogFragment
+	public static class AlertRefreshFragment extends AppCompatDialogFragment
 	{
 		@Override
-		public Dialog onCreateDialog(Bundle SavedInstanceState)
+		public AppCompatDialog onCreateDialog(Bundle SavedInstanceState)
 		{
 			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 

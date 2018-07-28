@@ -348,20 +348,26 @@ public class SettingsActivity extends FragmentActivity
 			//dentro questa cartella, prendo le sottocartelle che rappresentano le cartelle a disposizione come path
 			File[] directories = external.listFiles();
 
-			//inserisco i path delle directory nella lista
-			for(int g=0; g<directories.length; g++)
-			{
-				directories[g].mkdir();
-				if(directories[g].isDirectory())
-				{
-					//mi prendo il path assoluto e il nome di ogni cartella
-					String pa = directories[g].getAbsolutePath();
-					String name = directories[g].getName();
-					//prendo il path delle foto
-					fileList.add(pa);
-					//setto anche il suo nome
-					nameList.add(name);
+			if(directories!=null) {
+				//inserisco i path delle directory nella lista
+				for (int g = 0; g < directories.length; g++) {
+					directories[g].mkdir();
+					if (directories[g].isDirectory()) {
+						//mi prendo il path assoluto e il nome di ogni cartella
+						String pa = directories[g].getAbsolutePath();
+						String name = directories[g].getName();
+						//prendo il path delle foto
+						fileList.add(pa);
+						//setto anche il suo nome
+						nameList.add(name);
+					}
 				}
+			}
+			else
+			{
+				String text =appContext.getString(R.string.external_permission_error);
+				Toast toast = Toast.makeText(appContext, text, Toast.LENGTH_SHORT);
+				toast.show();
 			}
 		}
 		else
