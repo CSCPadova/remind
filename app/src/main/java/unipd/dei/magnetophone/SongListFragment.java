@@ -105,7 +105,7 @@ public class SongListFragment extends ListFragment {
 		long currentModified = xmlDirectory.lastModified();
 		
 		int time = checkTheFirstTime();//guardo se questa è la prima volta che l'applicazione parte
-		
+
 		//se c'è stata una qualche modifica alla cartella oppure se questa è la prima volta che partiamo
 		if(currentModified>lastModified || time==0)
 		{

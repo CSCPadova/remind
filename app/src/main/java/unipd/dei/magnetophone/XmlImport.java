@@ -15,6 +15,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Environment;
+import android.util.Log;
 
 public class XmlImport
 {
@@ -78,6 +79,7 @@ public class XmlImport
 		File magnetophoneDirectory = new File(getCurrentDirectory(cont));
 		//questa è la cartella Magnetophone, e dentro di essa ci sono le cartelle song
 		File[] songsDirectories = magnetophoneDirectory.listFiles();
+
 
 		try
 		{
