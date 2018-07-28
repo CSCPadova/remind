@@ -234,7 +234,7 @@ public class MusicPlayer
 	/**
 	 * Imposta il VideoController che deve ricevere gli eventi di stato
 	 * 
-	 * @param actrl
+	 * @param vctrl
 	 */
 	public void setVideoController(VideoController vctrl)
 	{

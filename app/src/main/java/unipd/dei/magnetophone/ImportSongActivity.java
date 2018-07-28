@@ -1,28 +1,40 @@
 package unipd.dei.magnetophone;
 
+//import it.unipd.dei.esp1314.magnetophone.R;
+
 import java.io.File;
 import java.security.InvalidParameterException;
 import java.util.LinkedList;
 
 import unipd.dei.magnetophone.Song.Track;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.DialogFragment;
-import android.app.Fragment;
+//import android.app.AlertDialog;
+//import android.app.Dialog;
+//import android.app.DialogFragment;
+//import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
-import android.preference.EditTextPreference;
-import android.preference.ListPreference;
-import android.preference.Preference;
-import android.preference.Preference.OnPreferenceChangeListener;
-import android.preference.Preference.OnPreferenceClickListener;
-import android.preference.PreferenceCategory;
+//import android.preference.EditTextPreference;
+//import android.preference.ListPreference;
+//import android.preference.Preference;
+//import android.preference.Preference.OnPreferenceChangeListener;
+//import android.preference.Preference.OnPreferenceClickListener;
+//import android.preference.PreferenceCategory;
+
+import android.support.v7.preference.EditTextPreference;
+import android.support.v7.preference.ListPreference;
+import android.support.v7.preference.Preference;
+import android.support.v7.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatDialog;
+import android.support.v7.preference.PreferenceFragmentCompat;
 import android.text.InputType;
 import android.util.Log;
 import android.view.MenuItem;
@@ -32,12 +44,12 @@ import android.widget.Toast;
 
 /**
  * Activity che si occupa di gestire l'importazione di brani.
- * 
+ *
  * Una volta confermate le decisioni, si salveranno i dati sul database in maniera permanente.
  *
  */
 
-public class ImportSongActivity extends FragmentActivity 
+public class ImportSongActivity extends FragmentActivity
 {
 
 	private static int RESULT_LOAD_AUDIO_FILE = 2;	//Codice per l'intent di scelta brano
@@ -46,7 +58,7 @@ public class ImportSongActivity extends FragmentActivity
 	private Song songToAdd = new Song();			//Canzone da aggiungere al database
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) 
+	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_import_song);
@@ -54,14 +66,14 @@ public class ImportSongActivity extends FragmentActivity
 		//Cambio titolo all'action bar
 		getActionBar().setTitle(getString(R.string.action_bar_campi_obbligatori_importazione));
 
-		if (savedInstanceState == null) 
+		if (savedInstanceState == null)
 		{
 			obligatoryFrag = new ObligatoryFragment();
 			//Aggiungo i due fragment, mostro solo il primo
-			getFragmentManager().beginTransaction()
-			.disallowAddToBackStack()
-			.add(R.id.container, obligatoryFrag)
-			.commit();
+			getSupportFragmentManager().beginTransaction()
+					.disallowAddToBackStack()
+					.add(R.id.container, obligatoryFrag)
+					.commit();
 		}
 	}
 
@@ -79,10 +91,10 @@ public class ImportSongActivity extends FragmentActivity
 	 * HOME: back normale di android
 	 */
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) 
+	public boolean onOptionsItemSelected(MenuItem item)
 	{
 		// Handle item selection
-		switch (item.getItemId()) 
+		switch (item.getItemId())
 		{
 			case android.R.id.home:
 				goToSongsList();
@@ -132,26 +144,26 @@ public class ImportSongActivity extends FragmentActivity
 
 
 	/**
-	 * Metodo che termina il processo di importazione, mostrando un popup di ultima conferma 
+	 * Metodo che termina il processo di importazione, mostrando un popup di ultima conferma
 	 */
 	private void endImportationProcess()
 	{
 		//Creo un popup di conferma dati e lo mostro
 		SaveAlertFragment save = new SaveAlertFragment();
-		save.show(getFragmentManager(), null);
+		save.show(getSupportFragmentManager(), null);
 	}
 
 	/**
 	 * Metodo che si occupa di uscire dall'activity e richiamare la lista dei brani
 	 */
-	private void goToSongsList() 
+	private void goToSongsList()
 	{
 		//informo la lista che dovrà far vedere la nuova canzone importata
 		SharedPreferences shared = this.getSharedPreferences("selected", Context.MODE_PRIVATE);
 		Editor editor = shared.edit();
 		editor.putInt("song_id", songToAdd.getId());
 		editor.commit();
-		
+
 		Intent intent = new Intent(this, SongListActivity.class);	//Passo alla lista dei brani
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);	//evito che premendo BACK dalla lista dei brani si ritorni all'importazione
 		intent.putExtra("modify", 1);
@@ -163,7 +175,7 @@ public class ImportSongActivity extends FragmentActivity
 	/**
 	 * Questo fragment mostra le opzioni definite nel file xml ImportSongDatiObbligatori
 	 */
-	public static class ObligatoryFragment extends PreferenceFragment
+	public static class ObligatoryFragment extends PreferenceFragmentCompat
 	{
 		private EditTextPreference prefSignature;
 		private EditTextPreference prefProvenance;
@@ -172,10 +184,10 @@ public class ImportSongActivity extends FragmentActivity
 		private ListPreference prefNumberOfTracks;
 		private Preference prefTrack1;		//Rappresentano le varie preference del file xml
 		private Preference prefTrack2;		//
-		private Preference prefTrack3;		
+		private Preference prefTrack3;
 		private Preference prefTrack4;
 		private ListPreference prefTapeWidth;
-//		private ListPreference prefSampleRate;
+		//		private ListPreference prefSampleRate;
 //		private ListPreference prefExtension;
 //		private ListPreference prefBitDepth;
 		private EditTextPreference prefAuthorName;
@@ -194,16 +206,16 @@ public class ImportSongActivity extends FragmentActivity
 
 
 		@Override
-		public void onCreate(Bundle savedInstanceState) 
+		public void onCreatePreferences(Bundle bundle, String s)
 		{
-			super.onCreate(savedInstanceState);
+			//super.onCreate(savedInstanceState);
 			//Creo una lista di preference dall'xml
 			addPreferencesFromResource(R.xml.import_song_dati);
 
 			//Creo dei collegamenti agli elementi prference dell'xml import_song_dati
 
 			imp = new XmlImport(getActivity());
-			
+
 			// ------------ campi obbligatori ----------------------
 			//Signature (no default)
 			prefSignature = (EditTextPreference)findPreference("Signature");
@@ -253,7 +265,7 @@ public class ImportSongActivity extends FragmentActivity
 
 			//################# la song da importare dovrà in ogni caso avere dei valori di default già pronti a parte per quelli obbligatori########
 			// ad esclusione certo delle track, di signature e di provenance
-			ImportSongActivity isa = (ImportSongActivity)getActivity(); 
+			ImportSongActivity isa = (ImportSongActivity)getActivity();
 
 			isa.songToAdd.setEqualization((String)prefEqualization.getEntryValues()[2]);
 			isa.songToAdd.setSpeed(Float.parseFloat((String)prefSpeed.getEntryValues()[0]));
@@ -275,7 +287,7 @@ public class ImportSongActivity extends FragmentActivity
 
 			//setto le preference
 			prefEqualization.setValue((String)prefEqualization.getEntryValues()[2]);
-			prefSpeed.setValue((String)prefSpeed.getEntryValues()[0]);		
+			prefSpeed.setValue((String)prefSpeed.getEntryValues()[0]);
 
 
 			prefNumberOfTracks.setValue((String)prefNumberOfTracks.getEntryValues()[0]);
@@ -285,11 +297,11 @@ public class ImportSongActivity extends FragmentActivity
 					findPreference("howManyTracks");
 			switch (Integer.parseInt((String)prefNumberOfTracks.getValue()))
 			{
-				case -1: 
+				case -1:
 				case 1: pc.removePreference(prefTrack2);
 				case 3: pc.removePreference(prefTrack3);
 				case 4: pc.removePreference(prefTrack4);
-				break;
+					break;
 				default:
 					break;
 			}
@@ -309,14 +321,14 @@ public class ImportSongActivity extends FragmentActivity
 
 
 			//Setto la possibilità di inserire solo numeri in questa preference
-			prefYear.getEditText().setInputType(InputType.TYPE_CLASS_NUMBER);
-
+			//TODO risolvere questa mancanza
+			//prefYear.getEditText().setInputType(InputType.TYPE_CLASS_NUMBER);
 
 
 			//########### setto i valori di default che appariranno come scritte nelle preference
-			prefSignature.setTitle(getString(R.string.signature_title) + ": " 
+			prefSignature.setTitle(getString(R.string.signature_title) + ": "
 					+ getString(R.string.signature_canzone_default_importazione));
-			prefProvenance.setTitle(getString(R.string.provenance_title) + 
+			prefProvenance.setTitle(getString(R.string.provenance_title) +
 					": " + getString(R.string.provenance_canzone_default_importazione));
 
 			prefEqualization.setTitle(getString(R.string.title_equalizzazione_importazione) + ": " + prefEqualization.getValue());
@@ -326,10 +338,10 @@ public class ImportSongActivity extends FragmentActivity
 			prefAuthorName.setTitle(getString(R.string.song_author_title_activity_single_song_settings) +
 					": " + getString(R.string.nome_canzone_default_importazione));
 
-			prefSongName.setTitle(getString(R.string.song_name_title_activity_single_song_settings) + 
+			prefSongName.setTitle(getString(R.string.song_name_title_activity_single_song_settings) +
 					": " + getString(R.string.titolo_canzone_default_importazione));
 
-			prefYear.setTitle(getString(R.string.song_year_title_activity_single_song_settings) + 
+			prefYear.setTitle(getString(R.string.song_year_title_activity_single_song_settings) +
 					": " + getString(R.string.anno_canzone_default_importazione));
 
 			prefTapeWidth.setTitle(getString(R.string.tape_width_title) +
@@ -349,14 +361,14 @@ public class ImportSongActivity extends FragmentActivity
 
 
 			//Creo il preferenceChangeListener per aggiornare i testi delle preference nella lista quando cambiano i contenuti
-			OnPreferenceChangeListener eventChange = new OnPreferenceChangeListener() 
+			Preference.OnPreferenceChangeListener eventChange = new Preference.OnPreferenceChangeListener()
 			{
 				@Override
 				public boolean onPreferenceChange(Preference preference, Object newValue)
 				{
 					//azione in base alla preference che chiama l'evento, newValue è l'input dell'utente
 					switch(preference.getKey())
-					{	
+					{
 						case "Signature":
 							prefSignature.setText((String)newValue);
 							preference.setTitle(getString(R.string.signature_title) +
@@ -381,7 +393,7 @@ public class ImportSongActivity extends FragmentActivity
 							break;
 
 
-						case "listaEqualizzazioneImportazioneBrano": 
+						case "listaEqualizzazioneImportazioneBrano":
 							//aggiorno la preference
 							prefEqualization.setValue((String)newValue);
 							//aggiorno il titolo così l'utente viene a conoscenza dell'avvenuto mutamento
@@ -389,7 +401,7 @@ public class ImportSongActivity extends FragmentActivity
 							//aggiorno la canzone che alla fine si importerà
 							((ImportSongActivity)getActivity()).songToAdd.setEqualization((String)newValue);
 							break;
-						case "listaVelocitaImportazioneBrano": 
+						case "listaVelocitaImportazioneBrano":
 							prefSpeed.setValue((String)newValue);
 							preference.setTitle(getString(R.string.title_velocita_importazione) + ": " + prefSpeed.getEntry());
 							((ImportSongActivity)getActivity()).songToAdd.setSpeed(Float.parseFloat((String)prefSpeed.getValue()));
@@ -404,14 +416,14 @@ public class ImportSongActivity extends FragmentActivity
 							//per andare a segliere i file audio e cancello eventuali file già selezionati
 							//se l'utente ha cambiato idea ed ha scelto di ridurre il numero di tracce che desidera
 							//prendo le reference alle preference
-							
-							
+
+
 
 							switch (number)
 							{
 								case -1: //1 traccia mono
 									removeExtraTracks(1);
-									
+
 									if(prefTrack2!=null)
 										pc.removePreference(prefTrack2);
 									if(prefTrack3!=null)
@@ -428,25 +440,25 @@ public class ImportSongActivity extends FragmentActivity
 									pc.removePreference(prefTrack4);
 
 									break;
-								case 2: 
+								case 2:
 									removeExtraTracks(2);
 
-									pc.addPreference(prefTrack2); 
+									pc.addPreference(prefTrack2);
 									pc.removePreference(prefTrack3);
 									pc.removePreference(prefTrack4);
 
 									break;
 								case 4:
 
-									pc.addPreference(prefTrack1); 
-									pc.addPreference(prefTrack2); 
-									pc.addPreference(prefTrack3); 
-									pc.addPreference(prefTrack4); 
+									pc.addPreference(prefTrack1);
+									pc.addPreference(prefTrack2);
+									pc.addPreference(prefTrack3);
+									pc.addPreference(prefTrack4);
 							}
 							break;
 
-						case "nomeCanzoneImportazioneBrano": 
-							preference.setTitle(getString(R.string.song_name_title_activity_single_song_settings) + 
+						case "nomeCanzoneImportazioneBrano":
+							preference.setTitle(getString(R.string.song_name_title_activity_single_song_settings) +
 									": " + (String)newValue);
 							prefSongName.setText((String)newValue);
 							((ImportSongActivity)getActivity()).songToAdd.setTitle((String)newValue);
@@ -462,17 +474,17 @@ public class ImportSongActivity extends FragmentActivity
 							else
 								((ImportSongActivity)getActivity()).songToAdd.setAuthor((String)newValue);
 							break;
-						case "annoImportazioneBrano": 
+						case "annoImportazioneBrano":
 							if(checkYear((String)newValue))
 							{
-								preference.setTitle(getString(R.string.song_year_title_activity_single_song_settings) + 
+								preference.setTitle(getString(R.string.song_year_title_activity_single_song_settings) +
 										": " + (String)newValue);
 								prefYear.setText((String)newValue);
 								if(((String)newValue).equals(""))
 									((ImportSongActivity)getActivity()).songToAdd.setYear(getString(R.string.sconosciuto));
 								else
 									((ImportSongActivity)getActivity()).songToAdd.setYear((String)newValue);
-							} 
+							}
 							break;
 						case "TapeWidth":
 							//aggiorno la preference
@@ -499,8 +511,8 @@ public class ImportSongActivity extends FragmentActivity
 //							((ImportSongActivity)getActivity()).songToAdd.setBitDepth(Integer.parseInt((String)newValue));
 //							break;
 
-						case "Description": 
-							preference.setTitle(getString(R.string.description_title) + 
+						case "Description":
+							preference.setTitle(getString(R.string.description_title) +
 									": " + (String)newValue);
 							prefDescription.setText((String)newValue);
 							if(((String)newValue).equals(""))
@@ -514,7 +526,7 @@ public class ImportSongActivity extends FragmentActivity
 			};
 
 			//setto il listener sulla preference per la scelta del primo file audio. Lo stesso negli altri
-			prefTrack1.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+			prefTrack1.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
 				@Override
 				public boolean onPreferenceClick(Preference preference)
 				{
@@ -523,7 +535,7 @@ public class ImportSongActivity extends FragmentActivity
 				}
 			});
 
-			prefTrack2.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+			prefTrack2.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
 				@Override
 				public boolean onPreferenceClick(Preference preference)
 				{
@@ -533,7 +545,7 @@ public class ImportSongActivity extends FragmentActivity
 				}
 			});
 
-			prefTrack3.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+			prefTrack3.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
 				@Override
 				public boolean onPreferenceClick(Preference preference)
 				{
@@ -543,7 +555,7 @@ public class ImportSongActivity extends FragmentActivity
 				}
 			});
 
-			prefTrack4.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+			prefTrack4.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
 				@Override
 				public boolean onPreferenceClick(Preference preference)
 				{
@@ -553,7 +565,7 @@ public class ImportSongActivity extends FragmentActivity
 				}
 			});
 
-			prefPhotos.setOnPreferenceClickListener(new OnPreferenceClickListener(){
+			prefPhotos.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
 				@Override
 				public boolean onPreferenceClick(Preference preference)
 				{
@@ -563,7 +575,7 @@ public class ImportSongActivity extends FragmentActivity
 				}
 			});
 
-			prefVideo.setOnPreferenceClickListener(new OnPreferenceClickListener(){
+			prefVideo.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
 				@Override
 				public boolean onPreferenceClick(Preference preference)
 				{
@@ -606,7 +618,7 @@ public class ImportSongActivity extends FragmentActivity
 		 */
 		private void removeExtraTracks(int n)
 		{
-			ImportSongActivity isa = (ImportSongActivity)getActivity(); 
+			ImportSongActivity isa = (ImportSongActivity)getActivity();
 			switch(n)
 			{
 				case 1://l'utente ha scelto di tenere 1 sola traccia
@@ -625,7 +637,7 @@ public class ImportSongActivity extends FragmentActivity
 								list.pollLast();
 							case 3:
 								list.pollLast();
-							case 2: 
+							case 2:
 								list.pollLast();
 								break;
 						}
@@ -657,13 +669,13 @@ public class ImportSongActivity extends FragmentActivity
 		}
 
 
-		/** Metodo che chiama l'activity AudioFilePickerActivity per scegliere un file audio, 
-		 * 
+		/** Metodo che chiama l'activity AudioFilePickerActivity per scegliere un file audio,
+		 *
 		 * @param index del track
 		 */
-		private void getAudioFile(int index) 
+		private void getAudioFile(int index)
 				throws InvalidParameterException
-				{
+		{
 
 			if(index == 1 || index == 2 || index == 3 || index == 4)
 				INDEX_OF_TRACK = index;
@@ -672,17 +684,17 @@ public class ImportSongActivity extends FragmentActivity
 
 			Intent intent = new Intent(getActivity(), AudioFilePickerActivity.class);
 			startActivityForResult(intent, RESULT_LOAD_AUDIO_FILE);
-				}
+		}
 
 		/**
 		 * metodo chiamato al ritorno dalla scelta del file audio. Setta i valori del file audio leggendone i dati.
 		 */
 		@Override
-		public void onActivityResult(int requestCode, int resultCode, Intent data) 
+		public void onActivityResult(int requestCode, int resultCode, Intent data)
 		{
 			super.onActivityResult(requestCode, resultCode, data);
 			{
-				if (requestCode == RESULT_LOAD_AUDIO_FILE && resultCode == RESULT_OK && data != null) 
+				if (requestCode == RESULT_LOAD_AUDIO_FILE && resultCode == RESULT_OK && data != null)
 				{
 
 					String filePath = data.getStringExtra("fileAbsPath");	//prendo la path assoluta
@@ -696,13 +708,13 @@ public class ImportSongActivity extends FragmentActivity
 					{
 						ext=filePath.substring(j);
 					}
-					
+
 					//setto il valore dell'estensione
 //					prefExtension.setValue(ext);
 //					prefExtension.setTitle(getString(R.string.extension_title) + ": " + prefExtension.getEntry());
 					((ImportSongActivity)getActivity()).songToAdd.setExtension(ext);
-					
-					//eseguo il parsing dell'header del file e ne ottengo le informazioni che vengono inserite nel wavHeader 
+
+					//eseguo il parsing dell'header del file e ne ottengo le informazioni che vengono inserite nel wavHeader
 					WaveHeader wavHeader = new WaveHeader(temp);
 					setTheWaveHeaderValues(wavHeader);
 
@@ -718,8 +730,8 @@ public class ImportSongActivity extends FragmentActivity
 
 
 					//si inserisce ora la track nella song
-					//nel caso l'utente avesse già selezionato una track e poi avesse cambiato idea, mi premuro di eliminarla 
-					//dalla canzone 
+					//nel caso l'utente avesse già selezionato una track e poi avesse cambiato idea, mi premuro di eliminarla
+					//dalla canzone
 					((ImportSongActivity)getActivity()).songToAdd.deleteTrackOfIndex(INDEX_OF_TRACK);
 					//inserisco il track nella song e tengo traccia del fatto che è stato selezionato il file corrispondente
 					//a quell'indice di track
@@ -731,17 +743,17 @@ public class ImportSongActivity extends FragmentActivity
 							firstSelected=true;
 							break;
 						case 2:
-							prefTrack2.setTitle(getString(R.string.title_canale1_importazione) + ": " + fileName); 
+							prefTrack2.setTitle(getString(R.string.title_canale1_importazione) + ": " + fileName);
 							((ImportSongActivity)getActivity()).songToAdd.setTrack(filePath, 2); //salvo nome del file
 							secondSelected=true;
 							break;
 						case 3:
-							prefTrack3.setTitle(getString(R.string.title_canale1_importazione) + ": " + fileName); 
+							prefTrack3.setTitle(getString(R.string.title_canale1_importazione) + ": " + fileName);
 							((ImportSongActivity)getActivity()).songToAdd.setTrack(filePath, 3); //salvo nome del file
 							thirdSelected=true;
 							break;
 						case 4:
-							prefTrack4.setTitle(getString(R.string.title_canale1_importazione) + ": " + fileName); 
+							prefTrack4.setTitle(getString(R.string.title_canale1_importazione) + ": " + fileName);
 							((ImportSongActivity)getActivity()).songToAdd.setTrack(filePath, 4); //salvo nome del file
 							fourthSelected=true;
 							break;
@@ -779,7 +791,7 @@ public class ImportSongActivity extends FragmentActivity
 					return firstSelected && secondSelected;
 				case 4:
 					return firstSelected && secondSelected && thirdSelected && fourthSelected;
-				default: 
+				default:
 					return false;
 			}
 
@@ -815,17 +827,17 @@ public class ImportSongActivity extends FragmentActivity
 			int duration = Toast.LENGTH_SHORT;
 			toast = Toast.makeText(getActivity(), getString(R.string.toast_activity_single_song_settings), duration);
 			//Controllo che l'anno sia effettivamente solo numerico
-			try 
+			try
 			{
 				numericYear = Integer.parseInt(year);
-			} 
+			}
 			catch(NumberFormatException nfe) {
 				toast.show();	//se ho l'eccezione mostro il toast di errore
 				return false;
-			} 
+			}
 
 			//se l'anno è da 0 a 9999 e non inizia per 0, faccio un piccolo controllo di bound dei numeri
-			if(numericYear < 9999 && numericYear > 0 && !year.startsWith("0")) 
+			if(numericYear < 9999 && numericYear > 0 && !year.startsWith("0"))
 				return true;
 
 			toast.show();		//se ho un anno fuori dai numeri massimi mostro toast di errore
@@ -863,21 +875,21 @@ public class ImportSongActivity extends FragmentActivity
 					wave3 = new WaveHeader(new File(track3.getPath()));
 					wave4 = new WaveHeader(new File(track4.getPath()));
 					return wave1.equals(wave2) && wave1.equals(wave3) && wave1.equals(wave4);//non faccio altri controlli
-					//per proprietà transitiva
+				//per proprietà transitiva
 			}
 			return false;//c'è qualcosa che non va nel numero di tracce
 		}
-		
-		
+
+
 		//dialog che si preoccupa di farci vedere le cartelle foto e di salvare la nostra scelta
 		public static class PhotosFragment extends DialogFragment
 		{
 			@Override
-			public Dialog onCreateDialog(Bundle SavedInstanceState)
+			public AppCompatDialog onCreateDialog(Bundle SavedInstanceState)
 			{
 				AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 				builder.setTitle(R.string.photos_choice);
- 
+
 				//TODO
 //				imp = new XmlImport(getActivity());
 				//mi prendo i path e i nomi delle cartelle
@@ -886,19 +898,19 @@ public class ImportSongActivity extends FragmentActivity
 
 				final ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.select_dialog_singlechoice, directoriesName);
 
-				builder.setAdapter(adapter, 
-						new DialogInterface.OnClickListener() 
-				{
-					public void onClick(DialogInterface dialog, int which) 
-					{
-						// The 'which' argument contains the index position
-						// of the selected item
-						String choice = pathList.get(which);
-						prefPhotos.setSummary(getString(R.string.photos_path_summary)  + choice);
-						((ImportSongActivity)getActivity()).songToAdd.setPhotos(choice); //salvo nella song il path della cartella delle foto
+				builder.setAdapter(adapter,
+						new DialogInterface.OnClickListener()
+						{
+							public void onClick(DialogInterface dialog, int which)
+							{
+								// The 'which' argument contains the index position
+								// of the selected item
+								String choice = pathList.get(which);
+								prefPhotos.setSummary(getString(R.string.photos_path_summary)  + choice);
+								((ImportSongActivity)getActivity()).songToAdd.setPhotos(choice); //salvo nella song il path della cartella delle foto
 
-					}
-				});
+							}
+						});
 				return builder.create();
 			}
 		}
@@ -910,7 +922,7 @@ public class ImportSongActivity extends FragmentActivity
 		public static class VideoFragment extends DialogFragment
 		{
 			@Override
-			public Dialog onCreateDialog(Bundle SavedInstanceState)
+			public AppCompatDialog onCreateDialog(Bundle SavedInstanceState)
 			{
 				AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 				builder.setTitle(R.string.video_choice);
@@ -924,11 +936,11 @@ public class ImportSongActivity extends FragmentActivity
 					public void onClick(DialogInterface dialog, int which) {
 						//prendo il path scelto dall'utente
 						String choice = pathList.get(which);
-						
+
 						//prendo il file nel path
 						File fileChoice = new File(choice);
 						File[] videos = fileChoice.listFiles();//in teoria dovrebbe esserci solo 1 video
-						
+
 						prefVideo.setSummary(getString(R.string.video_path_summary) + " : " + choice);
 						((ImportSongActivity)getActivity()).songToAdd.setVideo(videos[0].getAbsolutePath()); //salvo nella song il path della cartella delle foto
 
@@ -954,9 +966,9 @@ public class ImportSongActivity extends FragmentActivity
 			((ImportSongActivity)getActivity()).songToAdd.setBitDepth(header.getBitsPerSample());
 
 			((ImportSongActivity)getActivity()).songToAdd.setDuration(header.getDuration());
-			
+
 		}
-	} //fine fragment 
+	} //fine fragment
 
 
 
@@ -969,10 +981,10 @@ public class ImportSongActivity extends FragmentActivity
 	 * Mostra l'avvenuta importazione all'utente tramite un toast, e richiama la lista dei brani
 	 *
 	 */
-	public static class SaveAlertFragment extends DialogFragment 
+	public static class SaveAlertFragment extends DialogFragment
 	{
 		@Override
-		public Dialog onCreateDialog(Bundle savedInstanceState) 
+		public AppCompatDialog onCreateDialog(Bundle savedInstanceState)
 		{
 			//Uso un builder per creare il popup
 			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -980,9 +992,9 @@ public class ImportSongActivity extends FragmentActivity
 			builder.setMessage(getString(R.string.message_alert_activity_importazione));
 
 			//Setto il tasto SI e le sue azioni
-			builder.setPositiveButton(getString(R.string.yes_alert_activity_single_song_settings), new DialogInterface.OnClickListener() 
+			builder.setPositiveButton(getString(R.string.yes_alert_activity_single_song_settings), new DialogInterface.OnClickListener()
 			{
-				public void onClick(DialogInterface dialog, int id) 
+				public void onClick(DialogInterface dialog, int id)
 				{
 					//Salvataggio dei dati su database
 					DatabaseManager db = new DatabaseManager(getActivity());
@@ -999,11 +1011,11 @@ public class ImportSongActivity extends FragmentActivity
 			});	//fine setPositiveButton
 
 			//Setto il tasto ANNULLA, non faccio niente in sostanza, rimango nella schermata di importazione
-			builder.setNeutralButton(getString(R.string.neutral_alert_activity_single_song_settings), null); 
+			builder.setNeutralButton(getString(R.string.neutral_alert_activity_single_song_settings), null);
 
-			builder.setNegativeButton(getString(R.string.no_alert_activity_single_song_settings), new DialogInterface.OnClickListener() 
+			builder.setNegativeButton(getString(R.string.no_alert_activity_single_song_settings), new DialogInterface.OnClickListener()
 			{
-				public void onClick(DialogInterface dialog, int id) 
+				public void onClick(DialogInterface dialog, int id)
 				{
 					Toast.makeText(getActivity(), getString(R.string.toast_activity_cancel_import), Toast.LENGTH_SHORT).show();
 					//Passo alla lista dei brani (esco dall'importazione)
@@ -1049,10 +1061,10 @@ public class ImportSongActivity extends FragmentActivity
 						String pa = directoriesOfTheSong[g].getAbsolutePath();
 						String name = directoriesOfTheSong[g].getName();
 						//prendo il path delle foto e lo aggiungo alla lista
-						fileList.add(pa);	
+						fileList.add(pa);
 						//setto anche il suo nome
 						nameList.add(name);
-						
+
 					}
 				}
 			}
