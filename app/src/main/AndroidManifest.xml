@@ -34,6 +34,7 @@
         <activity
             android:name="unipd.dei.magnetophone.SettingsActivity"
             android:theme="@style/AppTheme.SettingsTheme"
+            android:screenOrientation="landscape"
             android:label="@string/title_activity_settings" >
         </activity>
         <activity
@@ -46,6 +47,7 @@
         </activity>
         <activity
             android:name="unipd.dei.magnetophone.ImportSongActivity"
+            android:screenOrientation="landscape"
             android:label="@string/title_activity_import_song" >
         </activity>
         <activity
@@ -61,6 +63,7 @@
 
         <activity
             android:name="unipd.dei.magnetophone.SongListActivity"
+            android:screenOrientation="landscape"
             android:label="@string/title_activity_library" >
         </activity>
         <activity
@@ -72,6 +75,7 @@
         </activity>
         <activity
             android:name="unipd.dei.magnetophone.MonitorSetupActivity"
+            android:screenOrientation="landscape"
             android:label="@string/monitor_setup_label">
         </activity>
         <activity
