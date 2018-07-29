@@ -172,14 +172,15 @@ public class StuderTapeDeck extends TapeDeck
 
 		// PULSANTI UI
 
-		UIButton[] uiButtons = new UIButton[5];
+		//UIButton[] uiButtons = new UIButton[5];
+		UIButton[] uiButtons = new UIButton[4];
 
 		uiButtons[0] = (UIButton) addComponent(new UIButton(1864-75, 18, 4, 172, 172, r.getDrawable(R.raw.btn_settings_up), r.getDrawable(R.raw.btn_settings_down))); // -29px per l'ombra
 		uiButtons[1] = (UIButton) addComponent(new UIButton(2014-75, 18, 4, 172, 172, r.getDrawable(R.raw.btn_library_up), r.getDrawable(R.raw.btn_library_down)));
 		uiButtons[2] = (UIButton) addComponent(new UIButton(2164-75, 18, 4, 172, 172, r.getDrawable(R.raw.btn_setup_mon_up), r.getDrawable(R.raw.btn_setup_mon_down)));
 		//uiButtons[3] = (UIButton) addComponent(new UIButton( 1714 2314, 18, 4, 172, 172, r.getDrawable(R.raw.btn_note_up), r.getDrawable(R.raw.btn_note_down)));
 		uiButtons[3] = (UIButton) addComponent(new UIButton(2314-75, 18, 4, 172, 172, r.getDrawable(R.raw.btn_help_up), r.getDrawable(R.raw.btn_help_down)));
-		uiButtons[4] = (UIButton) addComponent(new UIButton(2464-75, 18, 4, 172, 172, r.getDrawable(R.raw.btn_whatsnew_up), r.getDrawable(R.raw.btn_whatsnew_down)));
+		//uiButtons[4] = (UIButton) addComponent(new UIButton(2464-75, 18, 4, 172, 172, r.getDrawable(R.raw.btn_whatsnew_up), r.getDrawable(R.raw.btn_whatsnew_down)));
 		
 		// SETTINGS: Callback del pulsante
 		uiButtons[0].setCallback(new ComponentCallback() {

@@ -2,12 +2,19 @@ package unipd.dei.magnetophone;
 
 import unipd.dei.magnetophone.graphics.MagnetoCanvasView;
 import unipd.dei.magnetophone.graphics.VideoView;
+
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.View;
 import android.support.v7.app.AppCompatActivity;
+
+import static android.view.View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION;
 
 /**
  * Activity principale dell'applicazione dove viene mostrato il magnetofono
@@ -27,13 +34,26 @@ public class MagnetophoneActivity extends AppCompatActivity
 	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		//hideNavigationBar();
 		super.onCreate(savedInstanceState);
+		updateUI();
 		Log.d("MagnetophoneActivity", "oncreate MagnetophoneActivity");
 		setContentView(R.layout.activity_magnetophone);
 
 		//getActionBar().hide();
 		//if(getSupportActionBar()!=null)
 		//	getSupportActionBar().hide();
+
+
+		//View decorView = getWindow().getDecorView();
+// Hide both the navigation bar and the status bar.
+// SYSTEM_UI_FLAG_FULLSCREEN is only available on Android 4.1 and higher, but as
+// a general rule, you should design your app to hide the status bar whenever you
+// hide the navigation bar.
+		//int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+		//		| View.SYSTEM_UI_FLAG_FULLSCREEN |SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION;
+		//decorView.setSystemUiVisibility(uiOptions);
+
 
 
 		canvasView = (MagnetoCanvasView) findViewById(R.id.canvas);
@@ -45,6 +65,9 @@ public class MagnetophoneActivity extends AppCompatActivity
 
 		startService(new Intent(this, MusicService.class));
 		player.setContext(this);
+
+
+		isStoragePermissionGranted();
 	}
 	
 	/**
@@ -80,10 +103,12 @@ public class MagnetophoneActivity extends AppCompatActivity
 	@Override
 	public void onResume() {
 		super.onResume();
+		updateUI();
+
 		Log.d("MagnetophoneActivity", "onResume MagnetophoneActivity");
-        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN |
-        			                                     View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
-        			                                     View.SYSTEM_UI_FLAG_LOW_PROFILE );
+        //getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN |
+        //			                                     View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
+        //			                                     View.SYSTEM_UI_FLAG_LOW_PROFILE );
         
         canvasView.enableAnimation();
         player.setVideoController(videoView);
@@ -112,19 +137,53 @@ public class MagnetophoneActivity extends AppCompatActivity
 		}*/
 	}
 
-	//@Override
-	//public void onWindowFocusChanged(boolean hasFocus) {
-	//	super.onWindowFocusChanged(hasFocus);
-	//	// ogni volta che l'activity sarà in primo piano vengono reimpostati tutti i flag in modo
-	//	// che l'app sia a schermo intero senza la barra di navigazione e senza la barra di stato
-	//	if (hasFocus) {
-	//		decorView.setSystemUiVisibility(
-	//				View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-	//						| View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-	//						| View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-	//						| View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-	//						| View.SYSTEM_UI_FLAG_FULLSCREEN
-	//						| View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
-	//	}
-	//}
+	@Override
+	public void onWindowFocusChanged(boolean hasFocus) {
+		super.onWindowFocusChanged(hasFocus);
+		// ogni volta che l'activity sarà in primo piano vengono reimpostati tutti i flag in modo
+		// che l'app sia a schermo intero senza la barra di navigazione e senza la barra di stato
+		if (hasFocus) {
+			//hideNavigationBar();
+		}
+	}
+
+	/**
+	 * Hide system NavigationBar and StatusBar
+	 */
+	public void updateUI() {
+		final View decorView = getWindow().getDecorView();
+		decorView.setOnSystemUiVisibilityChangeListener (new View.OnSystemUiVisibilityChangeListener() {
+			@Override
+			public void onSystemUiVisibilityChange(int visibility) {
+				if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
+					decorView.setSystemUiVisibility(
+							View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+									| View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+									| View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+									| View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+									| View.SYSTEM_UI_FLAG_FULLSCREEN
+									| View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+				}
+			}
+		});
+	}
+
+	public  boolean isStoragePermissionGranted() {
+		if (Build.VERSION.SDK_INT >= 23) {
+			if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+					== PackageManager.PERMISSION_GRANTED) {
+				Log.v("DEBUG","Permission is granted");
+				return true;
+			} else {
+
+				Log.v("DEBUG","Permission is revoked");
+				ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+				return false;
+			}
+		}
+		else { //permission is automatically granted on sdk<23 upon installation
+			Log.v("DEBUG","Permission is granted");
+			return true;
+		}
+	}
 }

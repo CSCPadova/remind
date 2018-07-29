@@ -104,7 +104,7 @@ void stop()
 	{
 		threadGo = false;
 		if (fastThread->joinable())
-			fastThread->join();
+            fastThread->join();
 	}
 
 	if(playbackState == PLAYBACK_STATE_PLAYING)
@@ -122,7 +122,8 @@ void play()
 	if(threadGo)
 	{
 		threadGo = false;
-		fastThread->join();
+        if (fastThread->joinable())
+		    fastThread->join();
 	}
 
 	if(waveReader->isEof())
@@ -347,7 +348,7 @@ void fastFunction()
 
 	seek(currentTime);
 	threadGo = false;
-	fastThread->detach();
+	//fastThread->detach();
 }
 
 extern "C"

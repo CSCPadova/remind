@@ -16,6 +16,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Environment;
 import android.util.Log;
+import android.widget.Toast;
 
 public class XmlImport
 {
@@ -112,64 +113,80 @@ public class XmlImport
 				}
 			};
 
-			//ora, cartella per cartella, si guarda dentro che cosa contiene
-			for(int j=0; j<songsDirectories.length; j++)
-			{
-				File currentSongDirectory = songsDirectories[j];
-				//currentSongDirectory è la cartella di song che ci interessa, da dentro di essa vogliamo prendere solo i file xml
-				File[] xmlFileList = currentSongDirectory.listFiles(ff);//prendo tutti i file xml nella attuale cartella xml, non mi interessao
-				//le cartelle di songs, video e photos (in teoria dovrebbe essere uno solo, ma non si sa mai)
+			if(songsDirectories!=null) {
+				//ora, cartella per cartella, si guarda dentro che cosa contiene
+				for (int j = 0; j < songsDirectories.length; j++) {
+					File currentSongDirectory = songsDirectories[j];
+					//currentSongDirectory è la cartella di song che ci interessa, da dentro di essa vogliamo prendere solo i file xml
+					File[] xmlFileList = currentSongDirectory.listFiles(ff);//prendo tutti i file xml nella attuale cartella xml, non mi interessao
+					//le cartelle di songs, video e photos (in teoria dovrebbe essere uno solo, ma non si sa mai)
 
-				//a questo punto, si prendono uno ad uno i file xml nella external storage 
-				//e controlla se sono dentro al database 
-				if(xmlFileList!=null)//se è != null, ossia se c'è almeno 1 file xml
-				{
-					int fileListLength = xmlFileList.length;
-					
-					//per ogni file xml nella cartella (dovrebbe essercene 1 solo)
-					for(int i=0; i<fileListLength; i++)
+					//a questo punto, si prendono uno ad uno i file xml nella external storage
+					//e controlla se sono dentro al database
+					if (xmlFileList != null)//se è != null, ossia se c'è almeno 1 file xml
 					{
-						nomeFile = xmlFileList[i].getName();//prendo il nome dell'i-esimo file xml
-						//controllo se è già dentro il db
-						String[] select = {MagnetophoneOpenHelper.XMLID, MagnetophoneOpenHelper.NOMEFILE, MagnetophoneOpenHelper.DATAMODIFICA};
-						String where = MagnetophoneOpenHelper.NOMEFILE + "=\"" + nomeFile+"\""; 
-						
-						query = db.query(MagnetophoneOpenHelper.XML, select, where, null, null, null, null, null);
-						int numberOfCollision = query.getCount();//se c'è un risultato dal database, vuol dire che c'è gia un xml con quel nome dentro
-						if(numberOfCollision!=0)//se c'è già un file con lo stesso nome nel database
-						{
-							//controllo data ultima modifica
-							//prendo data ultima modifica del file nella external storage
-							lastModifiedStorage = xmlFileList[i].lastModified();
-							
-							//per il momento considero che ci possa essere 1 solo elemento con lo stesso nome nel database
-							query.moveToPosition(0);
-							lastModifiedDb = query.getLong(2);
-							
-							if(lastModifiedStorage>lastModifiedDb)//se nel database è più vecchio, elimino e sostituisco
+						int fileListLength = xmlFileList.length;
+
+						//per ogni file xml nella cartella (dovrebbe essercene 1 solo)
+						for (int i = 0; i < fileListLength; i++) {
+							nomeFile = xmlFileList[i].getName();//prendo il nome dell'i-esimo file xml
+							//controllo se è già dentro il db
+							String[] select = {MagnetophoneOpenHelper.XMLID, MagnetophoneOpenHelper.NOMEFILE, MagnetophoneOpenHelper.DATAMODIFICA};
+							String where = MagnetophoneOpenHelper.NOMEFILE + "=\"" + nomeFile + "\"";
+
+							query = db.query(MagnetophoneOpenHelper.XML, select, where, null, null, null, null, null);
+							int numberOfCollision = query.getCount();//se c'è un risultato dal database, vuol dire che c'è gia un xml con quel nome dentro
+							if (numberOfCollision != 0)//se c'è già un file con lo stesso nome nel database
 							{
-								dbManager.removeXmlFromDatabase(nomeFile);
-								//si inserisce il file xml aggiornato nel database
+								//controllo data ultima modifica
+								//prendo data ultima modifica del file nella external storage
+								lastModifiedStorage = xmlFileList[i].lastModified();
+
+								//per il momento considero che ci possa essere 1 solo elemento con lo stesso nome nel database
+								query.moveToPosition(0);
+								lastModifiedDb = query.getLong(2);
+
+								if (lastModifiedStorage > lastModifiedDb)//se nel database è più vecchio, elimino e sostituisco
+								{
+									dbManager.removeXmlFromDatabase(nomeFile);
+									//si inserisce il file xml aggiornato nel database
+									dbManager.insertXMLInDatabase(xmlFileList[i]);
+								}
+
+								//altrimenti non si fa nulla, il file non è stato modificato e non necessita di aggiornament
+							}//fine if se è stata trovata una collisione
+							else//non c'è stata collisione, si deve inserire ex novo
+							{
+								//si inserisce il file xml nel database, insieme alla canzone/i che contiene
 								dbManager.insertXMLInDatabase(xmlFileList[i]);
 							}
-							
-							//altrimenti non si fa nulla, il file non è stato modificato e non necessita di aggiornament
-						}//fine if se è stata trovata una collisione
-						else//non c'è stata collisione, si deve inserire ex novo 
-						{	
-							//si inserisce il file xml nel database, insieme alla canzone/i che contiene
-							dbManager.insertXMLInDatabase(xmlFileList[i]);
-						}
-						cursor.close();
-						query.close();
-					}//fine for per l'analisi dei file xml
+							cursor.close();
+							query.close();
+						}//fine for per l'analisi dei file xml
+					}
+
 				}
-				
 			}
+			else{
+				//se non ci sono sottocartelle
+
+				//fa in modo che la prossima volta riscansioni la cartella
+				SharedPreferences sharedPref = cont.getSharedPreferences("last_modified", Context.MODE_PRIVATE);
+				SharedPreferences.Editor editor = sharedPref.edit();
+				editor.putLong("LastModified", 0);
+
+				//e mostra un avviso
+				String text = cont.getString(R.string.empty_folder1)+" "+getCurrentDirectory(cont)+" "+cont.getString(R.string.empty_folder2);
+				Toast toast = Toast.makeText(cont, text, Toast.LENGTH_SHORT);
+				toast.show();
+			}
+
 			db.close();
 		}
-		catch(Exception e) 
+		catch(Exception e)
 		{
+
+
 			e.printStackTrace();
 			db.close();
 		}

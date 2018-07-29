@@ -34,7 +34,9 @@ public class MonitorSetupActivity extends Activity
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.monitor_setup_activity_layout);
-		getActionBar().setDisplayHomeAsUpEnabled(true);
+		//TODO SISTEMARE MEGLIO
+		if(getActionBar()!=null)
+			getActionBar().setDisplayHomeAsUpEnabled(true);
 	}
 
 	protected void onResume()

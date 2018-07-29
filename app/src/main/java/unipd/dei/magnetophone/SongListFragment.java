@@ -106,6 +106,8 @@ public class SongListFragment extends ListFragment {
 		
 		int time = checkTheFirstTime();//guardo se questa è la prima volta che l'applicazione parte
 
+		//TODO DEBUG TIME=0
+		time=0;
 		//se c'è stata una qualche modifica alla cartella oppure se questa è la prima volta che partiamo
 		if(currentModified>lastModified || time==0)
 		{

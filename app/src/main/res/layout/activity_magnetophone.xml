@@ -13,12 +13,13 @@
         android:layout_centerVertical="true"
         android:scaleType="centerCrop"
         android:src="@drawable/floor" />
-    
+
 	<unipd.dei.magnetophone.graphics.MagnetoCanvasView
-	    android:id="@+id/canvas"
-	    android:layout_centerHorizontal="true"
-	    android:layout_width="wrap_content"
-	    android:layout_height="match_parent" />
+		android:id="@+id/canvas"
+		android:layout_width="wrap_content"
+		android:layout_height="match_parent"
+		android:layout_alignParentStart="true"
+		android:layout_alignParentTop="true" />
 
 	<unipd.dei.magnetophone.graphics.VideoView
 	    android:id="@+id/video"
