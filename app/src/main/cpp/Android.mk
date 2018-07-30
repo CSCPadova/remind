@@ -19,7 +19,8 @@ LOCAL_SRC_FILES += DelayBuffer.cpp
 LOCAL_SRC_FILES += RateConverter.cpp
 LOCAL_SRC_FILES += WaveReader.cpp
 LOCAL_SRC_FILES += fftconvolver.cpp
-LOCAL_SRC_FILES +=
+LOCAL_SRC_FILES += audioengine.cpp
+LOCAL_SRC_FILES += audiocommon.cpp
 
 # for native audio
 LOCAL_LDLIBS    += -lOpenSLES
