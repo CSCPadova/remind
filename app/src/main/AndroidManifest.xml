@@ -23,8 +23,8 @@
 
         <activity
             android:name="unipd.dei.magnetophone.MagnetophoneActivity"
+            android:theme="@style/AppFullScreenTheme"
             android:screenOrientation="landscape" >
-            <!--android:theme="@style/AppFullScreenTheme"-->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

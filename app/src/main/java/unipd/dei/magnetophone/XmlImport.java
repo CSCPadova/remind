@@ -18,34 +18,30 @@ import android.os.Environment;
 import android.util.Log;
 import android.widget.Toast;
 
-public class XmlImport
-{
+public class XmlImport {
 	private static Context context;
 
 	//costruttore
-	public XmlImport(Context ctx)
-	{
+	public XmlImport(Context ctx) {
 		context = ctx;
 	}
 
-	/**metodo che restituisce il path della cartella dove si vanno a leggere i fle XML
+	/**
+	 * metodo che restituisce il path della cartella dove si vanno a leggere i fle XML
 	 * e dove si vanno a prendere le canzoni
-	 * 
-	 * */
-	public static String getCurrentDirectory()
-	{
+	 */
+	public static String getCurrentDirectory() {
 		SharedPreferences shared = context.getSharedPreferences("current_directory", Context.MODE_PRIVATE);
 		String name = shared.getString("name", "Magnetophone");
-		
+
 		String path = Environment.getExternalStorageDirectory().getAbsolutePath();//ritorna il file directory
 		return path + "/" + name + "/";//restituiamo il nome della cartella dove lavoriamo
 	}
-	
-	public static String getCurrentDirectory(Context cont)
-	{
+
+	public static String getCurrentDirectory(Context cont) {
 		SharedPreferences shared = cont.getSharedPreferences("current_directory", Context.MODE_PRIVATE);
 		String name = shared.getString("name", "/Magnetophone/");
-		
+
 		String path = Environment.getExternalStorageDirectory().getAbsolutePath();//ritorna il file directory
 		return path + "/" + name + "/";//restituiamo il nome della cartella dove lavoriamo
 
@@ -54,13 +50,13 @@ public class XmlImport
 	/**
 	 * metodo di importazione XML, chiamato quando ci si rende conto che qualcosa
 	 * è stato cambiato nella cartella dove sono posti i file
+	 *
 	 * @param cont
 	 * @param dbHelper
 	 */
-	public void importazioneXML(Context cont, MagnetophoneOpenHelper dbHelper)
-	{
+	public void importazioneXML(Context cont, MagnetophoneOpenHelper dbHelper) {
 		//######### inizializzazione di alcuni oggetti che servono nel corso del metodo ################	
-		DatabaseManager dbManager = new DatabaseManager(cont); 
+		DatabaseManager dbManager = new DatabaseManager(cont);
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
 
 		String nomeFile;//stringa per tenere temporaneamente un nome di file xml
@@ -82,16 +78,14 @@ public class XmlImport
 		File[] songsDirectories = magnetophoneDirectory.listFiles();
 
 
-		try
-		{
+		try {
 			//interroghiamo il database per conoscere i nomi dei file xml già presenti per controllare eventuali
 			//conflitti
 			cursor = db.query(MagnetophoneOpenHelper.XML, null, null, null, MagnetophoneOpenHelper.NOMEFILE, null, null, null);//prendo tutti gli XML nel database
 
 			//prendo la lista di tutti i file XML
 			int rows = cursor.getCount();//numero di tuple restituite dal database			
-			for(int i=0; i<rows; i++)
-			{
+			for (int i = 0; i < rows; i++) {
 				xmlFile = new XMLfile();
 				cursor.moveToPosition(i);
 
@@ -105,15 +99,14 @@ public class XmlImport
 			//poi scrivo un filtro che permetta di prendere solo i file xml
 			FileFilter ff = new FileFilter() {
 				@Override
-				public boolean accept(File pathname)
-				{
-					if(pathname.isDirectory())
+				public boolean accept(File pathname) {
+					if (pathname.isDirectory())
 						return false;
 					return pathname.getName().endsWith("xml");
 				}
 			};
 
-			if(songsDirectories!=null) {
+			if (songsDirectories != null) {
 				//ora, cartella per cartella, si guarda dentro che cosa contiene
 				for (int j = 0; j < songsDirectories.length; j++) {
 					File currentSongDirectory = songsDirectories[j];
@@ -166,8 +159,7 @@ public class XmlImport
 					}
 
 				}
-			}
-			else{
+			} else {
 				//se non ci sono sottocartelle
 
 				//fa in modo che la prossima volta riscansioni la cartella
@@ -176,17 +168,13 @@ public class XmlImport
 				editor.putLong("LastModified", 0);
 
 				//e mostra un avviso
-				String text = cont.getString(R.string.empty_folder1)+" "+getCurrentDirectory(cont)+" "+cont.getString(R.string.empty_folder2);
+				String text = cont.getString(R.string.empty_folder1) + " " + getCurrentDirectory(cont) + " " + cont.getString(R.string.empty_folder2);
 				Toast toast = Toast.makeText(cont, text, Toast.LENGTH_SHORT);
 				toast.show();
 			}
 
 			db.close();
-		}
-		catch(Exception e)
-		{
-
-
+		} catch (Exception e) {
 			e.printStackTrace();
 			db.close();
 		}

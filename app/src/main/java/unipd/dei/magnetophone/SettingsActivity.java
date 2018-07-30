@@ -40,8 +40,7 @@ import java.util.LinkedList;
  *
  */
 
-public class SettingsActivity extends FragmentActivity
-{
+public class SettingsActivity extends FragmentActivity {
 	private SettingsFragment frag; // Uso un fragment in quanto l'uso delle
 	// preference in un activity e' deprecato
 	//	private Spinner language_spinner;
@@ -55,11 +54,10 @@ public class SettingsActivity extends FragmentActivity
 	private static XmlImport imp;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState)
-	{
+	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		//poniamo la possibilità sulla action bar del tasto indietro
-		if(getActionBar()!=null)
+		if (getActionBar() != null)
 			getActionBar().setDisplayHomeAsUpEnabled(true);
 
 		imp = new XmlImport(this);
@@ -77,11 +75,9 @@ public class SettingsActivity extends FragmentActivity
 	 * ActionBar per tornare indietro usando HOME
 	 */
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item)
-	{
+	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle item selection
-		switch (item.getItemId())
-		{
+		switch (item.getItemId()) {
 			case android.R.id.home:
 				onBackPressed();
 				return true;
@@ -92,11 +88,11 @@ public class SettingsActivity extends FragmentActivity
 
 
 	//######################## PREFERENCE FRAGMENT #######################################
+
 	/**
 	 * Questo fragment mostra le opzioni definite nel file xml prefs
 	 */
-	public static class SettingsFragment extends PreferenceFragmentCompat
-	{
+	public static class SettingsFragment extends PreferenceFragmentCompat {
 		//@Override
 		//public void onCreate(Bundle savedInstanceState){
 
@@ -139,7 +135,7 @@ public class SettingsActivity extends FragmentActivity
 					.findPreference("ModificaPathImpostazioni");
 			prefXml = preferenceCategory
 					.findPreference("ExportDatabaseXml");
-			prefPassword =preferenceCategory
+			prefPassword = preferenceCategory
 					.findPreference("ChangePassword");
 
 			// Mostro la path dove si salvano gli xml
@@ -165,8 +161,7 @@ public class SettingsActivity extends FragmentActivity
 
 			prefPassword.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
 				@Override
-				public boolean onPreferenceClick(Preference preference)
-				{ // Lancio il Popup al click
+				public boolean onPreferenceClick(Preference preference) { // Lancio il Popup al click
 					InsertPasswordFragment dialog = new InsertPasswordFragment();//crea il nuovo fragment, definito a fine file
 
 					dialog.show(getFragmentManager(), null);
@@ -178,8 +173,7 @@ public class SettingsActivity extends FragmentActivity
 			//prendono le cartelle e eventualmente per cambiarlo
 			prefPath.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
 				@Override
-				public boolean onPreferenceClick(Preference preference)
-				{ // Lancio il Popup al click
+				public boolean onPreferenceClick(Preference preference) { // Lancio il Popup al click
 					//PathAlertFragment prefPath = (new SettingsActivity()).new PathAlertFragment();//crea il nuovo fragment, definito a fine file
 					PathAlertFragment prefPath = new SettingsActivity.PathAlertFragment();//crea il nuovo fragment, definito a fine file
 					prefPath.show(getFragmentManager(), null);
@@ -190,8 +184,7 @@ public class SettingsActivity extends FragmentActivity
 			//Mostro un popup per permettere l'esportazione
 			prefXml.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
 				@Override
-				public boolean onPreferenceClick(Preference preference)
-				{ // Lancio il Popup al click
+				public boolean onPreferenceClick(Preference preference) { // Lancio il Popup al click
 					PathXmlFragment prefPath = new PathXmlFragment();//crea il nuovo fragment, definito a fine file
 					prefPath.show(getFragmentManager(), null);
 					return false;
@@ -204,16 +197,14 @@ public class SettingsActivity extends FragmentActivity
 					.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
 						@Override
 						public boolean onPreferenceChange(
-								Preference preference, Object newValue)
-						{
+								Preference preference, Object newValue) {
 							prefAdvancedOptions.setChecked((boolean) newValue);
 
 							if (prefAdvancedOptions.isChecked()) // attivo o disattivo le preference delle opzioni avanzate
 							{
 								PasswordFragment prefPath = new PasswordFragment();//crea il nuovo fragment, definito a fine file
-								prefPath.show(getFragmentManager(),null);
-							}
-							else//se stiamo disattivando non richiediamo alcuna password
+								prefPath.show(getFragmentManager(), null);
+							} else//se stiamo disattivando non richiediamo alcuna password
 							{
 								preferenceCategory.removePreference(prefMaintenance);
 								preferenceCategory.removePreference(prefPath);
@@ -226,8 +217,7 @@ public class SettingsActivity extends FragmentActivity
 
 			// Rimuovo le opzioni a seconda se opzioni avanzate è gia'
 			// abilitato o meno
-			if (!(prefAdvancedOptions.isChecked()))
-			{
+			if (!(prefAdvancedOptions.isChecked())) {
 				preferenceCategory.removePreference(prefMaintenance);
 //				preferenceCategory.removePreference(prefImport);
 //				preferenceCategory.removePreference(prefDelete);
@@ -243,13 +233,10 @@ public class SettingsActivity extends FragmentActivity
 	/**
 	 * Fragment che visualizza un popup menu per mostrare la path della cartella Magnetophone
 	 * completa, che altrimenti non si vedrebbe
-	 *
 	 */
-	public static class PathAlertFragment extends DialogFragment
-	{
+	public static class PathAlertFragment extends DialogFragment {
 		@Override
-		public AppCompatDialog onCreateDialog(Bundle savedInstanceState)
-		{
+		public AppCompatDialog onCreateDialog(Bundle savedInstanceState) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 			builder.setTitle(getString(R.string.text1_subtitle_activity_settings));
 			builder.setMessage(XmlImport.getCurrentDirectory());
@@ -274,15 +261,12 @@ public class SettingsActivity extends FragmentActivity
 
 
 	/**
-	 * Fragment che visualizza una lista di cartelle interne all'external storage e permette all'utente di selezionarne 
+	 * Fragment che visualizza una lista di cartelle interne all'external storage e permette all'utente di selezionarne
 	 * una che diventerà il nuovo path di lettura dei file xml. Esegue anche un refresh dei dati
-	 *
 	 */
-	public static class PathChangerFragment extends AppCompatDialogFragment
-	{
+	public static class PathChangerFragment extends AppCompatDialogFragment {
 		@Override
-		public AppCompatDialog onCreateDialog(Bundle savedInstanceState)
-		{
+		public AppCompatDialog onCreateDialog(Bundle savedInstanceState) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 			builder.setTitle(getString(R.string.text1_subtitle_activity_settings));
 //			builder.setMessage(XmlImport.getCurrentDirectory());
@@ -292,15 +276,13 @@ public class SettingsActivity extends FragmentActivity
 
 
 			//final LinkedList<String> pathList = getTheFilesList(directoriesName);//lista che conterrà i path
-			final LinkedList<String> pathList = getTheFilesList(directoriesName,this.getActivity());//lista che conterrà i path
+			final LinkedList<String> pathList = getTheFilesList(directoriesName, this.getActivity());//lista che conterrà i path
 
 			final ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.select_dialog_singlechoice, directoriesName);
 
 			builder.setAdapter(adapter,
-					new DialogInterface.OnClickListener()
-					{
-						public void onClick(DialogInterface dialog, int which)
-						{
+					new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int which) {
 							// The 'which' argument contains the index position
 							// of the selected item
 							String choicePath = pathList.get(which);
@@ -332,23 +314,20 @@ public class SettingsActivity extends FragmentActivity
 
 
 	/**
-	 *
 	 * @return: lista con i path delle cartelle nella memoria interna
 	 */
-	public static LinkedList<String> getTheFilesList(LinkedList<String> nameList, Context appContext)
-	{
+	public static LinkedList<String> getTheFilesList(LinkedList<String> nameList, Context appContext) {
 		LinkedList<String> fileList = new LinkedList<String>();
 
 		//prendo la cartella di di memoria esterna
 		File external = Environment.getExternalStorageDirectory();
 		String state = Environment.getExternalStorageState();
 
-		if (Environment.MEDIA_MOUNTED.equals(state) || Environment.MEDIA_MOUNTED_READ_ONLY.equals(state))
-		{
+		if (Environment.MEDIA_MOUNTED.equals(state) || Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
 			//dentro questa cartella, prendo le sottocartelle che rappresentano le cartelle a disposizione come path
 			File[] directories = external.listFiles();
 
-			if(directories!=null) {
+			if (directories != null) {
 				//inserisco i path delle directory nella lista
 				for (int g = 0; g < directories.length; g++) {
 					directories[g].mkdir();
@@ -362,18 +341,14 @@ public class SettingsActivity extends FragmentActivity
 						nameList.add(name);
 					}
 				}
-			}
-			else
-			{
-				String text =appContext.getString(R.string.external_permission_error);
+			} else {
+				String text = appContext.getString(R.string.external_permission_error);
 				Toast toast = Toast.makeText(appContext, text, Toast.LENGTH_SHORT);
 				toast.show();
 			}
-		}
-		else
-		{
+		} else {
 			//impossibile leggere la memoria esterna
-			String text =appContext.getString(R.string.external_error);
+			String text = appContext.getString(R.string.external_error);
 			Toast toast = Toast.makeText(appContext, text, Toast.LENGTH_SHORT);
 			toast.show();
 		}
@@ -384,11 +359,9 @@ public class SettingsActivity extends FragmentActivity
 	 * Fragment che mostra l'attuale path di esportazione e permette di esportare il database in formato xml
 	 * se si preme il tasto OK
 	 */
-	public static class PathXmlFragment extends AppCompatDialogFragment
-	{
+	public static class PathXmlFragment extends AppCompatDialogFragment {
 		@Override
-		public AppCompatDialog onCreateDialog(Bundle savedInstanceState)
-		{
+		public AppCompatDialog onCreateDialog(Bundle savedInstanceState) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 			builder.setTitle(getString(R.string.where_we_export));
 			builder.setMessage(XmlImport.getCurrentDirectory());
@@ -408,11 +381,9 @@ public class SettingsActivity extends FragmentActivity
 	/**
 	 * Fragment che richiede all'utente la password per mostrargli poi le opzioni avanzate
 	 */
-	public static class PasswordFragment extends DialogFragment
-	{
+	public static class PasswordFragment extends DialogFragment {
 		@Override
-		public AppCompatDialog onCreateDialog(Bundle savedInstanceState)
-		{
+		public AppCompatDialog onCreateDialog(Bundle savedInstanceState) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
 			LayoutInflater inflater = getActivity().getLayoutInflater();
@@ -427,22 +398,19 @@ public class SettingsActivity extends FragmentActivity
 						public void onClick(DialogInterface dialog, int id) {
 
 							//controlliamo l'esattezza della password
-							EditText pass = (EditText)v.findViewById(R.id.password);
+							EditText pass = (EditText) v.findViewById(R.id.password);
 							String pa = pass.getText().toString();
 
 							SharedPreferences sharedPass = getActivity().getSharedPreferences("password", Context.MODE_PRIVATE);
 							String currentPass = sharedPass.getString("password", "magnetophone");
 
-							if(pa.equals(currentPass))
-							{
+							if (pa.equals(currentPass)) {
 								//password giusta, possiamo mostrare le opzioni avanzate
 								preferenceCategory.addPreference(prefMaintenance);
 								preferenceCategory.addPreference(prefPath);
 								preferenceCategory.addPreference(prefXml);
 								preferenceCategory.addPreference(prefPassword);
-							}
-							else
-							{
+							} else {
 								//password errata, riprovare
 								String text = getString(R.string.wrong_password);
 								Toast toast = Toast.makeText(getActivity(), text, Toast.LENGTH_SHORT);
@@ -454,12 +422,10 @@ public class SettingsActivity extends FragmentActivity
 							}
 						}
 					});
-			builder.setNegativeButton(R.string.revert_from_exporting, new DialogInterface.OnClickListener()
-			{
+			builder.setNegativeButton(R.string.revert_from_exporting, new DialogInterface.OnClickListener() {
 				//l'utente ha selezionato il checkbox, ma non aveva la password. Bisogna pertanto togliere
 				//il check altrimenti alla prossima apertura si vedrà le opzioni avanzate
-				public void onClick(DialogInterface dialog, int id)
-				{
+				public void onClick(DialogInterface dialog, int id) {
 					prefAdvancedOptions.setChecked(false);
 				}
 
@@ -470,13 +436,10 @@ public class SettingsActivity extends FragmentActivity
 
 	/**
 	 * dialog intermedio, chiede all'utente la password per poterla poi cambiare
-	 *
 	 */
-	public static class InsertPasswordFragment extends AppCompatDialogFragment
-	{
+	public static class InsertPasswordFragment extends AppCompatDialogFragment {
 		@Override
-		public AppCompatDialog onCreateDialog(Bundle savedInstanceState)
-		{
+		public AppCompatDialog onCreateDialog(Bundle savedInstanceState) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
 			LayoutInflater inflater = getActivity().getLayoutInflater();
@@ -492,21 +455,18 @@ public class SettingsActivity extends FragmentActivity
 						public void onClick(DialogInterface dialog, int id) {
 							// qui si controllerà l'esattezza della password
 
-							EditText pass = (EditText)v.findViewById(R.id.password);
+							EditText pass = (EditText) v.findViewById(R.id.password);
 							String pa = pass.getText().toString();
 
 							SharedPreferences sharedPass = getActivity().getSharedPreferences("password", Context.MODE_PRIVATE);
 							String currentPass = sharedPass.getString("password", "magnetophone");
 							//qui si controlla che la password sia attualmente valida
 
-							if(pa.equals(currentPass))
-							{
+							if (pa.equals(currentPass)) {
 								//se la password è valida
 								ChangePasswordFragment prefChange = new ChangePasswordFragment();//crea il nuovo fragment, definito a fine file
 								prefChange.show(getFragmentManager(), null);
-							}
-							else
-							{
+							} else {
 								//password errata, riprovare
 								String text = getString(R.string.wrong_password);
 								Toast toast = Toast.makeText(getActivity(), text, Toast.LENGTH_SHORT);
@@ -522,14 +482,12 @@ public class SettingsActivity extends FragmentActivity
 
 	/**
 	 * fragment che chiede all'utente di inserire la nuova password
-	 * @author dennisdosso
 	 *
+	 * @author dennisdosso
 	 */
-	public static class ChangePasswordFragment extends AppCompatDialogFragment
-	{
+	public static class ChangePasswordFragment extends AppCompatDialogFragment {
 		@Override
-		public AppCompatDialog onCreateDialog(Bundle savedInstanceState)
-		{
+		public AppCompatDialog onCreateDialog(Bundle savedInstanceState) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
 			LayoutInflater inflater = getActivity().getLayoutInflater();
@@ -545,7 +503,7 @@ public class SettingsActivity extends FragmentActivity
 						public void onClick(DialogInterface dialog, int id) {
 							// qui si controllerà l'esattezza della password
 
-							EditText pass = (EditText)v.findViewById(R.id.password);
+							EditText pass = (EditText) v.findViewById(R.id.password);
 							String pa = pass.getText().toString();
 
 							//qui si salva la password nelle shared preferences

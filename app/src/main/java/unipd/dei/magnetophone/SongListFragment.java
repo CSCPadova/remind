@@ -28,10 +28,9 @@ public class SongListFragment extends ListFragment {
 	protected static CustomAdapterListFragment adapter;
 	private XmlImport imp = new XmlImport(getActivity());
 	private static long lastModified;
-	
+
 	/**
 	 * Una stringa che gunge da chiave per conoscere la posizione dell'oggetto selezionato nell'ultima volta
-	 * 
 	 */
 	private static final String STATE_ACTIVATED_POSITION = "activated_position";
 
@@ -48,99 +47,92 @@ public class SongListFragment extends ListFragment {
 	/**
 	 * Una funzione di callback che tutte le activity che contengono questo fragment devono implementare
 	 * Permette all'activity di sapere della selezione di un oggetto della lista ed agire di conseguenza
-	 * 
-	 * 
 	 */
 	public interface Callbacks {
 		public void onItemSelected(ListView v, View view, int id);
 	}
 
-	
+
 	/**
-	 *Un'implementazione "dummy", ossia vuota, che non fa niente
-	 * del callback che il fragment richiede, si usa in caso di detach 
-	 *dall'activity
+	 * Un'implementazione "dummy", ossia vuota, che non fa niente
+	 * del callback che il fragment richiede, si usa in caso di detach
+	 * dall'activity
 	 */
-	private static Callbacks sDummyCallbacks = new Callbacks() 
-	{
+	private static Callbacks sDummyCallbacks = new Callbacks() {
 		@Override
-		public void onItemSelected(ListView v, View view, int id) {}
+		public void onItemSelected(ListView v, View view, int id) {
+		}
 	};
 
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
 	 * fragment (e.g. upon screen orientation changes).
 	 */
-	public SongListFragment() 
-	{}
+	public SongListFragment() {
+	}
 
 	//metodo di onCreate del fragment, si preoccupa di settare l'adapetr
 	//viene chiamato per creare il fragment, invocato subito dopo onAttach e prima di on createView
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);		
-		
+		super.onCreate(savedInstanceState);
+
 		manageListRefresh();
 		adapter = new CustomAdapterListFragment(getActivity(), R.layout.element_of_the_fragment_list_layout, finalList);
-				
+
 		setListAdapter(adapter);
-		
+
 	}
 
-	
+
 	/**
 	 * metodo che si preoccupa di controllare se ci sono le condizioni scelte per avviare il refresh
 	 * dei dati dalla cartella dei file xml.
 	 * Se così è, esegue il refresh del database e della lista dei brani
 	 */
-	private void manageListRefresh()
-	{
+	private void manageListRefresh() {
 		SharedPreferences sharedPref = getActivity().getSharedPreferences("last_modified", Context.MODE_PRIVATE);
 		lastModified = sharedPref.getLong("LastModified", 0);
-    	
+
 		//creiamo o controlliamo che esista già la cartella contenente i file XML
 		File xmlDirectory = new File(XmlImport.getCurrentDirectory(getActivity()));
 		xmlDirectory.mkdir();
 		//prendo il dato dell'ultima modifica della directory (i.e. è stata aggiunta una cartella)
 		long currentModified = xmlDirectory.lastModified();
-		
+
 		int time = checkTheFirstTime();//guardo se questa è la prima volta che l'applicazione parte
 
 		//TODO DEBUG TIME=0
-		time=0;
+		time = 0;
 		//se c'è stata una qualche modifica alla cartella oppure se questa è la prima volta che partiamo
-		if(currentModified>lastModified || time==0)
-		{
+		if (currentModified > lastModified || time == 0) {
 			SharedPreferences.Editor editor = sharedPref.edit();
 			editor.putLong("LastModified", currentModified);//aggiorniamo la nostra memoria sull'ultima volta che 
 			//ci siamo modificati
 			editor.commit();
 
 			//Carichiamo tutte le canzoni del database con le relative informazioni
-			loadListFromDatabaseAndXml();	
-		}
-		else
+			loadListFromDatabaseAndXml();
+		} else
 			loadListFromDatabase();
 	}
-	
-	private int checkTheFirstTime()
-	{
+
+	private int checkTheFirstTime() {
 		SharedPreferences pref = getActivity().getSharedPreferences("first_time", Context.MODE_PRIVATE);
 		int toReturn = pref.getInt("FirstTime", 0);
 		SharedPreferences.Editor editor = pref.edit();
-		editor.putInt("FirstTime", toReturn+1);
+		editor.putInt("FirstTime", toReturn + 1);
 		editor.commit();
-		
+
 		return toReturn;
 	}
-	
+
 	/**
 	 * Carica nel database le canzoni presenti nei file XML nel caso di modifiche, dopodichè
 	 * riempie la finalList (variabile globale) con gli oggetti Song presi
 	 * dal database aggiornato
 	 */
-	private void loadListFromDatabaseAndXml()
-	{
+	private void loadListFromDatabaseAndXml() {
 		// creo/apro il database
 		MagnetophoneOpenHelper dbHelper = new MagnetophoneOpenHelper(getActivity());
 		//invoco il metodo che si occupa di importre i file XML nuovi o modificati
@@ -148,21 +140,19 @@ public class SongListFragment extends ListFragment {
 
 		loadListFromDatabase();
 	}
-	
+
 	/**
 	 * metodo che carica nella lista tutti i brani nel database
 	 */
-	private void loadListFromDatabase()
-	{
+	private void loadListFromDatabase() {
 		MagnetophoneOpenHelper dbHelper = new MagnetophoneOpenHelper(getActivity());
 		SQLiteDatabase db = dbHelper.getReadableDatabase();
-		
+
 		Cursor cursor = db.query(MagnetophoneOpenHelper.SONG, null, null, null, null, null, null, null);
 		int cursorLength = cursor.getCount();
 
 		finalList = new LinkedList<Song>();
-		for(int j=0; j<cursorLength; j++)
-		{
+		for (int j = 0; j < cursorLength; j++) {
 			cursor.moveToPosition(j);
 			int songid = cursor.getInt(0);
 			Song new_song = DatabaseManager.getSongFromDatabase(songid, getActivity());
@@ -171,21 +161,19 @@ public class SongListFragment extends ListFragment {
 		}
 		db.close();
 	}
-	
-	
+
+
 	//chiamato subito dopo onCreateView e prima che ogni stato precedentemente salvato venga restaurato
 	@Override
-	public void onViewCreated(View view, Bundle savedInstanceState) 
-	{
+	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
 		// se avevamo uno stato salvato e se avevamo una posizione salvato, settiamo quella posizione
-		if (savedInstanceState != null && savedInstanceState.containsKey(STATE_ACTIVATED_POSITION)) 
-		{
+		if (savedInstanceState != null && savedInstanceState.containsKey(STATE_ACTIVATED_POSITION)) {
 			setActivatedPosition(savedInstanceState.getInt(STATE_ACTIVATED_POSITION));
 		}
-		
-		
+
+
 //		SharedPreferences songPrefSelected = getActivity().getSharedPreferences("selected", Context.MODE_PRIVATE);
 //		int viewId = songPrefSelected.getInt("view", -1);
 //		int position = songPrefSelected.getInt("position", -1);
@@ -223,8 +211,7 @@ public class SongListFragment extends ListFragment {
 		super.onAttach(activity);
 
 		// Activities containing this fragment must implement its callbacks.
-		if (!(activity instanceof Callbacks)) 
-		{
+		if (!(activity instanceof Callbacks)) {
 			throw new IllegalStateException("Activity must implement fragment's callbacks.");
 		}
 
@@ -233,8 +220,7 @@ public class SongListFragment extends ListFragment {
 
 	//chiamato quando un fragment viene staccato dalla sua activity
 	@Override
-	public void onDetach() 
-	{
+	public void onDetach() {
 		super.onDetach();
 
 		// Resetta il callback da quello che aveva l'activity che ci conteneva a quello
@@ -251,9 +237,8 @@ public class SongListFragment extends ListFragment {
 	 * id: il row id dell'oggetto che è stato cliccato
 	 */
 	@Override
-	public void onListItemClick(ListView listView, View view, int position, long id) 
-	{
-		super.onListItemClick(listView, view, position, id);		
+	public void onListItemClick(ListView listView, View view, int position, long id) {
+		super.onListItemClick(listView, view, position, id);
 		//avviso la mia activity padre di quale elemento io abbia ricevuto
 		//la posizione
 		mCallbacks.onItemSelected(listView, view, position);
@@ -264,8 +249,7 @@ public class SongListFragment extends ListFragment {
 	 * salva la posizione dell'elemento selezionato nella lista
 	 */
 	@Override
-	public void onSaveInstanceState(Bundle outState) 
-	{
+	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		if (mActivatedPosition != ListView.INVALID_POSITION) //se abbiamo una posizione valida
 		{
@@ -289,15 +273,13 @@ public class SongListFragment extends ListFragment {
 
 	/**
 	 * metodo privato, chiamato quando si ritorna, evidenzia l'ultimo elemento che abbiamo selezionato
+	 *
 	 * @param position
 	 */
-	private void setActivatedPosition(int position) 
-	{//se la posizione è invalida, togliamo l'evidenziazione
-		if (position == ListView.INVALID_POSITION) 
-		{
+	private void setActivatedPosition(int position) {//se la posizione è invalida, togliamo l'evidenziazione
+		if (position == ListView.INVALID_POSITION) {
 			getListView().setItemChecked(mActivatedPosition, false);
-		} 
-		else //altrimenti la mettiamo
+		} else //altrimenti la mettiamo
 		{
 			getListView().setItemChecked(position, true);
 		}
@@ -305,12 +287,8 @@ public class SongListFragment extends ListFragment {
 		//salviamo l'ultima posizione, sia che sia valida sia che non lo sia
 		mActivatedPosition = position;
 	}
-	
-	public LinkedList<Song> getTheLinkedList()
-	{
+
+	public LinkedList<Song> getTheLinkedList() {
 		return finalList;
 	}
-	
-	
-	
 }

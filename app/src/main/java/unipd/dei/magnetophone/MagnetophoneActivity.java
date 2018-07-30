@@ -19,45 +19,25 @@ import static android.view.View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION;
 /**
  * Activity principale dell'applicazione dove viene mostrato il magnetofono
  */
-public class MagnetophoneActivity extends AppCompatActivity
-{
+public class MagnetophoneActivity extends AppCompatActivity {
 	// Istanza della View su cui verrà disegnato il magnetofono
 	private MagnetoCanvasView canvasView = null;
 	private VideoView videoView = null;
-	
+
 	private MusicPlayer player;
 
-	//private View decorView;
-	
 	/**
 	 * onCreate dell'activity
 	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		//hideNavigationBar();
 		super.onCreate(savedInstanceState);
-		updateUI();
+
 		Log.d("MagnetophoneActivity", "oncreate MagnetophoneActivity");
 		setContentView(R.layout.activity_magnetophone);
 
-		//getActionBar().hide();
-		//if(getSupportActionBar()!=null)
-		//	getSupportActionBar().hide();
-
-
-		//View decorView = getWindow().getDecorView();
-// Hide both the navigation bar and the status bar.
-// SYSTEM_UI_FLAG_FULLSCREEN is only available on Android 4.1 and higher, but as
-// a general rule, you should design your app to hide the status bar whenever you
-// hide the navigation bar.
-		//int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-		//		| View.SYSTEM_UI_FLAG_FULLSCREEN |SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION;
-		//decorView.setSystemUiVisibility(uiOptions);
-
-
-
 		canvasView = (MagnetoCanvasView) findViewById(R.id.canvas);
-		videoView  =         (VideoView) findViewById(R.id.video);
+		videoView = (VideoView) findViewById(R.id.video);
 
 		canvasView.setVideoView(videoView);
 
@@ -69,7 +49,7 @@ public class MagnetophoneActivity extends AppCompatActivity
 
 		isStoragePermissionGranted();
 	}
-	
+
 	/**
 	 * Salvo la velocità utilizzata nel caso in cui si richiami la stessa canzone
 	 */
@@ -77,16 +57,16 @@ public class MagnetophoneActivity extends AppCompatActivity
 	public void onPause() {
 		Log.d("MagnetophoneActivity", "onPause MagnetophoneActivity");
 		canvasView.disableAnimation();
-		
+
 		//player.setVideoController(null);
-		
+
 		//Salvo i dati della riproduzione
 		player.saveState();
 		player.onPause();
 		super.onPause();
 	}
-	
-	public void onBackPressed(){
+
+	public void onBackPressed() {
 		player.onBackPressed();
 		super.onBackPressed();
 	}
@@ -96,34 +76,29 @@ public class MagnetophoneActivity extends AppCompatActivity
 		
 		super.onStop();
 	}*/
-	
+
 	/**
 	 * Chiamato quando il magnetofono viene richiamato dalla pausa, devo ricaricare i dati
 	 */
 	@Override
 	public void onResume() {
 		super.onResume();
-		updateUI();
 
 		Log.d("MagnetophoneActivity", "onResume MagnetophoneActivity");
-        //getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN |
-        //			                                     View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
-        //			                                     View.SYSTEM_UI_FLAG_LOW_PROFILE );
-        
-        canvasView.enableAnimation();
-        player.setVideoController(videoView);
-        
-        /*
-         * Avverto il player di ricollegarsi al servizio per riprendere a funzionare
-         * NOTA: lo metto in onResume() poichè se fosse in onStart(),
-         * nel caso che l'activity fosse messa in pausa ma non stoppata,
-         * non verrebbe fatto ripartire il player una volta tornata in primo piano, portando ad eventuali errori.
-         * Vedi https://developer.android.com/training/basics/activity-lifecycle/starting.html
-         */
-		
+
+		canvasView.enableAnimation();
+		player.setVideoController(videoView);
+
+		/*
+		 * Avverto il player di ricollegarsi al servizio per riprendere a funzionare
+		 * NOTA: lo metto in onResume() poichè se fosse in onStart(),
+		 * nel caso che l'activity fosse messa in pausa ma non stoppata,
+		 * non verrebbe fatto ripartire il player una volta tornata in primo piano, portando ad eventuali errori.
+		 * Vedi https://developer.android.com/training/basics/activity-lifecycle/starting.html
+		 */
+
 		player.onResume();
-		
-		
+
 		/*
 		SharedPreferences preferences = getSharedPreferences("service", Context.MODE_PRIVATE);
 		int songId = preferences.getInt("song_id", -1);
@@ -140,49 +115,22 @@ public class MagnetophoneActivity extends AppCompatActivity
 	@Override
 	public void onWindowFocusChanged(boolean hasFocus) {
 		super.onWindowFocusChanged(hasFocus);
-		// ogni volta che l'activity sarà in primo piano vengono reimpostati tutti i flag in modo
-		// che l'app sia a schermo intero senza la barra di navigazione e senza la barra di stato
-		if (hasFocus) {
-			//hideNavigationBar();
-		}
 	}
 
-	/**
-	 * Hide system NavigationBar and StatusBar
-	 */
-	public void updateUI() {
-		final View decorView = getWindow().getDecorView();
-		decorView.setOnSystemUiVisibilityChangeListener (new View.OnSystemUiVisibilityChangeListener() {
-			@Override
-			public void onSystemUiVisibilityChange(int visibility) {
-				if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
-					decorView.setSystemUiVisibility(
-							View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-									| View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-									| View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-									| View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-									| View.SYSTEM_UI_FLAG_FULLSCREEN
-									| View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
-				}
-			}
-		});
-	}
-
-	public  boolean isStoragePermissionGranted() {
+	public boolean isStoragePermissionGranted() {
 		if (Build.VERSION.SDK_INT >= 23) {
 			if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
 					== PackageManager.PERMISSION_GRANTED) {
-				Log.v("DEBUG","Permission is granted");
+				Log.v("DEBUG", "Permission is granted");
 				return true;
 			} else {
 
-				Log.v("DEBUG","Permission is revoked");
+				Log.v("DEBUG", "Permission is revoked");
 				ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
 				return false;
 			}
-		}
-		else { //permission is automatically granted on sdk<23 upon installation
-			Log.v("DEBUG","Permission is granted");
+		} else { //permission is automatically granted on sdk<23 upon installation
+			Log.v("DEBUG", "Permission is granted");
 			return true;
 		}
 	}
