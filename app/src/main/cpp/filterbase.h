@@ -4,6 +4,10 @@
 #include <thread>
 #include <jni.h>
 
+enum class SongEqualization {
+	CCIR, NAB, FLAT
+};
+
 class FilterBase
 {
 	public:
