@@ -9,7 +9,15 @@ bool threadGo = false;
 
 NativePlayer::NativePlayer() {
     currentSampleRate = -1;
+    currentPlaybackDeviceId=-1;
+    currentSampleFormat=-1;
+    currentSampleChannels=-1;
+    currentSampleRate=-1;
+    fillInterAudioBuffer=false;
     playbackState = PLAYBACK_STATE_INITIALIZED;
+}
+
+NativePlayer::~NativePlayer() {
 }
 
 void NativePlayer::closeOutputStream() {
@@ -24,6 +32,7 @@ void NativePlayer::closeOutputStream() {
         if (result != AAUDIO_OK) {
             LOGE("Error closing output stream. %s", AAudio_convertResultToText(result));
         }
+        playStream_=nullptr;
     }
 }
 
@@ -87,12 +96,13 @@ void NativePlayer::playbackCallback() {
 
     if (leftStat == audio::Status::OK && rightStat == audio::Status::OK) {
         for (int i = 0; i < audio::AudioBufferSize; i++) {
-            intermediateAudioBuffer.push_back((float) leftBuffer[i] * 32767);
-            intermediateAudioBuffer.push_back((float) rightBuffer[i] * 32767);
+            intermediateAudioBuffer.push_back((float) leftBuffer[i]);//* 32767);
+            intermediateAudioBuffer.push_back((float) rightBuffer[i]);//* 32767);
         }
     }
 
     currentTime += 102400.0 / (double) mixer->getSamplingFrequency() / rateConverter->getRatio();
+    //timeUpdate();
 }
 
 void NativePlayer::stop() {
@@ -104,10 +114,9 @@ void NativePlayer::stop() {
 
     if (playbackState == PLAYBACK_STATE_PLAYING) {
         playbackState = PLAYBACK_STATE_STOPPED;
-        aaudio_result_t result = AAudioStream_requestStop(playStream_);
-        if (result != AAUDIO_OK) {
-            LOGE("Error starting stream. %s", AAudio_convertResultToText(result));
-        }
+
+        intermediateAudioBuffer.clear();
+        closeOutputStream();
     }
 
     playbackChange(0, true);
@@ -131,13 +140,10 @@ void NativePlayer::play() {
 
     playbackState = PLAYBACK_STATE_PLAYING;
 
-    aaudio_result_t result = AAudioStream_requestStart(playStream_);
+    setupAudioEngineAndPlay(currentPlaybackDeviceId, currentSampleFormat, currentSampleChannels,
+                            currentSampleRate);
 
-    if (result != AAUDIO_OK) {
-        LOGE("Error starting stream. %s", AAudio_convertResultToText(result));
-    }
-    // Store the underrun count so we can tune the latency in the dataCallback
-    playStreamUnderrunCount_ = AAudioStream_getXRunCount(playStream_);
+    getAudioDataThread = new std::thread(&NativePlayer::threadReadData, this);
 }
 
 void NativePlayer::seek(double timeCentisec) {
@@ -160,146 +166,90 @@ void NativePlayer::seek(double timeCentisec) {
      * ma prevenire che il codice venga chiamato mentre un'altra copia è in esecuzione;
      * in caso ciò succeda, la seconda esecuzione viene bloccata.
      */
-    //static std::mutex threadJoinMtx;
+    static std::mutex threadJoinMtx;
 
-    //threadJoinMtx.lock();    // Prova a fare un lock sul mutex; se si blocca, vuol dire che c'è ancora un thread che sta reinizializzando
-    //threadJoinMtx.unlock();    // i filtri, quindi blocca finchè non si libera. Appena il lock() ha successo, lo sblocchiamo subito.
+    threadJoinMtx.lock();    // Prova a fare un lock sul mutex; se si blocca, vuol dire che c'è ancora un thread che sta reinizializzando
+    threadJoinMtx.unlock();    // i filtri, quindi blocca finchè non si libera. Appena il lock() ha successo, lo sblocchiamo subito.
 
-    //std::thread th([timeCentisec, mixer] {
-    //    std::lock_guard<std::mutex> guard(threadJoinMtx);    // Impedisce di rientrare finchè non finiamo
+    std::thread th([timeCentisec, this] {
+        std::lock_guard<std::mutex> guard(
+                threadJoinMtx);    // Impedisce di rientrare finchè non finiamo
 
-    if (mixer != NULL)
-        mixer->scheduleStop();
+        if (mixer != NULL)
+            mixer->scheduleStop();
 
-    if (waveReader != NULL)
-        waveReader->scheduleStop();
+        if (waveReader != NULL)
+            waveReader->scheduleStop();
 
-    if (rateConverter != NULL)
-        rateConverter->scheduleStop();
+        if (rateConverter != NULL)
+            rateConverter->scheduleStop();
 
-    fftconvolver[0].scheduleStop();
-    fftconvolver[1].scheduleStop();
-    fftconvolver[2].scheduleStop();
-    fftconvolver[3].scheduleStop();
+        fftconvolver[0].scheduleStop();
+        fftconvolver[1].scheduleStop();
+        fftconvolver[2].scheduleStop();
+        fftconvolver[3].scheduleStop();
 
-    // -- Join --
-    LOGD("join");
-    if (mixer != NULL)
-        mixer->join();
+        // -- Join --
+        LOGD("join");
+        if (mixer != NULL)
+            mixer->join();
 
-    if (rateConverter != NULL)
-        rateConverter->join();
+        if (rateConverter != NULL)
+            rateConverter->join();
 
-    if (waveReader != NULL)
-        waveReader->join();
+        if (waveReader != NULL)
+            waveReader->join();
 
-    fftconvolver[0].join();
-    fftconvolver[1].join();
-    fftconvolver[2].join();
-    fftconvolver[3].join();
+        fftconvolver[0].join();
+        fftconvolver[1].join();
+        fftconvolver[2].join();
+        fftconvolver[3].join();
 
-    // -- Flush --
-    LOGD("flush");
-    if (mixer != NULL)
-        mixer->flush();
+        // -- Flush --
+        LOGD("flush");
+        if (mixer != NULL)
+            mixer->flush();
 
-    if (rateConverter != NULL)
-        rateConverter->flush();
+        if (rateConverter != NULL)
+            rateConverter->flush();
 
-    if (waveReader != NULL) {
-        waveReader->flush();
-        waveReader->seek(timeCentisec);
-    }
+        if (waveReader != NULL) {
+            waveReader->flush();
+            waveReader->seek(timeCentisec);
+        }
 
-    fftconvolver[0].reset();
-    fftconvolver[1].reset();
-    fftconvolver[2].reset();
-    fftconvolver[3].reset();
+        fftconvolver[0].reset();
+        fftconvolver[1].reset();
+        fftconvolver[2].reset();
+        fftconvolver[3].reset();
 
-    // -- Run --
-    if (mixer != NULL)
-        mixer->run();
+        // -- Run --
+        if (mixer != NULL)
+            mixer->run();
 
-    if (rateConverter != NULL)
-        rateConverter->run();
+        if (rateConverter != NULL)
+            rateConverter->run();
 
-    if (waveReader != NULL) {
-        LOGD("partito wave reader");
-        waveReader->run();
-    }
+        if (waveReader != NULL) {
+            LOGD("partito wave reader");
+            waveReader->run();
+        }
 
-    fftconvolver[0].run();
-    fftconvolver[1].run();
-    fftconvolver[2].run();
-    fftconvolver[3].run();
+        fftconvolver[0].run();
+        fftconvolver[1].run();
+        fftconvolver[2].run();
+        fftconvolver[3].run();
 
-    LOGD("tutti filtri ok");
-    //(*player_buf_q)->Clear(player_buf_q);
-    if (!waveReader->isEof()) {
-        playbackCallback(); //riempio i buffer
-        playbackCallback();
-    }
-    //});
-    //th.detach();
+        LOGD("tutti filtri ok");
+        //(*player_buf_q)->Clear(player_buf_q);
+        if (!waveReader->isEof()) {
+            playbackCallback(); //riempio i buffer
+            playbackCallback();
+        }
+    });
+    th.detach();
 
     playbackChange(0, true);
-}
-
-void NativePlayer::speedChange() {
-    LOGD("speedChange");
-    JNIEnv *env;
-    int check = (jvm)->GetEnv((void **) &env, JNI_VERSION_1_6);
-
-    if (check == JNI_EDETACHED)
-        jvm->AttachCurrentThread(&env, NULL);
-    if (songSpeedCallbackID != 0)
-        env->CallVoidMethod(javaobj, songSpeedCallbackID);
-    if (check == JNI_EDETACHED)
-        jvm->DetachCurrentThread();
-}
-
-void NativePlayer::playbackChange(int type, bool stop) {
-    LOGD("playbackChange");
-    JNIEnv *env;
-    int check = (jvm)->GetEnv((void **) &env, JNI_VERSION_1_6);
-
-    if (check == JNI_EDETACHED)
-        jvm->AttachCurrentThread(&env, NULL);
-
-    if (playbackStateCallbackID != 0)
-        env->CallVoidMethod(javaobj, playbackStateCallbackID, type, stop);
-
-    if (check == JNI_EDETACHED)
-        jvm->DetachCurrentThread();
-}
-
-void NativePlayer::songLoaded() {
-    LOGD("songLoaded");
-    JNIEnv *env;
-    int check = (jvm)->GetEnv((void **) &env, JNI_VERSION_1_6);
-
-    if (check == JNI_EDETACHED)
-        jvm->AttachCurrentThread(&env, NULL);
-
-    if (songLoadedCallbackID != 0)
-        env->CallVoidMethod(javaobj, songLoadedCallbackID);
-
-    if (check == JNI_EDETACHED)
-        jvm->DetachCurrentThread();
-}
-
-void NativePlayer::timeUpdate() {
-    JNIEnv *env;
-    int check = (jvm)->GetEnv((void **) &env, JNI_VERSION_1_6);
-
-    if (check == JNI_EDETACHED)
-        jvm->AttachCurrentThread(&env, NULL);
-
-    if (onTimeUpdateMethodID != 0)
-        env->CallVoidMethod(javaobj, onTimeUpdateMethodID, currentTime);
-
-    if (check == JNI_EDETACHED)
-        jvm->DetachCurrentThread();
 }
 
 void NativePlayer::fastFunction() {
@@ -332,6 +282,25 @@ void NativePlayer::fastFunction() {
     seek(currentTime);
     threadGo = false;
     //fastThread->detach();
+}
+
+void NativePlayer::threadReadData() {
+    while (playbackState == PLAYBACK_STATE_PLAYING) {
+        if (fillInterAudioBuffer==true) {
+
+            int prevLen=-1;
+            //TODO sistemare
+            //2000 e' arbitrario
+            while(intermediateAudioBuffer.size()<2000 && prevLen!=intermediateAudioBuffer.size()) {
+                intermediateAudioBufferAccess.lock();
+                //LOGD("THREAD playbackCallback");
+                playbackCallback();
+                intermediateAudioBufferAccess.unlock();
+            }
+            timeUpdate();
+            std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        }
+    }
 }
 
 /**
@@ -396,7 +365,7 @@ void NativePlayer::restartStream() {
     if (restartingLock_.try_lock()) {
         closeOutputStream();
         //TODO sistemare
-        //setupAudioEngine();
+        //setupAudioEngineAndPlay();
         restartingLock_.unlock();
     } else {
         LOGD("Restart stream operation already in progress - ignoring this request");
@@ -497,21 +466,28 @@ aaudio_data_callback_result_t NativePlayer::dataCallback(AAudioStream *stream,
     int32_t samplesPerFrame = sampleChannels_;
 
     //zeroing the audio buffer before filling it mixing the sounds
-    memset(static_cast<uint8_t *>(audioData), 0,
-           sizeof(float) * samplesPerFrame * numFrames);
+    //memset(static_cast<uint8_t *>(audioData), 0,
+    //       sizeof(float) * samplesPerFrame * numFrames);
 
     float *temp = static_cast<float *>(audioData);
 
+    //se il buffer di trasferimento non e' abbastanza pieno riempilo
+    if (intermediateAudioBuffer.size() < 2 * numFrames) {
+        LOGD("THREAD fillInterAudioBuffer=true");
+        fillInterAudioBuffer=true;
+    }
+
     int i;
-    for (i = 0; !intermediateAudioBuffer.empty() && i < numFrames; i++) {
-        temp[i] = intermediateAudioBuffer.at(i);
-    }
+    if(intermediateAudioBuffer.size()>numFrames) {
+        for (i = 0; !intermediateAudioBuffer.empty() && i < numFrames; i++) {
+            temp[i] = intermediateAudioBuffer.at(i);
+        }
 
-    if (!intermediateAudioBuffer.empty()) {
-        intermediateAudioBuffer.erase(intermediateAudioBuffer.begin(),
-                                      intermediateAudioBuffer.begin() + i);
+        if (!intermediateAudioBuffer.empty()) {
+            intermediateAudioBuffer.erase(intermediateAudioBuffer.begin(),
+                                          intermediateAudioBuffer.begin() + i);
+        }
     }
-
 
 
     //calculateCurrentOutputLatencyMillis(stream, &currentOutputLatencyMillis_);
@@ -522,10 +498,10 @@ aaudio_data_callback_result_t NativePlayer::dataCallback(AAudioStream *stream,
 /**
  * Creates an audio stream for playback. The audio device used will depend on playbackDeviceId_.
  */
-void NativePlayer::setupAudioEngine(int playbackDeviceId_,
-                                    int sampleFormat_,
-                                    int sampleChannels_,
-                                    int sampleRate_) {
+void NativePlayer::setupAudioEngineAndPlay(int playbackDeviceId_,
+                                           int sampleFormat_,
+                                           int sampleChannels_,
+                                           int sampleRate_) {
     currentTime = 0;
 
     AAudioStreamBuilder *builder = createStreamBuilder();
@@ -556,13 +532,13 @@ void NativePlayer::setupAudioEngine(int playbackDeviceId_,
             LOGD("creato audio engine");
 
             // Start the stream - the dataCallback function will start being called
-            //result = AAudioStream_requestStart(playStream_);
-            //if (result != AAUDIO_OK) {
-            //    LOGE("Error starting stream. %s", AAudio_convertResultToText(result));
-            //}
+            result = AAudioStream_requestStart(playStream_);
+            if (result != AAUDIO_OK) {
+                LOGE("Error starting stream. %s", AAudio_convertResultToText(result));
+            }
 
             // Store the underrun count so we can tune the latency in the dataCallback
-            //playStreamUnderrunCount_ = AAudioStream_getXRunCount(playStream_);
+            playStreamUnderrunCount_ = AAudioStream_getXRunCount(playStream_);
 
         } else {
             LOGE("Failed to create stream. Error: %s", AAudio_convertResultToText(result));
@@ -721,14 +697,14 @@ void NativePlayer::loadSong(JNIEnv *env, jclass clazz, jobjectArray pathsArray, 
     audio::connect(mixer->outputRight, inRight);
     // ------------------------------
 
-    //void NativePlayer::setupPlaybackStreamParameters(AAudioStreamBuilder *builder,
-    //                                                 int playbackDeviceId_,
-    //                                                int sampleFormat_,
-    //                                                int sampleChannels_,
-    //                                                int sampleRate_)
-    setupAudioEngine(0, AAUDIO_FORMAT_PCM_I16, 2, songSampleRate);
+    //setup parametri motore audio
+    currentPlaybackDeviceId=0;
+    currentSampleFormat=AAUDIO_FORMAT_PCM_FLOAT;
+    currentSampleChannels=2;
+    currentSampleRate=(int)(songSampleRate*0.9);
 
-
+    //setupAudioEngineAndPlay(currentPlaybackDeviceId, currentSampleFormat, currentSampleChannels, currentSampleRate);
+    
     playbackState = PLAYBACK_STATE_STOPPED;
     seek(0);
     songLoaded();
@@ -806,15 +782,18 @@ void NativePlayer::setSpeed(int speed) {
 void NativePlayer::fastForward() {
     if (playbackState == PLAYBACK_STATE_INITIALIZED)
         return;
+
+    LOGD("fastforward");
+    stop();
+    LOGD("stoppeclsd");
+
     reverse = false;
 
     if (threadGo) {
         playbackChange(1, reverse);
         return;
     }
-    LOGD("fastforward");
-    stop();
-    LOGD("stopped");
+
     delete fastThread;
     fastThread = new std::thread(&NativePlayer::fastFunction, this);
 }
@@ -824,13 +803,13 @@ void NativePlayer::fastReverse() {
         return;
     reverse = true;
 
+    LOGD("fastreverse");
+    stop();
+
     if (threadGo) {
         playbackChange(1, reverse);
         return;
     }
-
-    LOGD("fastreverse");
-    stop();
 
     delete fastThread;
     fastThread = new std::thread(&NativePlayer::fastFunction, this);
@@ -849,24 +828,81 @@ float NativePlayer::getRatio() {
 
 void NativePlayer::setNewGlobalRef(jobject jObject) {
     javaobj = jObject;
-
 }
 
 void NativePlayer::setOnTimeUpdate(jmethodID mID) {
     onTimeUpdateMethodID = mID;
-
 }
 
 void NativePlayer::setSongSpeedCallback(jmethodID mID) {
     songSpeedCallbackID = mID;
-
 }
 
 void NativePlayer::setSongLoadedCallback(jmethodID mID) {
     songLoadedCallbackID = mID;
-
 }
 
 void NativePlayer::setPlaybackStateCallback(jmethodID mID) {
     playbackStateCallbackID = mID;
+}
+
+void NativePlayer::setJavaVMObj(JNIEnv *env){
+    env->GetJavaVM(&jvm);
+}
+
+void NativePlayer::speedChange() {
+    LOGD("speedChange");
+    JNIEnv *env;
+    int check = (jvm)->GetEnv((void **) &env, JNI_VERSION_1_6);
+
+    if (check == JNI_EDETACHED)
+        jvm->AttachCurrentThread(&env, NULL);
+    if (songSpeedCallbackID != 0)
+        env->CallVoidMethod(javaobj, songSpeedCallbackID);
+    if (check == JNI_EDETACHED)
+        jvm->DetachCurrentThread();
+}
+
+void NativePlayer::playbackChange(int type, bool stop) {
+    LOGD("playbackChange");
+    JNIEnv *env;
+    int check = (jvm)->GetEnv((void **) &env, JNI_VERSION_1_6);
+
+    if (check == JNI_EDETACHED)
+        jvm->AttachCurrentThread(&env, NULL);
+
+    if (playbackStateCallbackID != 0)
+        env->CallVoidMethod(javaobj, playbackStateCallbackID, type, stop);
+
+    if (check == JNI_EDETACHED)
+        jvm->DetachCurrentThread();
+}
+
+void NativePlayer::songLoaded() {
+    LOGD("songLoaded");
+    JNIEnv *env;
+    int check = (jvm)->GetEnv((void **) &env, JNI_VERSION_1_6);
+
+    if (check == JNI_EDETACHED)
+        jvm->AttachCurrentThread(&env, NULL);
+
+    if (songLoadedCallbackID != 0)
+        env->CallVoidMethod(javaobj, songLoadedCallbackID);
+
+    if (check == JNI_EDETACHED)
+        jvm->DetachCurrentThread();
+}
+
+void NativePlayer::timeUpdate() {
+    JNIEnv *env;
+    int check = (jvm)->GetEnv((void **) &env, JNI_VERSION_1_6);
+
+    if (check == JNI_EDETACHED)
+        jvm->AttachCurrentThread(&env, NULL);
+
+    if (onTimeUpdateMethodID != 0)
+        env->CallVoidMethod(javaobj, onTimeUpdateMethodID, currentTime);
+
+    if (check == JNI_EDETACHED)
+        jvm->DetachCurrentThread();
 }

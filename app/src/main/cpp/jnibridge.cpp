@@ -11,8 +11,6 @@ static NativePlayer *engine = nullptr;
 extern "C"
 {
 
-JavaVM *jvm = nullptr;
-
 void
 Java_unipd_dei_megnetophone_NativePlayer_convertJavaEqualization(JNIEnv *env, jstring javaEqu) {
     if (engine == nullptr) {
@@ -29,33 +27,59 @@ JNIEXPORT void JNICALL Java_unipd_dei_magnetophone_MusicService_init(JNIEnv *env
     //(*engineObject)->Realize(engineObject, SL_BOOLEAN_FALSE);
     //(*engineObject)->GetInterface(engineObject, SL_IID_ENGINE, &engineItf);
 
-    engine = new NativePlayer();
 
-    env->GetJavaVM(&jvm);
+    if(engine == nullptr) {
+        engine = new NativePlayer();
+        engine->setJavaVMObj(env);
+        JavaVM* javaVM = nullptr;
+        env->GetJavaVM(&javaVM);
 
-    jclass cls = env->GetObjectClass(obj);
-    //javaobj = (jobject) env->NewGlobalRef(obj);
-    engine->setNewGlobalRef((jobject) env->NewGlobalRef(obj));
+        jclass cls = env->GetObjectClass(obj);
+        //javaobj = (jobject) env->NewGlobalRef(obj);
+        engine->setNewGlobalRef((jobject) env->NewGlobalRef(obj));
 
-    //onTimeUpdateMethodID = env->GetMethodID(cls, "onTimeUpdate", "(D)V");
-    engine->setOnTimeUpdate(env->GetMethodID(cls, "onTimeUpdate", "(D)V"));
+        //onTimeUpdateMethodID = env->GetMethodID(cls, "onTimeUpdate", "(D)V");
+        engine->setOnTimeUpdate(env->GetMethodID(cls, "onTimeUpdate", "(D)V"));
 
-    //songSpeedCallbackID = env->GetMethodID(cls, "songSpeedCallback", "()V");
-    engine->setSongSpeedCallback(env->GetMethodID(cls, "songSpeedCallback", "()V"));
+        //songSpeedCallbackID = env->GetMethodID(cls, "songSpeedCallback", "()V");
+        engine->setSongSpeedCallback(env->GetMethodID(cls, "songSpeedCallback", "()V"));
 
-    //songLoadedCallbackID = env->GetMethodID(cls, "songLoadedCallback", "()V");
-    engine->setSongLoadedCallback(env->GetMethodID(cls, "songLoadedCallback", "()V"));
+        //songLoadedCallbackID = env->GetMethodID(cls, "songLoadedCallback", "()V");
+        engine->setSongLoadedCallback(env->GetMethodID(cls, "songLoadedCallback", "()V"));
 
-    //playbackStateCallbackID = env->GetMethodID(cls, "playbackStateCallback", "(IZ)V");
-    engine->setPlaybackStateCallback(env->GetMethodID(cls, "playbackStateCallback", "(IZ)V"));
+        //playbackStateCallbackID = env->GetMethodID(cls, "playbackStateCallback", "(IZ)V");
+        engine->setPlaybackStateCallback(env->GetMethodID(cls, "playbackStateCallback", "(IZ)V"));
 
-    if (engine == nullptr) {
-        LOGE("Engine is null, you must call createEngine before calling this method");
-        return;
     }
-    //TODO da fare
-    //playbackState = PLAYBACK_STATE_INITIALIZED;
-    //engine->init();
+//    if(engine == nullptr) {
+//        engine = new NativePlayer();
+//
+//        //env->GetJavaVM(&jvm);
+//
+//        jclass cls = env->GetObjectClass(obj);
+//        //javaobj = (jobject) env->NewGlobalRef(obj);
+//        engine->setNewGlobalRef((jobject) env->NewGlobalRef(obj));
+//
+//        //onTimeUpdateMethodID = env->GetMethodID(cls, "onTimeUpdate", "(D)V");
+//        engine->setOnTimeUpdate(env->GetMethodID(cls, "onTimeUpdate", "(D)V"));
+//
+//        //songSpeedCallbackID = env->GetMethodID(cls, "songSpeedCallback", "()V");
+//        engine->setSongSpeedCallback(env->GetMethodID(cls, "songSpeedCallback", "()V"));
+//
+//        //songLoadedCallbackID = env->GetMethodID(cls, "songLoadedCallback", "()V");
+//        engine->setSongLoadedCallback(env->GetMethodID(cls, "songLoadedCallback", "()V"));
+//
+//        //playbackStateCallbackID = env->GetMethodID(cls, "playbackStateCallback", "(IZ)V");
+//        engine->setPlaybackStateCallback(env->GetMethodID(cls, "playbackStateCallback", "(IZ)V"));
+//
+//        if (engine == nullptr) {
+//            LOGE("Engine is null, you must call createEngine before calling this method");
+//            return;
+//        }
+//        //TODO da fare
+//        //playbackState = PLAYBACK_STATE_INITIALIZED;
+//        //engine->init();
+//    }
 }
 
 // create the engine
@@ -162,7 +186,8 @@ Java_unipd_dei_magnetophone_MusicService_terminate(JNIEnv *env, jclass clazz) {
     if (engine->getPlaybackState() != PLAYBACK_STATE_INITIALIZED)
         return;
 
-    engine->closeOutputStream();
+    engine->stop();
+    //engine->closeOutputStream();
     delete engine;
     engine = nullptr;
     //(*engineObject)->Destroy(engineObject);

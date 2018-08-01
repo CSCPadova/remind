@@ -20,9 +20,10 @@ LOCAL_SRC_FILES += RateConverter.cpp
 LOCAL_SRC_FILES += WaveReader.cpp
 LOCAL_SRC_FILES += fftconvolver.cpp
 LOCAL_SRC_FILES += audiocommon.cpp
+LOCAL_SRC_FILES += jnibridge.cpp
 
 # for native audio
-LOCAL_LDLIBS    := -lOpenSLES
+#LOCAL_LDLIBS    := -lOpenSLES
 LOCAL_LDLIBS    := -laaudio
 # for logging
 LOCAL_LDLIBS    += -llog

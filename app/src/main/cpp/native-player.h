@@ -8,12 +8,18 @@
 #include "RateConverter.h"
 #include "WaveReader.h"
 #include "fftconvolver.h"
+#include <aaudio/AAudio.h>
 
 #define PLAYBACK_STATE_INITIALIZED 0
 #define PLAYBACK_STATE_STOPPED 1
 #define PLAYBACK_STATE_PLAYING 2
 
 #define BUFFER_SIZE_AUTOMATIC 0
+
+
+static std::mutex threadJoinMtx;
+
+static std::mutex intermediateAudioBufferAccess;
 
 class NativePlayer {
 
@@ -26,19 +32,6 @@ class NativePlayer {
  * -Marco
  */
 
-	//extern "C"
-	//{
-		// engine interfaces
-	//	SLObjectItf engineObject = NULL;
-	//	SLEngineItf engineItf;
-//
-	//	SLObjectItf player_obj;
-	//	SLPlayItf player;
-	//	SLmilliHertz recorderSR;
-	//	SLObjectItf output_mix_obj;
-	//	SLPlaybackRateItf rateItf;
-
-	//}
 	int playbackState;
 	int songSampleRate;
 	int loadState;
@@ -47,23 +40,14 @@ class NativePlayer {
 
     std::vector<float> intermediateAudioBuffer;
 
+    bool fillInterAudioBuffer;
+
 	SongSpeed songSpeed;
 	SongEqualization songEqu, desiredEqu;
 	FFTConvolver fftconvolver[4];
 
-	//SLAndroidSimpleBufferQueueItf player_buf_q;
-//WavReader *waveReaders[4];
 	WaveReader *waveReader = nullptr;
-	//char paths[4][200];
-	//short bufferLettura[4][2000];
-	//short *bufferLetturaPtrs[4] = {nullptr};
-	//int bufcount = 0;
 
-	//jmethodID onTimeUpdateMethodID, songSpeedCallbackID, songLoadedCallbackID, playbackStateCallbackID;
-
-	//jobject javaobj = 0;
-	//JavaVM *jvm = nullptr;
-	//JNIEnv *current_jni_env = nullptr;
 	Mixer *mixer = nullptr;
 	RateConverter *rateConverter = nullptr;
 	audio::InputStream inLeft;
@@ -71,9 +55,14 @@ class NativePlayer {
 
 	SongType songType;
 	std::thread *fastThread = nullptr;
+
+    std::thread *getAudioDataThread = nullptr;
+
 	bool reverse;
 
 	void fastFunction();
+
+    void threadReadData();
 
 
 
@@ -100,9 +89,13 @@ class NativePlayer {
     int16_t sampleChannels_;
     int32_t playbackDeviceId_ = AAUDIO_UNSPECIFIED;
     int32_t bufferSizeSelection_ = BUFFER_SIZE_AUTOMATIC;
-    int32_t currentSampleRate;
     int32_t currentFramesPerBurst;
     int32_t bufSizeInFrames_;
+
+	int currentPlaybackDeviceId;
+	int currentSampleFormat;
+	int currentSampleChannels;
+	int currentSampleRate;
 
     int32_t framesPerBurst_;
     int32_t playStreamUnderrunCount_;
@@ -117,6 +110,16 @@ private:
                                        int sampleFormat_,
                                        int sampleChannels_,
                                        int sampleRate_);
+
+
+    void threadFunction(double timeCentisec);
+
+	void closeOutputStream();
+
+	void setupAudioEngineAndPlay(int playbackDeviceId_,
+								 int sampleFormat_,
+								 int sampleChannels_,
+								 int sampleRate_);
 
 public:
     NativePlayer();
@@ -149,6 +152,7 @@ public:
     float getRatio();
 
     //cose varie per interfacciarsi con jni
+    void setJavaVMObj(JNIEnv *env);
     //javaobj = (jobject) env->NewGlobalRef(obj);
     void setNewGlobalRef(jobject jObject);
     //onTimeUpdateMethodID = env->GetMethodID(cls, "onTimeUpdate", "(D)V");
@@ -160,16 +164,9 @@ public:
     //playbackStateCallbackID = env->GetMethodID(cls, "playbackStateCallback", "(IZ)V");
     void setPlaybackStateCallback(jmethodID mID);
 
-
-
     //AAUDIO
-    //setupAudioEngine chiamera' setupPlaybackStreamParameters
-    void setupAudioEngine(int playbackDeviceId_,
-                          int sampleFormat_,
-                          int sampleChannels_,
-                          int sampleRate_);
+    //setupAudioEngineAndPlay chiamera' setupPlaybackStreamParameters
 
-    void closeOutputStream();
 
     aaudio_data_callback_result_t dataCallback(AAudioStream *stream,
                                                void *audioData,
