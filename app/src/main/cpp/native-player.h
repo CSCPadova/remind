@@ -38,12 +38,7 @@ class NativePlayer {
 
     double currentTime = 0; //tempo espresso in centesimi di secondo
 
-    std::vector<float> intermediateAudioBuffer;
-    //quanto riempire il buffer?
-    int intermAudioBufferFillValue;
-    bool fillInterAudioBuffer;
-    //valore arbitrario
-    int readThreadSleepTime;
+
 
 	SongSpeed songSpeed;
 	SongEqualization songEqu, desiredEqu;
@@ -64,10 +59,6 @@ class NativePlayer {
 	bool reverse;
 
 	void fastFunction();
-
-    void threadReadData();
-
-
 
 	void seek(double timeCentisec);
 
@@ -108,6 +99,14 @@ class NativePlayer {
     std::mutex restartingLock_;
 
 private:
+
+    std::vector<float> intermediateAudioBuffer;
+    //quanto riempire il buffer?
+    int intermAudioBufferFillValue;
+    bool fillInterAudioBuffer;
+    //valore arbitrario
+    int readThreadSleepTime;
+
     void setupPlaybackStreamParameters(AAudioStreamBuilder *builder,
                                        int playbackDeviceId_,
                                        int sampleFormat_,
@@ -123,6 +122,8 @@ private:
 								 int sampleFormat_,
 								 int sampleChannels_,
 								 int sampleRate_);
+
+    void threadReadData();
 
 public:
     NativePlayer();
