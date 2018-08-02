@@ -208,7 +208,7 @@ JNIEXPORT jint JNICALL Java_unipd_dei_magnetophone_MusicService_getTime(JNIEnv *
         LOGE("Engine is null, you must call createEngine before calling this method");
         return -1;
     }
-    return engine->getCurrnetTime();
+    return engine->getCurrentTime();
 }
 
 JNIEXPORT void JNICALL Java_unipd_dei_magnetophone_MusicService_play(JNIEnv *env, jclass clazz) {

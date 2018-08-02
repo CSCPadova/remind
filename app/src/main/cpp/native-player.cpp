@@ -497,8 +497,6 @@ void NativePlayer::setupAudioEngineAndPlay(int playbackDeviceId_,
                                            int sampleFormat_,
                                            int sampleChannels_,
                                            int sampleRate_) {
-    currentTime = 0;
-
     AAudioStreamBuilder *builder = createStreamBuilder();
 
     if (builder != nullptr) {
@@ -550,7 +548,7 @@ int NativePlayer::getPlaybackState() {
     return playbackState;
 }
 
-int NativePlayer::getCurrnetTime() {
+int NativePlayer::getCurrentTime() {
     return currentTime;
 }
 
@@ -701,6 +699,7 @@ void NativePlayer::loadSong(JNIEnv *env, jclass clazz, jobjectArray pathsArray, 
     //setupAudioEngineAndPlay(currentPlaybackDeviceId, currentSampleFormat, currentSampleChannels, currentSampleRate);
 
     playbackState = PLAYBACK_STATE_STOPPED;
+    currentTime = 0;
     seek(0);
     songLoaded();
     speedChange();

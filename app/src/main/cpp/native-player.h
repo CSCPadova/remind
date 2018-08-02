@@ -139,7 +139,7 @@ public:
     SongEqualization getSongEqu();
 
     int getPlaybackState();
-    int getCurrnetTime();
+    int getCurrentTime();
     void unloadSong();
     void loadSong(JNIEnv* env, jclass clazz, jobjectArray pathsArray, jint songTypeNum, jint songSpeedNum, jstring songEquStr);
     void mixerSetChannelSatellitePosition(int channelNumber, int position);
