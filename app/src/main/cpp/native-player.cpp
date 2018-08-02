@@ -3,11 +3,17 @@
 #include "fftconvolver.h"
 #include "audiocommon.h"
 
+#include <math.h>
+
 //short buffers[2][20000];		// <--- ugh
 
 bool threadGo = false;
 
 NativePlayer::NativePlayer() {
+    time=0;
+    readThreadSleepTime=2;
+    intermAudioBufferFillValue=2000;
+
     currentSampleRate = -1;
     currentPlaybackDeviceId=-1;
     currentSampleFormat=-1;
@@ -100,9 +106,8 @@ void NativePlayer::playbackCallback() {
             intermediateAudioBuffer.push_back((float) rightBuffer[i]);//* 32767);
         }
     }
-
     currentTime += 102400.0 / (double) mixer->getSamplingFrequency() / rateConverter->getRatio();
-    //timeUpdate();
+    timeUpdate();
 }
 
 void NativePlayer::stop() {
@@ -242,10 +247,10 @@ void NativePlayer::seek(double timeCentisec) {
 
         LOGD("tutti filtri ok");
         //(*player_buf_q)->Clear(player_buf_q);
-        if (!waveReader->isEof()) {
-            playbackCallback(); //riempio i buffer
-            playbackCallback();
-        }
+        //if (!waveReader->isEof()) {
+        //    playbackCallback(); //riempio i buffer
+        //    playbackCallback();
+        //}
     });
     th.detach();
 
@@ -285,20 +290,16 @@ void NativePlayer::fastFunction() {
 }
 
 void NativePlayer::threadReadData() {
+    int prevLen=-1;
     while (playbackState == PLAYBACK_STATE_PLAYING) {
+        prevLen=-1;
         if (fillInterAudioBuffer==true) {
-
-            int prevLen=-1;
-            //TODO sistemare
-            //2000 e' arbitrario
-            while(intermediateAudioBuffer.size()<2000 && prevLen!=intermediateAudioBuffer.size()) {
-                intermediateAudioBufferAccess.lock();
-                //LOGD("THREAD playbackCallback");
+            while(intermediateAudioBuffer.size()<intermAudioBufferFillValue && prevLen!=intermediateAudioBuffer.size()) {
                 playbackCallback();
-                intermediateAudioBufferAccess.unlock();
+                prevLen=intermediateAudioBuffer.size();
             }
-            timeUpdate();
-            std::this_thread::sleep_for(std::chrono::milliseconds(10));
+            fillInterAudioBuffer=false;
+            std::this_thread::sleep_for(std::chrono::milliseconds(readThreadSleepTime));
         }
     }
 }
@@ -437,7 +438,6 @@ aaudio_data_callback_result_t NativePlayer::dataCallback(AAudioStream *stream,
     }
 
     if (hasUnderrunCountIncreased && bufferSizeSelection_ == BUFFER_SIZE_AUTOMATIC) {
-
         /**
          * This is a buffer size tuning algorithm. If the number of underruns (i.e. instances where
          * we were unable to supply sufficient data to the stream) has increased since the last callback
@@ -446,15 +446,17 @@ aaudio_data_callback_result_t NativePlayer::dataCallback(AAudioStream *stream,
          */
         bufferSize += framesPerBurst_; // Increase buffer size by one burst
         shouldChangeBufferSize = true;
+        LOGD("UNDERRUN DETECTED");
     } else if (bufferSizeSelection_ > 0 && (bufferSizeSelection_ * framesPerBurst_) != bufferSize) {
 
         // If the buffer size selection has changed then update it here
         bufferSize = bufferSizeSelection_ * framesPerBurst_;
         shouldChangeBufferSize = true;
+        LOGD("CHANGE BUFFER SIZE");
     }
 
     if (shouldChangeBufferSize) {
-        LOGD("Setting buffer size to %d", bufferSize);
+        //LOGD("Setting buffer size to %d", bufferSize);
         bufferSize = AAudioStream_setBufferSizeInFrames(stream, bufferSize);
         if (bufferSize > 0) {
             bufSizeInFrames_ = bufferSize;
@@ -465,30 +467,23 @@ aaudio_data_callback_result_t NativePlayer::dataCallback(AAudioStream *stream,
 
     int32_t samplesPerFrame = sampleChannels_;
 
-    //zeroing the audio buffer before filling it mixing the sounds
-    //memset(static_cast<uint8_t *>(audioData), 0,
-    //       sizeof(float) * samplesPerFrame * numFrames);
-
     float *temp = static_cast<float *>(audioData);
 
-    //se il buffer di trasferimento non e' abbastanza pieno riempilo
-    if (intermediateAudioBuffer.size() < 2 * numFrames) {
-        LOGD("THREAD fillInterAudioBuffer=true");
-        fillInterAudioBuffer=true;
-    }
+    int i=0;
 
-    int i;
-    if(intermediateAudioBuffer.size()>numFrames) {
-        for (i = 0; !intermediateAudioBuffer.empty() && i < numFrames; i++) {
+    if(!intermediateAudioBuffer.empty() && intermediateAudioBuffer.size()>numFrames*2) {
+
+        for (i = 0; i < numFrames*2; i++) {
             temp[i] = intermediateAudioBuffer.at(i);
         }
-
-        if (!intermediateAudioBuffer.empty()) {
-            intermediateAudioBuffer.erase(intermediateAudioBuffer.begin(),
-                                          intermediateAudioBuffer.begin() + i);
-        }
+        intermediateAudioBuffer.erase(intermediateAudioBuffer.begin(),
+                                      intermediateAudioBuffer.begin() + i);
     }
 
+    //TODO decidere se tenere un numero magico
+    intermAudioBufferFillValue=numFrames*2*2*2;
+
+    fillInterAudioBuffer=true;
 
     //calculateCurrentOutputLatencyMillis(stream, &currentOutputLatencyMillis_);
 
@@ -701,10 +696,10 @@ void NativePlayer::loadSong(JNIEnv *env, jclass clazz, jobjectArray pathsArray, 
     currentPlaybackDeviceId=0;
     currentSampleFormat=AAUDIO_FORMAT_PCM_FLOAT;
     currentSampleChannels=2;
-    currentSampleRate=(int)(songSampleRate*0.9);
+    currentSampleRate=(int)(songSampleRate);
 
     //setupAudioEngineAndPlay(currentPlaybackDeviceId, currentSampleFormat, currentSampleChannels, currentSampleRate);
-    
+
     playbackState = PLAYBACK_STATE_STOPPED;
     seek(0);
     songLoaded();

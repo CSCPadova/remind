@@ -19,8 +19,6 @@
 
 static std::mutex threadJoinMtx;
 
-static std::mutex intermediateAudioBufferAccess;
-
 class NativePlayer {
 
 /*
@@ -36,11 +34,16 @@ class NativePlayer {
 	int songSampleRate;
 	int loadState;
 
+    double time;
+
     double currentTime = 0; //tempo espresso in centesimi di secondo
 
     std::vector<float> intermediateAudioBuffer;
-
+    //quanto riempire il buffer?
+    int intermAudioBufferFillValue;
     bool fillInterAudioBuffer;
+    //valore arbitrario
+    int readThreadSleepTime;
 
 	SongSpeed songSpeed;
 	SongEqualization songEqu, desiredEqu;
