@@ -9,9 +9,7 @@
 #include "WaveReader.h"
 #include "fftconvolver.h"
 #include <aaudio/AAudio.h>
-#include <oboe/include/oboe/Definitions.h>
-#include <oboe/include/oboe/AudioStream.h>
-#include "oboe/include/oboe/ResultWithValue.h"
+#include <oboe/AudioStream.h>
 
 #define PLAYBACK_STATE_INITIALIZED 0
 #define PLAYBACK_STATE_STOPPED 1
@@ -19,9 +17,10 @@
 
 #define BUFFER_SIZE_AUTOMATIC 0
 
-#include "oboe/include/oboe/AudioStreamCallback.h"
 
 static std::mutex threadJoinMtx;
+
+static std::mutex threadReadLock;
 
 class NativePlayer : oboe::AudioStreamCallback {
 
@@ -72,14 +71,10 @@ class NativePlayer : oboe::AudioStreamCallback {
     jobject javaobj = 0;
     jmethodID onTimeUpdateMethodID, songSpeedCallbackID, songLoadedCallbackID, playbackStateCallbackID;
 
-
-    //AAUDIO
-    //AAudioStream *playStream_;
     oboe::AudioStream *stream;
 
-    aaudio_format_t sampleFormat_;
 
-    int32_t playbackDeviceId_ = 0;
+    int32_t playbackDeviceId_;
     int32_t bufferSizeSelection_ = BUFFER_SIZE_AUTOMATIC;
     int32_t currentFramesPerBurst;
     int32_t bufSizeInFrames_;
@@ -91,8 +86,6 @@ class NativePlayer : oboe::AudioStreamCallback {
 
     int32_t framesPerBurst_;
 
-    std::mutex restartingLock_;
-
 private:
 
 
@@ -100,7 +93,6 @@ private:
     std::vector<float> intermediateAudioBuffer;
     //quanto riempire il buffer?
     int intermAudioBufferFillValue;
-    bool fillInterAudioBuffer;
     //valore arbitrario
     int readThreadSleepTime;
 

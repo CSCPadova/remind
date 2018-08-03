@@ -2,11 +2,12 @@
 #include "fftconvolver.h"
 #include "audiocommon.h"
 #include <math.h>
-#include <oboe/include/oboe/Oboe.h>
+#include <oboe/Oboe.h>
 
 NativePlayer::NativePlayer() {
     time = 0;
-    readThreadSleepTime = 2;
+    playbackDeviceId_ = 0;
+    readThreadSleepTime = 1;
     intermAudioBufferFillValue = 2000;
     threadGo = false;
 
@@ -15,7 +16,6 @@ NativePlayer::NativePlayer() {
     currentSampleFormat = oboe::AudioFormat::Unspecified;
     currentSampleChannels = -1;
     currentSampleRate = -1;
-    fillInterAudioBuffer = false;
     playbackState = PLAYBACK_STATE_INITIALIZED;
 }
 
@@ -96,8 +96,8 @@ void NativePlayer::playbackCallback() {
 
     if (leftStat == audio::Status::OK && rightStat == audio::Status::OK) {
         for (int i = 0; i < audio::AudioBufferSize; i++) {
-            intermediateAudioBuffer.push_back((float) leftBuffer[i]);//* 32767);
-            intermediateAudioBuffer.push_back((float) rightBuffer[i]);//* 32767);
+            intermediateAudioBuffer.push_back(leftBuffer[i] * 32767);
+            intermediateAudioBuffer.push_back(rightBuffer[i] * 32767);
         }
     }
     currentTime += 102400.0 / (double) mixer->getSamplingFrequency() / rateConverter->getRatio();
@@ -296,14 +296,11 @@ void NativePlayer::threadReadData() {
     int prevLen = -1;
     while (playbackState == PLAYBACK_STATE_PLAYING) {
         prevLen = -1;
-        if (fillInterAudioBuffer == true) {
-            while (intermediateAudioBuffer.size() < intermAudioBufferFillValue &&
-                   prevLen != intermediateAudioBuffer.size()) {
-                playbackCallback();
-                prevLen = intermediateAudioBuffer.size();
-            }
-            fillInterAudioBuffer = false;
-            std::this_thread::sleep_for(std::chrono::milliseconds(readThreadSleepTime));
+        threadReadLock.lock();
+        while (intermediateAudioBuffer.size() < intermAudioBufferFillValue &&
+               prevLen != intermediateAudioBuffer.size()) {
+            playbackCallback();
+            prevLen = intermediateAudioBuffer.size();
         }
     }
 }
@@ -332,7 +329,7 @@ oboe::DataCallbackResult NativePlayer::onAudioReady(
          */
         bufferSize += framesPerBurst_; // Increase buffer size by one burst
         shouldChangeBufferSize = true;
-        LOGD("UNDERRUN DETECTED");
+        //LOGD("UNDERRUN DETECTED");
     } else if (bufferSizeSelection_ > 0 && (bufferSizeSelection_ * framesPerBurst_) != bufferSize) {
 
         // If the buffer size selection has changed then update it here
@@ -350,7 +347,7 @@ oboe::DataCallbackResult NativePlayer::onAudioReady(
             LOGE("Error setting buffer size: %d", bufferSize);
         }
     }
-    float *temp = static_cast<float *>(audioData);
+    int16_t *temp = static_cast<int16_t *>(audioData);
 
     int i = 0;
 
@@ -366,7 +363,8 @@ oboe::DataCallbackResult NativePlayer::onAudioReady(
 
     //TODO decidere se tenere un numero magico
     intermAudioBufferFillValue = numFrames * 2 * 2 * 2;
-    fillInterAudioBuffer = true;
+
+    threadReadLock.unlock();
 
     //calculateCurrentOutputLatencyMillis(stream, &currentOutputLatencyMillis_);
 
@@ -561,7 +559,7 @@ void NativePlayer::loadSong(JNIEnv *env, jclass clazz, jobjectArray pathsArray, 
 
     //setup parametri motore audio
     currentPlaybackDeviceId = 0;
-    currentSampleFormat = oboe::AudioFormat::Float;
+    currentSampleFormat = oboe::AudioFormat::I16;//oboe::AudioFormat::Float;//;
     currentSampleChannels = 2;
     currentSampleRate = songSampleRate;
 
