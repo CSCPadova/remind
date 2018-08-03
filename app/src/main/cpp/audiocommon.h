@@ -6,7 +6,7 @@
 #define AUDIOTEST_AUDIO_COMMON_H
 
 #include <aaudio/AAudio.h>
-#include <oboe/AudioStream.h>
+#include <liboboe/AudioStream.h>
 
 // Time constants
 #define NANOS_PER_SECOND 1000000000L

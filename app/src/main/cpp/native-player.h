@@ -9,7 +9,7 @@
 #include "WaveReader.h"
 #include "fftconvolver.h"
 #include <aaudio/AAudio.h>
-#include <oboe/AudioStream.h>
+#include <liboboe/AudioStream.h>
 
 #define PLAYBACK_STATE_INITIALIZED 0
 #define PLAYBACK_STATE_STOPPED 1

@@ -2,7 +2,7 @@
 #include "fftconvolver.h"
 #include "audiocommon.h"
 #include <math.h>
-#include <oboe/Oboe.h>
+#include <liboboe/Oboe.h>
 
 NativePlayer::NativePlayer() {
     time = 0;

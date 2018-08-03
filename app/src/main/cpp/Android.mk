@@ -2,7 +2,7 @@ LOCAL_PATH := $(call my-dir)
 
 OBOE_PATH :=$(LOCAL_PATH)
 LIB_PATH :=$(LOCAL_PATH)
-include $(OBOE_PATH)/oboe/Android.mk
+include $(OBOE_PATH)/liboboe/Android.mk
 
 include $(LIB_PATH)/libsamplerate.mk
 include $(LIB_PATH)/libsndfile/Android.mk
@@ -36,7 +36,7 @@ LOCAL_LDLIBS    += -landroid
 LOCAL_STATIC_LIBRARIES  := libsamplerate
 LOCAL_STATIC_LIBRARIES  += libsndfile
 LOCAL_STATIC_LIBRARIES  += ckfft
-LOCAL_STATIC_LIBRARIES  += liboboe
+LOCAL_STATIC_LIBRARIES  += liboboegit
 
 include $(BUILD_SHARED_LIBRARY)
 
