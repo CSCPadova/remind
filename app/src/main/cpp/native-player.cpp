@@ -1,25 +1,21 @@
-#include <aaudio/AAudio.h>
 #include "native-player.h"
 #include "fftconvolver.h"
 #include "audiocommon.h"
-
 #include <math.h>
-
-//short buffers[2][20000];		// <--- ugh
-
-bool threadGo = false;
+#include <oboe/include/oboe/Oboe.h>
 
 NativePlayer::NativePlayer() {
-    time=0;
-    readThreadSleepTime=2;
-    intermAudioBufferFillValue=2000;
+    time = 0;
+    readThreadSleepTime = 2;
+    intermAudioBufferFillValue = 2000;
+    threadGo = false;
 
     currentSampleRate = -1;
-    currentPlaybackDeviceId=-1;
-    currentSampleFormat=-1;
-    currentSampleChannels=-1;
-    currentSampleRate=-1;
-    fillInterAudioBuffer=false;
+    currentPlaybackDeviceId = -1;
+    currentSampleFormat = oboe::AudioFormat::Unspecified;
+    currentSampleChannels = -1;
+    currentSampleRate = -1;
+    fillInterAudioBuffer = false;
     playbackState = PLAYBACK_STATE_INITIALIZED;
 }
 
@@ -28,17 +24,15 @@ NativePlayer::~NativePlayer() {
 
 void NativePlayer::closeOutputStream() {
 
-    if (playStream_ != nullptr) {
-        aaudio_result_t result = AAudioStream_requestStop(playStream_);
-        if (result != AAUDIO_OK) {
-            LOGE("Error stopping output stream. %s", AAudio_convertResultToText(result));
-        }
+    if (stream != nullptr) {
 
-        result = AAudioStream_close(playStream_);
-        if (result != AAUDIO_OK) {
-            LOGE("Error closing output stream. %s", AAudio_convertResultToText(result));
+        stop();
+
+        oboe::Result result = stream->close();
+        if (result != oboe::Result::OK) {
+            LOGE("Error closing output stream. %s", oboe::convertToText(result));
         }
-        playStream_=nullptr;
+        delete stream;
     }
 }
 
@@ -111,44 +105,59 @@ void NativePlayer::playbackCallback() {
 }
 
 void NativePlayer::stop() {
-    if (threadGo) {
-        threadGo = false;
-        if (fastThread->joinable())
-            fastThread->join();
+    if (songReady) {
+        if (threadGo) {
+            threadGo = false;
+            if (fastThread->joinable()) {
+                fastThread->join();
+                delete fastThread;
+            }
+        }
+
+        if (playbackState == PLAYBACK_STATE_PLAYING) {
+            playbackState = PLAYBACK_STATE_STOPPED;
+
+            if (getAudioDataThread->joinable()) {
+                getAudioDataThread->join();
+                delete getAudioDataThread;
+            }
+
+            //intermediateAudioBuffer.clear();
+            oboe::Result result = stream->stop();
+            if (result != oboe::Result::OK) {
+                LOGE("Error stopping output stream. %s", oboe::convertToText(result));
+            }
+        }
+        playbackChange(0, true);
     }
-
-    if (playbackState == PLAYBACK_STATE_PLAYING) {
-        playbackState = PLAYBACK_STATE_STOPPED;
-
-        intermediateAudioBuffer.clear();
-        closeOutputStream();
-    }
-
-    playbackChange(0, true);
 }
 
 void NativePlayer::play() {
-    LOGD("Into PLAY");
-    if (threadGo) {
-        threadGo = false;
-        if (fastThread->joinable())
-            fastThread->join();
+    if (songReady) {
+        LOGD("Into PLAY");
+        if (threadGo) {
+            threadGo = false;
+            if (fastThread->joinable())
+                fastThread->join();
+        }
+
+        if (waveReader->isEof())
+            return;
+
+        playbackChange(0, false);
+
+        if (playbackState != PLAYBACK_STATE_STOPPED)
+            return;
+
+        playbackState = PLAYBACK_STATE_PLAYING;
+
+        oboe::Result result = stream->start();
+        if (result != oboe::Result::OK) {
+            LOGE("Error stopping output stream. %s", oboe::convertToText(result));
+        }
+
+        getAudioDataThread = new std::thread(&NativePlayer::threadReadData, this);
     }
-
-    if (waveReader->isEof())
-        return;
-
-    playbackChange(0, false);
-
-    if (playbackState != PLAYBACK_STATE_STOPPED)
-        return;
-
-    playbackState = PLAYBACK_STATE_PLAYING;
-
-    setupAudioEngineAndPlay(currentPlaybackDeviceId, currentSampleFormat, currentSampleChannels,
-                            currentSampleRate);
-
-    getAudioDataThread = new std::thread(&NativePlayer::threadReadData, this);
 }
 
 void NativePlayer::seek(double timeCentisec) {
@@ -171,7 +180,7 @@ void NativePlayer::seek(double timeCentisec) {
      * ma prevenire che il codice venga chiamato mentre un'altra copia è in esecuzione;
      * in caso ciò succeda, la seconda esecuzione viene bloccata.
      */
-    static std::mutex threadJoinMtx;
+    //static std::mutex threadJoinMtx;
 
     threadJoinMtx.lock();    // Prova a fare un lock sul mutex; se si blocca, vuol dire che c'è ancora un thread che sta reinizializzando
     threadJoinMtx.unlock();    // i filtri, quindi blocca finchè non si libera. Appena il lock() ha successo, lo sblocchiamo subito.
@@ -246,11 +255,6 @@ void NativePlayer::seek(double timeCentisec) {
         fftconvolver[3].run();
 
         LOGD("tutti filtri ok");
-        //(*player_buf_q)->Clear(player_buf_q);
-        //if (!waveReader->isEof()) {
-        //    playbackCallback(); //riempio i buffer
-        //    playbackCallback();
-        //}
     });
     th.detach();
 
@@ -286,149 +290,31 @@ void NativePlayer::fastFunction() {
 
     seek(currentTime);
     threadGo = false;
-    //fastThread->detach();
 }
 
 void NativePlayer::threadReadData() {
-    int prevLen=-1;
+    int prevLen = -1;
     while (playbackState == PLAYBACK_STATE_PLAYING) {
-        prevLen=-1;
-        if (fillInterAudioBuffer==true) {
-            while(intermediateAudioBuffer.size()<intermAudioBufferFillValue && prevLen!=intermediateAudioBuffer.size()) {
+        prevLen = -1;
+        if (fillInterAudioBuffer == true) {
+            while (intermediateAudioBuffer.size() < intermAudioBufferFillValue &&
+                   prevLen != intermediateAudioBuffer.size()) {
                 playbackCallback();
-                prevLen=intermediateAudioBuffer.size();
+                prevLen = intermediateAudioBuffer.size();
             }
-            fillInterAudioBuffer=false;
+            fillInterAudioBuffer = false;
             std::this_thread::sleep_for(std::chrono::milliseconds(readThreadSleepTime));
         }
     }
 }
 
-/**
- * Creates a stream builder which can be used to construct streams
- * @return a new stream builder object
- */
-AAudioStreamBuilder *NativePlayer::createStreamBuilder() {
-
-    AAudioStreamBuilder *builder = nullptr;
-    aaudio_result_t result = AAudio_createStreamBuilder(&builder);
-    if (result != AAUDIO_OK) {
-        LOGE("Error creating stream builder: %s", AAudio_convertResultToText(result));
-    }
-    return builder;
-}
-
-/**
- * If there is an error with a stream this function will be called. A common example of an error
- * is when an audio device (such as headphones) is disconnected. In this case you should not
- * restart the stream within the callback, instead use a separate thread to perform the stream
- * recreation and restart.
- *
- * @param stream the stream with the error
- * @param userData the context in which the function is being called, in this case it will be the
- * PlayAudioEngine instance
- * @param error the error which occured, a human readable string can be obtained using
- * AAudio_convertResultToText(error);
- *
- * @see PlayAudioEngine#errorCallback
- */
-void errorCallback(AAudioStream *stream,
-                   void *userData,
-                   aaudio_result_t error) {
-    assert(userData);
-    NativePlayer *audioEngine = reinterpret_cast<NativePlayer *>(userData);
-    audioEngine->errorCallback(stream, error);
-}
-
-/**
- * @see errorCallback function at top of this file
- */
-void NativePlayer::errorCallback(AAudioStream *stream,
-                                 aaudio_result_t error) {
-
-    assert(stream == playStream_);
-    LOGD("errorCallback result: %s", AAudio_convertResultToText(error));
-
-    aaudio_stream_state_t streamState = AAudioStream_getState(playStream_);
-    if (streamState == AAUDIO_STREAM_STATE_DISCONNECTED) {
-
-        // Handle stream restart on a separate thread
-        std::function<void(void)> restartStream = std::bind(&NativePlayer::restartStream, this);
-        std::thread streamRestartThread(restartStream);
-        streamRestartThread.detach();
-    }
-}
-
-void NativePlayer::restartStream() {
-
-    LOGD("Restarting stream");
-
-    if (restartingLock_.try_lock()) {
-        closeOutputStream();
-        //TODO sistemare
-        //setupAudioEngineAndPlay();
-        restartingLock_.unlock();
-    } else {
-        LOGD("Restart stream operation already in progress - ignoring this request");
-    }
-}
-
-/**
- * Every time the playback stream requires data this method will be called.
- *
- * @param stream the audio stream which is requesting data, this is the playStream_ object
- * @param userData the context in which the function is being called, in this case it will be the
- * PlayAudioEngine instance
- * @param audioData an empty buffer into which we can write our audio data
- * @param numFrames the number of audio frames which are required
- * @return Either AAUDIO_CALLBACK_RESULT_CONTINUE if the stream should continue requesting data
- * or AAUDIO_CALLBACK_RESULT_STOP if the stream should stop.
- *
- * @see PlayAudioEngine#dataCallback
- */
-aaudio_data_callback_result_t dataCallback(AAudioStream *stream, void *userData,
-                                           void *audioData, int32_t numFrames) {
-    assert(userData &&
-           audioData);//if both zero a message is written to the standard error device and abort is called, terminating the program execution
-    NativePlayer *audioEngine = reinterpret_cast<NativePlayer *>(userData);//when you call reinterpret_cast the CPU does not invoke any calculations. It just treats a set of bits in the memory like if it had another type
-    return audioEngine->dataCallback(stream, audioData, numFrames);
-}
-
-/**
- * Sets the stream parameters which are specific to playback, including device id and the
- * dataCallback function, which must be set for low latency playback.
- * @param builder The playback stream builder
- */
-void NativePlayer::setupPlaybackStreamParameters(AAudioStreamBuilder *builder,
-                                                 int playbackDeviceId_,
-                                                 int sampleFormat_,
-                                                 int sampleChannels_,
-                                                 int sampleRate_) {
-    AAudioStreamBuilder_setDeviceId(builder, playbackDeviceId_);
-    AAudioStreamBuilder_setFormat(builder, sampleFormat_);
-    AAudioStreamBuilder_setChannelCount(builder, sampleChannels_);
-    AAudioStreamBuilder_setSampleRate(builder, sampleRate_);
-
-    // We request EXCLUSIVE mode since this will give us the lowest possible latency.
-    // If EXCLUSIVE mode isn't available the builder will fall back to SHARED mode.
-    AAudioStreamBuilder_setSharingMode(builder, AAUDIO_SHARING_MODE_EXCLUSIVE);
-    AAudioStreamBuilder_setPerformanceMode(builder, AAUDIO_PERFORMANCE_MODE_LOW_LATENCY);
-    AAudioStreamBuilder_setDirection(builder, AAUDIO_DIRECTION_OUTPUT);
-    AAudioStreamBuilder_setDataCallback(builder, ::dataCallback, this);
-    AAudioStreamBuilder_setErrorCallback(builder, ::errorCallback, this);
-}
-
-/**
- * @see dataCallback function at top of this file
- */
-aaudio_data_callback_result_t NativePlayer::dataCallback(AAudioStream *stream,
-                                                         void *audioData,
-                                                         int32_t numFrames) {
-    assert(stream == playStream_);
-
+oboe::DataCallbackResult NativePlayer::onAudioReady(
+        oboe::AudioStream *oboeStream,
+        void *audioData,
+        int32_t numFrames) {
     //controlla che il buffer non sia mai stato vuoto
-    int32_t underrunCount = AAudioStream_getXRunCount(playStream_);
-    aaudio_result_t bufferSize = AAudioStream_getBufferSizeInFrames(playStream_);
+    int32_t underrunCount = (oboeStream->getXRunCount()).value();
+    aaudio_result_t bufferSize = oboeStream->getBufferSizeInFrames();
     bool hasUnderrunCountIncreased = false;
     bool shouldChangeBufferSize = false;
 
@@ -456,24 +342,22 @@ aaudio_data_callback_result_t NativePlayer::dataCallback(AAudioStream *stream,
     }
 
     if (shouldChangeBufferSize) {
-        //LOGD("Setting buffer size to %d", bufferSize);
-        bufferSize = AAudioStream_setBufferSizeInFrames(stream, bufferSize);
+        LOGD("Setting buffer size to %d", bufferSize);
+        oboeStream->setBufferSizeInFrames(bufferSize);
         if (bufferSize > 0) {
             bufSizeInFrames_ = bufferSize;
         } else {
-            LOGE("Error setting buffer size: %s", AAudio_convertResultToText(bufferSize));
+            LOGE("Error setting buffer size: %d", bufferSize);
         }
     }
-
-    int32_t samplesPerFrame = sampleChannels_;
-
     float *temp = static_cast<float *>(audioData);
 
-    int i=0;
+    int i = 0;
 
-    if(!intermediateAudioBuffer.empty() && intermediateAudioBuffer.size()>numFrames*2) {
+    if (!intermediateAudioBuffer.empty() &&
+        intermediateAudioBuffer.size() > numFrames * currentSampleChannels) {
 
-        for (i = 0; i < numFrames*2; i++) {
+        for (i = 0; i < numFrames * 2; i++) {
             temp[i] = intermediateAudioBuffer.at(i);
         }
         intermediateAudioBuffer.erase(intermediateAudioBuffer.begin(),
@@ -481,67 +365,52 @@ aaudio_data_callback_result_t NativePlayer::dataCallback(AAudioStream *stream,
     }
 
     //TODO decidere se tenere un numero magico
-    intermAudioBufferFillValue=numFrames*2*2*2;
-
-    fillInterAudioBuffer=true;
+    intermAudioBufferFillValue = numFrames * 2 * 2 * 2;
+    fillInterAudioBuffer = true;
 
     //calculateCurrentOutputLatencyMillis(stream, &currentOutputLatencyMillis_);
 
-    return AAUDIO_CALLBACK_RESULT_CONTINUE;
+    return oboe::DataCallbackResult::Continue;
 }
 
 /**
  * Creates an audio stream for playback. The audio device used will depend on playbackDeviceId_.
  */
 void NativePlayer::setupAudioEngineAndPlay(int playbackDeviceId_,
-                                           int sampleFormat_,
+                                           oboe::AudioFormat sampleFormat_,
                                            int sampleChannels_,
                                            int sampleRate_) {
-    AAudioStreamBuilder *builder = createStreamBuilder();
+    oboe::AudioStreamBuilder builder;
 
-    if (builder != nullptr) {
+    builder.setDeviceId(playbackDeviceId_);
+    builder.setDirection(oboe::Direction::Output);
+    builder.setSharingMode(oboe::SharingMode::Exclusive);
+    builder.setSampleRate(sampleRate_);
+    builder.setChannelCount(sampleChannels_);
+    builder.setFormat(sampleFormat_);
+    builder.setPerformanceMode(oboe::PerformanceMode::LowLatency);
+    builder.setCallback(this);
 
-        setupPlaybackStreamParameters(builder, playbackDeviceId_, sampleFormat_, sampleChannels_,
-                                      sampleRate_);
+    oboe::Result result = builder.openStream(&stream);
 
-        aaudio_result_t result = AAudioStreamBuilder_openStream(builder, &playStream_);
-
-        if (result == AAUDIO_OK && playStream_ != nullptr) {
-
-            // check that we got PCM_FLOAT format
-            if (sampleFormat_ != AAudioStream_getFormat(playStream_)) {
-                LOGD("Sample format is not PCM_FLOAT");
-            }
-
-            currentSampleRate = AAudioStream_getSampleRate(playStream_);
-            currentFramesPerBurst = AAudioStream_getFramesPerBurst(playStream_);
-
-            // Set the buffer size to the burst size - this will give us the minimum possible latency
-            AAudioStream_setBufferSizeInFrames(playStream_, currentFramesPerBurst);
-            bufSizeInFrames_ = currentFramesPerBurst;
-
-            PrintAudioStreamInfo(playStream_);
-
-            LOGD("creato audio engine");
-
-            // Start the stream - the dataCallback function will start being called
-            result = AAudioStream_requestStart(playStream_);
-            if (result != AAUDIO_OK) {
-                LOGE("Error starting stream. %s", AAudio_convertResultToText(result));
-            }
-
-            // Store the underrun count so we can tune the latency in the dataCallback
-            playStreamUnderrunCount_ = AAudioStream_getXRunCount(playStream_);
-
-        } else {
-            LOGE("Failed to create stream. Error: %s", AAudio_convertResultToText(result));
+    if (result == oboe::Result::OK) {
+        if (stream->getFormat() != sampleFormat_) {
+            LOGD("Sample format is not PCM_FLOAT");
         }
+        currentSampleRate = stream->getSampleRate();
+        currentFramesPerBurst = stream->getFramesPerBurst();
+        stream->setBufferSizeInFrames(currentFramesPerBurst);
+        bufSizeInFrames_ = currentFramesPerBurst;
 
-        AAudioStreamBuilder_delete(builder);
+        PrintAudioStreamInfo(stream);
 
+        LOGD("creato stream audio");
+
+        playStreamUnderrunCount_ = (stream->getXRunCount()).value();
     } else {
-        LOGE("Unable to obtain an AAudioStreamBuilder object");
+        LOGE("Failed to create stream. Error: %s", oboe::convertToText(result));
     }
+
 }
 
 int NativePlayer::getPlaybackState() {
@@ -556,8 +425,7 @@ void NativePlayer::unloadSong() {
     if (playbackState != PLAYBACK_STATE_STOPPED)
         return;
 
-    //TODO da fare
-    //releaseAudioEngine();
+    closeOutputStream();
 
     if (mixer != NULL)mixer->scheduleStop();
 
@@ -595,6 +463,8 @@ void NativePlayer::unloadSong() {
     LOGD("distrutto tutto");
 
     playbackState = PLAYBACK_STATE_INITIALIZED;
+    songReady = false;
+    playbackChange(0, false);
 }
 
 void NativePlayer::loadSong(JNIEnv *env, jclass clazz, jobjectArray pathsArray, jint songTypeNum,
@@ -664,7 +534,6 @@ void NativePlayer::loadSong(JNIEnv *env, jclass clazz, jobjectArray pathsArray, 
     // --- Collega i filtri ---
     //numChannels = waveReader->getChannelCount();
     songSampleRate = waveReader->getSamplerate();
-    int bitPerSample = waveReader->getBitPerSample();
     mixer = new Mixer(songType, songSampleRate);
 
     rateConverter = new RateConverter(songSpeed, ntracce);
@@ -691,18 +560,21 @@ void NativePlayer::loadSong(JNIEnv *env, jclass clazz, jobjectArray pathsArray, 
     // ------------------------------
 
     //setup parametri motore audio
-    currentPlaybackDeviceId=0;
-    currentSampleFormat=AAUDIO_FORMAT_PCM_FLOAT;
-    currentSampleChannels=2;
-    currentSampleRate=(int)(songSampleRate);
+    currentPlaybackDeviceId = 0;
+    currentSampleFormat = oboe::AudioFormat::Float;
+    currentSampleChannels = 2;
+    currentSampleRate = songSampleRate;
 
-    //setupAudioEngineAndPlay(currentPlaybackDeviceId, currentSampleFormat, currentSampleChannels, currentSampleRate);
+
+    setupAudioEngineAndPlay(currentPlaybackDeviceId, currentSampleFormat, currentSampleChannels,
+                            currentSampleRate);
 
     playbackState = PLAYBACK_STATE_STOPPED;
     currentTime = 0;
     seek(0);
     songLoaded();
     speedChange();
+    songReady = true;
     playbackChange(0, true);
 }
 
@@ -788,7 +660,6 @@ void NativePlayer::fastForward() {
         return;
     }
 
-    delete fastThread;
     fastThread = new std::thread(&NativePlayer::fastFunction, this);
 }
 
@@ -805,7 +676,6 @@ void NativePlayer::fastReverse() {
         return;
     }
 
-    delete fastThread;
     fastThread = new std::thread(&NativePlayer::fastFunction, this);
 }
 
@@ -840,7 +710,7 @@ void NativePlayer::setPlaybackStateCallback(jmethodID mID) {
     playbackStateCallbackID = mID;
 }
 
-void NativePlayer::setJavaVMObj(JNIEnv *env){
+void NativePlayer::setJavaVMObj(JNIEnv *env) {
     env->GetJavaVM(&jvm);
 }
 

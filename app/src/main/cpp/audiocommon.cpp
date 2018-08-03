@@ -3,6 +3,7 @@
 //
 
 #include <string>
+#include <oboe/include/oboe/AudioStream.h>
 #include "audiocommon.h"
 #include "log.h"
 
@@ -23,31 +24,36 @@ static const char * audioFormatStr[] = {
         "AAUDIO_FORMAT_PCM_FLOAT",
 };
 
-void PrintAudioStreamInfo(const AAudioStream * stream) {
-#define STREAM_CALL(c) AAudioStream_##c((AAudioStream*)stream)
+void PrintAudioStreamInfo(oboe::AudioStream * stream) {
     LOGD("StreamID: %p", stream);
 
-    LOGD("BufferCapacity: %d", STREAM_CALL(getBufferCapacityInFrames));
-    LOGD("BufferSize: %d", STREAM_CALL(getBufferSizeInFrames));
-    LOGD("FramesPerBurst: %d", STREAM_CALL(getFramesPerBurst));
-    LOGD("XRunCount: %d", STREAM_CALL(getXRunCount));
-    LOGD("SampleRate: %d", STREAM_CALL(getSampleRate));
-    LOGD("SamplesPerFrame: %d", STREAM_CALL(getChannelCount));
-    LOGD("DeviceId: %d", STREAM_CALL(getDeviceId));
-    LOGD("Format: %s",  FormatToString(STREAM_CALL(getFormat)));
-    LOGD("SharingMode: %s", (STREAM_CALL(getSharingMode)) == AAUDIO_SHARING_MODE_EXCLUSIVE ?
+    LOGD("BufferCapacity: %d", stream->getBufferSizeInFrames());
+    LOGD("BufferSize: %d", stream->getBufferSizeInFrames());
+    LOGD("FramesPerBurst: %d", stream->getFramesPerBurst());
+    LOGD("XRunCount: %d", stream->getXRunCount().value());
+    LOGD("SampleRate: %d", stream->getSampleRate());
+    LOGD("SamplesPerFrame: %d", stream->getChannelCount());
+    LOGD("DeviceId: %d", stream->getDeviceId());
+
+
+    for (int32_t i = 0; i < audioFormatCount; ++i) {
+        if (audioFormatEnum[i] == (int)stream->getFormat())
+            LOGD("Format: %s", audioFormatStr[i]);
+    }
+
+    LOGD("SharingMode: %s", stream->getSharingMode() == oboe::SharingMode::Exclusive ?
                             "EXCLUSIVE" : "SHARED");
 
-    aaudio_performance_mode_t perfMode = STREAM_CALL(getPerformanceMode);
+    oboe::PerformanceMode perfMode = stream->getPerformanceMode();
     std::string perfModeDescription;
     switch (perfMode){
-        case AAUDIO_PERFORMANCE_MODE_NONE:
+        case oboe::PerformanceMode::None :
             perfModeDescription = "NONE";
             break;
-        case AAUDIO_PERFORMANCE_MODE_LOW_LATENCY:
+        case oboe::PerformanceMode::LowLatency:
             perfModeDescription = "LOW_LATENCY";
             break;
-        case AAUDIO_PERFORMANCE_MODE_POWER_SAVING:
+        case oboe::PerformanceMode::PowerSaving:
             perfModeDescription = "POWER_SAVING";
             break;
         default:
@@ -56,24 +62,15 @@ void PrintAudioStreamInfo(const AAudioStream * stream) {
     }
     LOGD("PerformanceMode: %s", perfModeDescription.c_str());
 
-    aaudio_direction_t  dir = STREAM_CALL(getDirection);
-    LOGD("Direction: %s", (dir == AAUDIO_DIRECTION_OUTPUT ? "OUTPUT" : "INPUT"));
-    if (dir == AAUDIO_DIRECTION_OUTPUT) {
-        LOGD("FramesReadByDevice: %d", (int32_t)STREAM_CALL(getFramesRead));
-        LOGD("FramesWriteByApp: %d", (int32_t)STREAM_CALL(getFramesWritten));
+    oboe::Direction  dir = stream->getDirection();
+    LOGD("Direction: %s", (dir == oboe::Direction::Output ? "OUTPUT" : "INPUT"));
+    if (dir == oboe::Direction::Output) {
+        LOGD("FramesReadByDevice: %d",stream->getFramesRead());
+        LOGD("FramesWriteByApp: %d", stream->getFramesWritten());
     } else {
-        LOGD("FramesReadByApp: %d", (int32_t)STREAM_CALL(getFramesRead));
-        LOGD("FramesWriteByDevice: %d", (int32_t)STREAM_CALL(getFramesWritten));
+        LOGD("FramesReadByApp: %d", stream->getFramesRead());
+        LOGD("FramesWriteByDevice: %d", stream->getFramesWritten());
     }
-#undef STREAM_CALL
-}
-
-const char* FormatToString(aaudio_format_t format) {
-    for (int32_t i = 0; i < audioFormatCount; ++i) {
-        if (audioFormatEnum[i] == format)
-            return audioFormatStr[i];
-    }
-    return "UNKNOW_AUDIO_FORMAT";
 }
 
 int64_t timestamp_to_nanoseconds(timespec ts){

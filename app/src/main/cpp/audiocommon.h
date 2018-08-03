@@ -13,7 +13,7 @@
 
 constexpr int kStereoChannelCount = 2;
 
-void PrintAudioStreamInfo(const AAudioStream * stream);
+void PrintAudioStreamInfo(oboe::AudioStream * stream);
 
 const char * FormatToString(aaudio_format_t format);
 
