@@ -9,7 +9,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        externalNativeBuild {
+        externalNativeBuild {git add -A
             ndkBuild {
                 //APP_CPPFLAGS := -std=c++11 -frtti -fexceptions -Wall
                 cppFlags "-frtti", "-fexceptions"
