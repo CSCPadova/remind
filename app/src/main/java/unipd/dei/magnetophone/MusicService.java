@@ -31,11 +31,9 @@ public class MusicService extends Service
 	public native void stop();
 	public native int  getPlaybackState();
 	public native int  getTime();
-	public native int  setSatellitePosition(int channel, int position);
 	public native int  setChannelEnabled(int channel, int enabled);
 	public native void setTrackChannel(int track, int channel);
 	public native int[] getTrackMap();
-	public native int  getChannelSatellitePosition(int channel);
 	public native int  getChannelEnabled(int i);
 	public native void setSpeed(int speed);
 	public native void setEqualization(String eq);
@@ -43,6 +41,10 @@ public class MusicService extends Service
 	public native void fastForward();
 	public native void fastReverse();
 	public native float getRatio();
+
+	public native void setTrackVolume(int track, float volumeL, float volumeR);
+	public native float getTrackVolumeL(int track);
+	public native float getTrackVolumeR(int track);
 
 	private Song currentSong;
 	Notification not;
@@ -168,26 +170,25 @@ public class MusicService extends Service
 			Log.d("MusicService", "speed " + currentSpeed.getValue());
 			MusicService.this.loadSong(pathsArray, songType.getValue(), currentSpeed.getValue(), playerEqualization.name());
 		}
-
-		public void setSatellitePosition(int satelliteNumber, int position)
-		{
-			MusicService.this.setSatellitePosition(satelliteNumber, position);
+		public void setTrackVolume(int track, float volumeL, float volumeR){
+			MusicService.this.setTrackVolume(track, volumeL, volumeR);
 		}
 
-		public void setChannelEnabled(int satelliteNumber, boolean enabled)
-		{
-			MusicService.this.setChannelEnabled(satelliteNumber, enabled ? 1 : 0);
+        public void setTrackVolumeL(int track, float volumeL){
+            MusicService.this.setTrackVolume(track, volumeL, MusicService.this.getTrackVolumeR(track));
+        }
+
+        public void setTrackVolumeR(int track, float volumeR){
+            MusicService.this.setTrackVolume(track, MusicService.this.getTrackVolumeL(track), volumeR);
+        }
+
+		public float getTrackVolumeL(int track){
+            return MusicService.this.getTrackVolumeL(track);
 		}
 
-		public void setTrackChannel(int channelNumber, int trackNumber)
-		{
-			MusicService.this.setTrackChannel(trackNumber, channelNumber);
-		}
-
-		public int[] getTrackMap()
-		{
-			return MusicService.this.getTrackMap();
-		}
+        public float getTrackVolumeR(int track){
+            return MusicService.this.getTrackVolumeR(track);
+        }
 
 		public void stop()
 		{
@@ -197,16 +198,6 @@ public class MusicService extends Service
 		public Song getSong()
 		{
 			return MusicService.this.currentSong;
-		}
-
-		public int getChannelSatellitePosition(int channel)
-		{
-			return MusicService.this.getChannelSatellitePosition(channel);
-		}
-
-		public boolean getChannelEnabled(int channel)
-		{
-			return MusicService.this.getChannelEnabled(channel) != 0 ? true : false;
 		}
 
 		public void addOnTimeUpdateListener(OnTimeUpdateListener l)

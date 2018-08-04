@@ -4,94 +4,60 @@
 	android:layout_height="fill_parent"
 	android:layout_gravity="center_vertical|center_horizontal">
 
-	<LinearLayout
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:orientation="vertical" >
+	<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent">
 
 		<LinearLayout
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content" >
+			android:layout_height="match_parent"
+			android:orientation="vertical">
 
 			<LinearLayout
-				android:layout_width="0dp"
-				android:layout_height="200dp"
-				android:layout_weight="1"
-				android:orientation="vertical"
-				android:paddingLeft="20dp"
-				android:paddingTop="20dp" >
-
-				<SeekBar
-					android:id="@+id/monitor_channel1_satellite_position_seekbar"
-					android:layout_width="fill_parent"
-					android:layout_height="wrap_content"
-					android:max="100"
-					android:paddingLeft="9dp"
-					android:paddingRight="9dp"
-					android:progress="100"
-					android:progressDrawable="@android:color/black"
-					android:thumb="@drawable/monitor_setup_speaker" />
-
-				<ToggleButton
-					android:id="@+id/monitor_channel1_enable_switch"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="ToggleButton"
-					android:textOff="@string/toggle_button_off"
-					android:textOn="@string/toggle_button_on" />
-
-			</LinearLayout>
-
-			<LinearLayout
-				android:layout_width="0dp"
-				android:layout_height="200dp"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
 				android:layout_weight="1"
 				android:orientation="vertical"
 				android:paddingLeft="0dp"
-				android:paddingRight="20dp"
-				android:paddingTop="20dp" >
+				android:paddingTop="0dp">
 
-				<SeekBar
-					android:id="@+id/monitor_channel2_satellite_position_seekbar"
-					android:layout_width="fill_parent"
+				<TextView
+					android:id="@+id/monitor_channel1_track_name"
+					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
-					android:max="100"
-					android:paddingLeft="9dp"
-					android:paddingRight="9dp"
-					android:progress="0"
-					android:progressDrawable="@android:color/black"
-					android:thumb="@drawable/monitor_setup_speaker" />
+					android:layout_margin="5dp"
+					android:text="TextView" />
 
-				<ToggleButton
-					android:id="@+id/monitor_channel2_enable_switch"
+				<Button
+					android:id="@+id/buttonLR1"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:layout_gravity="right"
-					android:layout_weight="0"
-					android:text="ToggleButton"
-					android:textOff="@string/toggle_button_off"
-					android:textOn="@string/toggle_button_on" />
+					android:layout_gravity="center_horizontal"
+					android:text="@string/button_equal_volumes" />
+
+				<SeekBar
+					android:id="@+id/monitor_channel1_vol_l"
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginBottom="5dp"
+					android:layout_marginTop="5dp"
+					android:max="100"
+					android:progress="50"/>
+				<!--android:progressDrawable="@android:color/black"
+                android:thumb="@drawable/monitor_setup_speaker"/>-->
+
+				<SeekBar
+					android:id="@+id/monitor_channel1_vol_r"
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginBottom="5dp"
+					android:layout_marginTop="5dp"
+					android:max="100"
+					android:progress="50"/>
+				<!--android:progressDrawable="@android:color/black"
+                android:thumb="@drawable/monitor_setup_speaker"/>-->
 
 			</LinearLayout>
 		</LinearLayout>
-
-		<LinearLayout
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_weight="1" >
-
-			<FrameLayout
-				android:layout_width="fill_parent"
-				android:layout_height="match_parent" >
-
-				<ImageView
-					android:id="@+id/monitor_user_listener_imagegview"
-					android:layout_width="200dp"
-					android:layout_height="200dp"
-					android:layout_gravity="center_horizontal"
-					android:src="@drawable/monitor_listener_user" />
-			</FrameLayout>
-		</LinearLayout>
-	</LinearLayout>
-
+	</ScrollView>
 </FrameLayout>

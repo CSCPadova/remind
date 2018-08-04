@@ -250,68 +250,6 @@ JNIEXPORT void JNICALL Java_unipd_dei_magnetophone_MusicService_loadSong(JNIEnv 
 }
 
 JNIEXPORT void JNICALL
-Java_unipd_dei_magnetophone_MusicService_setSatellitePosition(JNIEnv *env, jclass clazz,
-                                                              jint channelNumber, jint position) {
-    if (engine == nullptr) {
-        LOGE("Engine is null, you must call createEngine before calling this method");
-        return;
-    }
-    engine->mixerSetChannelSatellitePosition(channelNumber, position);
-}
-
-JNIEXPORT void JNICALL
-Java_unipd_dei_magnetophone_MusicService_setChannelEnabled(JNIEnv *env, jclass clazz,
-                                                           jint channelNumber, jint enabled) {
-    if (engine == nullptr) {
-        LOGE("Engine is null, you must call createEngine before calling this method");
-        return;
-    }
-
-    engine->mixerSetChannelEnabled(channelNumber, enabled);
-}
-
-JNIEXPORT void JNICALL
-Java_unipd_dei_magnetophone_MusicService_setTrackChannel(JNIEnv *env, jclass clazz,
-                                                         jint trackNumber, jint channelNumber) {
-    if (engine == nullptr) {
-        LOGE("Engine is null, you must call createEngine before calling this method");
-        return;
-    }
-    engine->mixerSetTrackChannel(trackNumber, channelNumber);
-}
-
-JNIEXPORT jintArray JNICALL
-Java_unipd_dei_magnetophone_MusicService_getTrackMap(JNIEnv *env, jclass clazz) {
-    if (engine == nullptr) {
-        LOGE("Engine is null, you must call createEngine before calling this method");
-        return env->NewIntArray(4);
-    }
-    return engine->mixerGetTrackMap(env, clazz);
-
-}
-
-JNIEXPORT jint JNICALL
-Java_unipd_dei_magnetophone_MusicService_getChannelSatellitePosition(JNIEnv *env, jclass clazz,
-                                                                     jint channel) {
-    if (engine == nullptr) {
-        LOGE("Engine is null, you must call createEngine before calling this method");
-        return -1;
-    }
-    return engine->mixerGetChannelSatellitePosition(channel);
-}
-
-JNIEXPORT jint JNICALL
-Java_unipd_dei_magnetophone_MusicService_getChannelEnabled(JNIEnv *env, jclass clazz,
-                                                           jint channel) {
-
-    if (engine == nullptr) {
-        LOGE("Engine is null, you must call createEngine before calling this method");
-        return -1;
-    }
-    return engine->mixerGetChannelEnabled(channel);
-}
-
-JNIEXPORT void JNICALL
 Java_unipd_dei_magnetophone_MusicService_setSpeed(JNIEnv *env, jclass clazz, jint speed) {
     if (engine == nullptr) {
         LOGE("Engine is null, you must call createEngine before calling this method");
@@ -358,5 +296,31 @@ Java_unipd_dei_magnetophone_MusicService_getRatio(JNIEnv *env, jclass clazz) {
         return -1.0;
     }
     return engine->getRatio();
+}
+
+JNIEXPORT void JNICALL
+        Java_unipd_dei_magnetophone_MusicService_setTrackVolume(JNIEnv *env, jclass clazz, jint track, jfloat volumeL, jfloat volumeR){
+    if (engine == nullptr)
+        LOGE("Engine is null, you must call createEngine before calling this method");
+
+    return engine->mixerSetTrackVolume(track, volumeL, volumeR);
+}
+
+JNIEXPORT jfloat JNICALL
+Java_unipd_dei_magnetophone_MusicService_getTrackVolumeL(JNIEnv *env, jclass clazz, jint track) {
+    if (engine == nullptr) {
+        LOGE("Engine is null, you must call createEngine before calling this method");
+        return -1.0;
+    }
+    return engine->mixerGetTrackVolumeL(track);
+}
+
+JNIEXPORT jfloat JNICALL
+Java_unipd_dei_magnetophone_MusicService_getTrackVolumeR(JNIEnv *env, jclass clazz, jint track) {
+    if (engine == nullptr) {
+        LOGE("Engine is null, you must call createEngine before calling this method");
+        return -1.0;
+    }
+    return engine->mixerGetTrackVolumeR(track);
 }
 }

@@ -7,7 +7,6 @@
 NativePlayer::NativePlayer() {
     time = 0;
     playbackDeviceId_ = 0;
-    readThreadSleepTime = 1;
     intermAudioBufferFillValue = 2000;
     threadGo = false;
 
@@ -287,7 +286,6 @@ void NativePlayer::fastFunction() {
         timeUpdate();
         std::this_thread::sleep_for(dura);
     }
-
     seek(currentTime);
     threadGo = false;
 }
@@ -576,44 +574,20 @@ void NativePlayer::loadSong(JNIEnv *env, jclass clazz, jobjectArray pathsArray, 
     playbackChange(0, true);
 }
 
-void NativePlayer::mixerSetChannelSatellitePosition(int channelNumber, int position) {
+void NativePlayer::mixerSetTrackVolume(int trackNumber, float volumeL, float volumeR) {
     if (mixer != NULL)
-        mixer->setChannelSatellitePosition(channelNumber, position);
+        mixer->setTrackVolume(trackNumber, volumeL, volumeR);
 }
 
-void NativePlayer::mixerSetChannelEnabled(int channelNumber, int enabled) {
+float NativePlayer::mixerGetTrackVolumeL(int trackNumber) {
     if (mixer != NULL)
-        mixer->setChannelEnabled(channelNumber, enabled);
-}
-
-void NativePlayer::mixerSetTrackChannel(int trackNumber, int channelNumber) {
-    if (mixer != NULL)
-        mixer->setTrackChannel(trackNumber, channelNumber);
-}
-
-jintArray NativePlayer::mixerGetTrackMap(JNIEnv *env, jclass clazz) {
-    jintArray result = env->NewIntArray(4);
-    if (result == NULL)
-        return NULL;
-
-    // fill a temp structure to use to populate the java int array
-    jint map[4];
-    if (mixer != NULL)
-        mixer->getTrackMap(map);
-
-    env->SetIntArrayRegion(result, 0, 4, map);
-    return result;
-}
-
-int NativePlayer::mixerGetChannelSatellitePosition(int channel) {
-    if (mixer != NULL)
-        return mixer->getChannelSatellitePosition(channel);
+        return mixer->getTrackVolumeL(trackNumber);
     return -1;
 }
 
-int NativePlayer::mixerGetChannelEnabled(int channel) {
+float NativePlayer::mixerGetTrackVolumeR(int trackNumber) {
     if (mixer != NULL)
-        return mixer->getChannelEnabled(channel);
+        return mixer->getTrackVolumeR(trackNumber);
     return -1;
 }
 

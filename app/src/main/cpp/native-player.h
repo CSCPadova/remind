@@ -93,8 +93,6 @@ private:
     std::vector<float> intermediateAudioBuffer;
     //quanto riempire il buffer?
     int intermAudioBufferFillValue;
-    //valore arbitrario
-    int readThreadSleepTime;
 
     void closeOutputStream();
 
@@ -130,17 +128,11 @@ public:
     void loadSong(JNIEnv *env, jclass clazz, jobjectArray pathsArray, jint songTypeNum,
                   jint songSpeedNum, jstring songEquStr);
 
-    void mixerSetChannelSatellitePosition(int channelNumber, int position);
+    void mixerSetTrackVolume(int trackNumber, float volumeL, float volumeR);
 
-    void mixerSetChannelEnabled(int channelNumber, int enabled);
+    float mixerGetTrackVolumeL(int trackNumber);
 
-    void mixerSetTrackChannel(int trackNumber, int channelNumber);
-
-    jintArray mixerGetTrackMap(JNIEnv *env, jclass clazz);
-
-    int mixerGetChannelSatellitePosition(int channel);
-
-    int mixerGetChannelEnabled(int channel);
+    float mixerGetTrackVolumeR(int trackNumber);
 
     void setSpeed(int speed);
 
@@ -155,27 +147,18 @@ public:
     //cose varie per interfacciarsi con jni
     void setJavaVMObj(JNIEnv *env);
 
-    //javaobj = (jobject) env->NewGlobalRef(obj);
     void setNewGlobalRef(jobject jObject);
 
-    //onTimeUpdateMethodID = env->GetMethodID(cls, "onTimeUpdate", "(D)V");
     void setOnTimeUpdate(jmethodID mID);
 
-    //songSpeedCallbackID = env->GetMethodID(cls, "songSpeedCallback", "()V");
     void setSongSpeedCallback(jmethodID mID);
 
-    //songLoadedCallbackID = env->GetMethodID(cls, "songLoadedCallback", "()V");
     void setSongLoadedCallback(jmethodID mID);
 
-    //playbackStateCallbackID = env->GetMethodID(cls, "playbackStateCallback", "(IZ)V");
     void setPlaybackStateCallback(jmethodID mID);
 
     oboe::DataCallbackResult
     onAudioReady(oboe::AudioStream *audioStream, void *audioData, int32_t numFrames);
-
-    void errorCallback(oboe::AudioStream *streamCall, oboe::Result error);
-
-    void restartStream();
 };
 
 #endif

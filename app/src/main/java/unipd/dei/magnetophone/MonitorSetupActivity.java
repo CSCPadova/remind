@@ -1,7 +1,5 @@
 package unipd.dei.magnetophone;
 
-import java.util.ArrayList;
-
 import unipd.dei.magnetophone.MusicService.MusicServiceBinder;
 import android.app.Activity;
 import android.content.ComponentName;
@@ -14,20 +12,18 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.ToggleButton;
 
 public class MonitorSetupActivity extends Activity
 {
+	private final float VOLUME_SEEKBAR_MAX_VALUE=100;
 	protected MusicServiceBinder musicServiceBinder;
-	private Spinner spinners[] = new Spinner[4];
+	private TextView trackNamesTextViews[] = new TextView[4];
 
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -195,29 +191,21 @@ public class MonitorSetupActivity extends Activity
 		/*
 		 * recupero le 2 seekbar
 		 */
-		SeekBar seekbarSatelliteChannel1 = (SeekBar) findViewById(R.id.monitor_channel1_satellite_position_seekbar);
-		SeekBar seekbarSatelliteChannel2 = (SeekBar) findViewById(R.id.monitor_channel2_satellite_position_seekbar);
+		final SeekBar seekbarSatelliteChannel1L = (SeekBar) findViewById(R.id.monitor_channel1_vol_l);
+		final SeekBar seekbarSatelliteChannel1R = (SeekBar) findViewById(R.id.monitor_channel1_vol_r);
+		final SeekBar seekbarSatelliteChannel2L = (SeekBar) findViewById(R.id.monitor_channel2_vol_l);
+		final SeekBar seekbarSatelliteChannel2R = (SeekBar) findViewById(R.id.monitor_channel2_vol_r);
 
-		seekbarSatelliteChannel1.setProgress(musicServiceBinder.getChannelSatellitePosition(1));
-		seekbarSatelliteChannel2.setProgress(100 - musicServiceBinder.getChannelSatellitePosition(2));
+		seekbarSatelliteChannel1L.setProgress((int)(musicServiceBinder.getTrackVolumeL(1)*VOLUME_SEEKBAR_MAX_VALUE));
+		seekbarSatelliteChannel1R.setProgress((int)(musicServiceBinder.getTrackVolumeR(1)*VOLUME_SEEKBAR_MAX_VALUE));
+		seekbarSatelliteChannel2L.setProgress((int)(musicServiceBinder.getTrackVolumeL(2)*VOLUME_SEEKBAR_MAX_VALUE));
+		seekbarSatelliteChannel2R.setProgress((int)(musicServiceBinder.getTrackVolumeR(2)*VOLUME_SEEKBAR_MAX_VALUE));
 
-		/*
-		 * recupero i due switch
-		 */
-		ToggleButton switchChannel1 = (ToggleButton) findViewById(R.id.monitor_channel1_enable_switch);
-		ToggleButton switchChannel2 = (ToggleButton) findViewById(R.id.monitor_channel2_enable_switch);
-
-		switchChannel1.setChecked(musicServiceBinder.getChannelEnabled(1));
-		switchChannel2.setChecked(musicServiceBinder.getChannelEnabled(2));
-
-		/*
-		 * configurazione seekbar satellite 1
-		 */
-		seekbarSatelliteChannel1.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
+		seekbarSatelliteChannel1L.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
 		{
 			@Override
 			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-				changeSatellitePosition(1, progress);	// variazione della posizione della seekbar
+				setTrackVolumeL(1, (float)(progress)/VOLUME_SEEKBAR_MAX_VALUE);
 			}
 
 			@Override
@@ -229,14 +217,11 @@ public class MonitorSetupActivity extends Activity
 			}
 		});
 
-		/*
-		 * configurazione seekbar satellite 2
-		 */
-		seekbarSatelliteChannel2.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
+		seekbarSatelliteChannel1R.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
 		{
 			@Override
 			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-				changeSatellitePosition(2, 100 - progress);	// variazione della posizione della seekbar
+				setTrackVolumeR(1, (float)(progress)/VOLUME_SEEKBAR_MAX_VALUE);
 			}
 
 			@Override
@@ -246,28 +231,53 @@ public class MonitorSetupActivity extends Activity
 			@Override
 			public void onStopTrackingTouch(SeekBar seekBar) {
 			}
-
 		});
 
-		/*
-		 * configurazione switch canale 1
-		 */
-		switchChannel1.setOnCheckedChangeListener(new OnCheckedChangeListener()
+		seekbarSatelliteChannel2L.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
 		{
 			@Override
-			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				setChannelEnabled(1, isChecked);
+			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+				setTrackVolumeL(2, (float)(progress)/VOLUME_SEEKBAR_MAX_VALUE);
+			}
+
+			@Override
+			public void onStartTrackingTouch(SeekBar seekBar) {
+			}
+
+			@Override
+			public void onStopTrackingTouch(SeekBar seekBar) {
 			}
 		});
 
-		/*
-		 * configurazione switch canale 2
-		 */
-		switchChannel2.setOnCheckedChangeListener(new OnCheckedChangeListener()
+		seekbarSatelliteChannel2R.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
 		{
 			@Override
-			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				setChannelEnabled(2, isChecked);
+			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+				setTrackVolumeR(2, (float)(progress)/VOLUME_SEEKBAR_MAX_VALUE);
+			}
+
+			@Override
+			public void onStartTrackingTouch(SeekBar seekBar) {
+			}
+
+			@Override
+			public void onStopTrackingTouch(SeekBar seekBar) {
+			}
+		});
+
+		Button equalVolumes1=findViewById(R.id.buttonLR1);
+
+		equalVolumes1.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				seekbarSatelliteChannel1L.setProgress(seekbarSatelliteChannel1R.getProgress());
+			}
+		});
+
+		Button equalVolumes2=findViewById(R.id.buttonLR2);
+
+		equalVolumes2.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				seekbarSatelliteChannel2L.setProgress(seekbarSatelliteChannel2R.getProgress());
 			}
 		});
 	}
@@ -282,55 +292,16 @@ public class MonitorSetupActivity extends Activity
 		initOneStereoControls();
 
 		/*
-		 * recupero spinners
+		 * recupero TextView
 		 */
-		spinners[0] = (Spinner) findViewById(R.id.monitor_channel1_track_spinner);
-		spinners[1] = (Spinner) findViewById(R.id.monitor_channel2_track_spinner);
+		trackNamesTextViews[0] = (TextView) findViewById(R.id.monitor_channel1_track_name);
+		trackNamesTextViews[1] = (TextView) findViewById(R.id.monitor_channel2_track_name);
 
 		/*
-		 * popolo gli spinner con i nomi delle tracce
+		 * popolo gli TextView con i nomi delle tracce
 		 */
-		ArrayList<String> trackNamesList = new ArrayList<String>();
-		for (Song.Track track : musicServiceBinder.getSong().getTrackList())
-			trackNamesList.add(track.getName());
-
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, trackNamesList);
-
-		spinners[0].setAdapter(adapter);
-		spinners[1].setAdapter(adapter);
-
-		/*
-		 * imposto le tracce riprodotte nei giusti canali
-		 */
-		spinners[0].setSelection(0);
-		spinners[1].setSelection(1);
-
-		/*
-		 * imposto eventi
-		 */
-		spinners[0].setOnItemSelectedListener(new OnItemSelectedListener()
-		{
-			@Override
-			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-				changeChannelTrack(1, position);
-			}
-
-			@Override
-			public void onNothingSelected(AdapterView<?> parent) {
-			}
-		});
-
-		spinners[1].setOnItemSelectedListener(new OnItemSelectedListener()
-		{
-			@Override
-			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-				changeChannelTrack(2, position);
-			}
-
-			@Override
-			public void onNothingSelected(AdapterView<?> parent) {
-			}
-		});
+		trackNamesTextViews[0].setText(musicServiceBinder.getSong().getTrackList().get(0).getName());
+		trackNamesTextViews[1].setText(musicServiceBinder.getSong().getTrackList().get(1).getName());
 	}
 
 	/*
@@ -342,157 +313,129 @@ public class MonitorSetupActivity extends Activity
 	{
 		initTwoMonoControls();
 
-		/*
-		 * recupero le 2 seekbar restanti
-		 */
-		SeekBar seekbarSatelliteChannel3 = (SeekBar) findViewById(R.id.monitor_channel3_satellite_position_seekbar);
-		SeekBar seekbarSatelliteChannel4 = (SeekBar) findViewById(R.id.monitor_channel4_satellite_position_seekbar);
-
-		seekbarSatelliteChannel3.setProgress(musicServiceBinder.getChannelSatellitePosition(3));
-		seekbarSatelliteChannel4.setProgress(100 - musicServiceBinder.getChannelSatellitePosition(4));
-		/*
-		 * recupero i due switch restanti
-		 */
-		ToggleButton switchChannel3 = (ToggleButton) findViewById(R.id.monitor_channel3_enable_switch);
-		ToggleButton switchChannel4 = (ToggleButton) findViewById(R.id.monitor_channel4_enable_switch);
-
-		switchChannel3.setChecked(musicServiceBinder.getChannelEnabled(3));
-		switchChannel4.setChecked(musicServiceBinder.getChannelEnabled(4));
+		TextView txtView1=(TextView) findViewById(R.id.monitor_channel1_track_name);
+		TextView txtView2=(TextView) findViewById(R.id.monitor_channel2_track_name);
+		TextView txtView3=(TextView) findViewById(R.id.monitor_channel3_track_name);
+		TextView txtView4=(TextView) findViewById(R.id.monitor_channel4_track_name);
 
 		/*
-		 * configurazione seekbar satellite 3
+		 * recupero 2 trackNamesTextViews rimanenti
 		 */
-		seekbarSatelliteChannel3.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
-		{
-			@Override
-			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-				changeSatellitePosition(3, progress);	// variazione della posizione della seekbar
-			}
-
-			@Override
-			public void onStartTrackingTouch(SeekBar seekBar) {
-			}
-
-			@Override
-			public void onStopTrackingTouch(SeekBar seekBar) {
-			}
-		});
-
-		/*
-		 * configurazione seekbar satellite 4
-		 */
-		seekbarSatelliteChannel4.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
-		{
-			@Override
-			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-				changeSatellitePosition(4, 100 - progress);	// variazione della posizione della seekbar
-			}
-
-			@Override
-			public void onStartTrackingTouch(SeekBar seekBar) {
-			}
-
-			@Override
-			public void onStopTrackingTouch(SeekBar seekBar) {
-			}
-		});
-
-		/*
-		 * configurazione switch canale 3
-		 */
-		switchChannel3.setOnCheckedChangeListener(new OnCheckedChangeListener()
-		{
-			@Override
-			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				setChannelEnabled(3, isChecked);
-			}
-		});
-
-		/*
-		 * configurazione switch canale 4
-		 */
-		switchChannel4.setOnCheckedChangeListener(new OnCheckedChangeListener()
-		{
-			@Override
-			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				setChannelEnabled(4, isChecked);
-			}
-		});
-
-		/*
-		 * recupero 2 spinners rimanenti
-		 */
-		spinners[2] = (Spinner) findViewById(R.id.monitor_channel3_track_spinner);
-		spinners[3] = (Spinner) findViewById(R.id.monitor_channel4_track_spinner);
+		trackNamesTextViews[2] = (TextView) findViewById(R.id.monitor_channel3_track_name);
+		trackNamesTextViews[3] = (TextView) findViewById(R.id.monitor_channel4_track_name);
 
 		/*
 		 * popolo gli spinner con i nomi delle tracce
 		 */
-		spinners[2].setAdapter(spinners[1].getAdapter());
-		spinners[3].setAdapter(spinners[1].getAdapter());
+		trackNamesTextViews[2].setText(musicServiceBinder.getSong().getTrackList().get(2).getName());
+		trackNamesTextViews[3].setText(musicServiceBinder.getSong().getTrackList().get(3).getName());
 
 		/*
-		 * imposto le tracce riprodotte nei giusti canali
+		 * recupero le 2 seekbar
 		 */
-		spinners[2].setSelection(2);
-		spinners[3].setSelection(3);
+		final SeekBar seekbarSatelliteChannel3L = (SeekBar) findViewById(R.id.monitor_channel3_vol_l);
+		final SeekBar seekbarSatelliteChannel3R = (SeekBar) findViewById(R.id.monitor_channel3_vol_r);
+		final SeekBar seekbarSatelliteChannel4L = (SeekBar) findViewById(R.id.monitor_channel4_vol_l);
+		final SeekBar seekbarSatelliteChannel4R = (SeekBar) findViewById(R.id.monitor_channel4_vol_r);
 
-		/*
-		 * imposto eventi
-		 */
-		spinners[2].setOnItemSelectedListener(new OnItemSelectedListener()
+		seekbarSatelliteChannel3L.setProgress((int)(musicServiceBinder.getTrackVolumeL(3)*VOLUME_SEEKBAR_MAX_VALUE));
+		seekbarSatelliteChannel3R.setProgress((int)(musicServiceBinder.getTrackVolumeR(3)*VOLUME_SEEKBAR_MAX_VALUE));
+		seekbarSatelliteChannel4L.setProgress((int)(musicServiceBinder.getTrackVolumeL(4)*VOLUME_SEEKBAR_MAX_VALUE));
+		seekbarSatelliteChannel4R.setProgress((int)(musicServiceBinder.getTrackVolumeR(4)*VOLUME_SEEKBAR_MAX_VALUE));
+
+		seekbarSatelliteChannel3L.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
 		{
 			@Override
-			public void onItemSelected(AdapterView<?> parent, View view, int position, long id){
-				changeChannelTrack(3, position);
+			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+				setTrackVolumeL(3, (float)(progress)/VOLUME_SEEKBAR_MAX_VALUE);
 			}
 
 			@Override
-			public void onNothingSelected(AdapterView<?> parent) {
+			public void onStartTrackingTouch(SeekBar seekBar) {
+			}
+
+			@Override
+			public void onStopTrackingTouch(SeekBar seekBar) {
 			}
 		});
 
-		spinners[3].setOnItemSelectedListener(new OnItemSelectedListener()
+		seekbarSatelliteChannel3R.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
 		{
 			@Override
-			public void onItemSelected(AdapterView<?> parent, View view, int position, long id){
-				changeChannelTrack(4, position);
+			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+				setTrackVolumeR(3, (float)(progress)/VOLUME_SEEKBAR_MAX_VALUE);
 			}
 
 			@Override
-			public void onNothingSelected(AdapterView<?> parent) {
+			public void onStartTrackingTouch(SeekBar seekBar) {
+			}
+
+			@Override
+			public void onStopTrackingTouch(SeekBar seekBar) {
 			}
 		});
-	}
 
-	/*
-	 * metodo che andrà a modificare la posizione virtuale di un satellite
-	 */
-	private void changeSatellitePosition(int satelliteNumber, int position)
-	{
-		if (musicServiceBinder != null)
-			musicServiceBinder.setSatellitePosition(satelliteNumber, position);
-	}
-
-	/*
-	 * metodo che abilita o disabilita un canale audio
-	 */
-	protected void setChannelEnabled(int channelNumber, boolean enabled)
-	{
-		if (musicServiceBinder != null)
-			musicServiceBinder.setChannelEnabled(channelNumber, enabled);
-	}
-
-	protected void changeChannelTrack(int channelNumber, int trackNumber)
-	{
-		if (musicServiceBinder != null)
+		seekbarSatelliteChannel4L.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
 		{
-			musicServiceBinder.setTrackChannel(channelNumber, trackNumber);
-			int[] map = musicServiceBinder.getTrackMap();
+			@Override
+			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+				setTrackVolumeL(4, (float)(progress)/VOLUME_SEEKBAR_MAX_VALUE);
+			}
 
-			for (int i = 0; i < musicServiceBinder.getSong().getNumberOfTracks(); i++)
-				spinners[i].setSelection(map[i]);
-		}
+			@Override
+			public void onStartTrackingTouch(SeekBar seekBar) {
+			}
+
+			@Override
+			public void onStopTrackingTouch(SeekBar seekBar) {
+			}
+		});
+
+		seekbarSatelliteChannel4R.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
+		{
+			@Override
+			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+				setTrackVolumeR(4, (float)(progress)/VOLUME_SEEKBAR_MAX_VALUE);
+			}
+
+			@Override
+			public void onStartTrackingTouch(SeekBar seekBar) {
+			}
+
+			@Override
+			public void onStopTrackingTouch(SeekBar seekBar) {
+			}
+		});
+
+		Button equalVolumes3=findViewById(R.id.buttonLR3);
+
+		equalVolumes3.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				seekbarSatelliteChannel3L.setProgress(seekbarSatelliteChannel3R.getProgress());
+			}
+		});
+
+		Button equalVolumes4=findViewById(R.id.buttonLR4);
+
+		equalVolumes4.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				seekbarSatelliteChannel4L.setProgress(seekbarSatelliteChannel4R.getProgress());
+			}
+		});
+
+
+	}
+
+	private void setTrackVolumeL(int track, float volumeL)
+	{
+		if (musicServiceBinder != null)
+			musicServiceBinder.setTrackVolumeL(track, volumeL);
+	}
+
+	private void setTrackVolumeR(int track, float volumeR)
+	{
+		if (musicServiceBinder != null)
+			musicServiceBinder.setTrackVolumeR(track, volumeR);
 	}
 
 	/**
