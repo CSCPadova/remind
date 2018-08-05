@@ -204,8 +204,6 @@ void MixerProcessor4M::process(audio::AudioBuffer (&buffers)[4], audio::AudioBuf
     auto &inputBuffer_2 = mixer->trackEnabled[1] ? buffers[mixer->trackMap[1]] : silence;
     auto &inputBuffer_3 = mixer->trackEnabled[2] ? buffers[mixer->trackMap[2]] : silence;
     auto &inputBuffer_4 = mixer->trackEnabled[3] ? buffers[mixer->trackMap[3]] : silence;
-
-    LOGD("track1L: %.6f",this->mixer->track1L);
     
     for (unsigned int i = 0; i < outLeft.size(); i++) {
 

@@ -29,6 +29,8 @@ public class StuderTapeDeck extends TapeDeck
 	private UIKnob speedKnob, eqKnob;			// Manopole (per due non conveniva usare un'array)
 	private UILcd lcd;							// Display
 
+	private final float VIDEO_OFFSET_STEP=1.0f;
+
 	private final PlayerEqualization[] eq_values = {
 		PlayerEqualization.CCIR,
 		PlayerEqualization.NAB,
@@ -187,6 +189,7 @@ public class StuderTapeDeck extends TapeDeck
 			@Override
 			public void stateChanged(UIComponent obj)
 			{
+				player.stop();
 				context.startActivity(new Intent(context, SettingsActivity.class));
 			}
 		});
@@ -196,6 +199,7 @@ public class StuderTapeDeck extends TapeDeck
 			@Override
 			public void stateChanged(UIComponent obj)
 			{
+				player.stop();
 				context.startActivity(new Intent(context, SongListActivity.class));
 			}
 		});
@@ -205,6 +209,7 @@ public class StuderTapeDeck extends TapeDeck
 			@Override
 			public void stateChanged(UIComponent obj)
 			{
+				player.stop();
 				if (songLoaded)
 					context.startActivity(new Intent(context, MonitorSetupActivity.class));
 				else
@@ -220,6 +225,50 @@ public class StuderTapeDeck extends TapeDeck
 					context.startActivity(new Intent(context, MainActivity.class));
 			}
 		});*/
+
+		//video offset UI
+
+
+		int minus_x_pos=1750,plus_x_pos=2300,lcd_v_width=305;
+
+
+		final UILcd lcdOffset = (UILcd) addComponent(
+				new UILcd((plus_x_pos+minus_x_pos)/2-lcd_v_width/4,
+						300, 3, lcd_v_width, 85,
+						r.getDrawable(R.raw.lcd)));
+
+		UIButton[] videoSyncButtons = new UIButton[2];
+
+		videoSyncButtons[0] = (UIButton) addComponent(new UIButton(minus_x_pos,
+				300, 4, 125, 125,
+				r.getDrawable(R.raw.icon_minus), r.getDrawable(R.raw.icon_minus)));
+		videoSyncButtons[1] = (UIButton) addComponent(new UIButton(plus_x_pos,
+				300, 4, 125, 125,
+				r.getDrawable(R.raw.icon_plus), r.getDrawable(R.raw.icon_plus)));
+
+		videoSyncButtons[0].setCallback(new ComponentCallback() {
+			@Override
+			public void stateChanged(UIComponent obj)
+			{
+				if (songLoaded) {
+					player.setVideoSyncOffset(player.getVideoSyncOffset()-VIDEO_OFFSET_STEP);
+					lcdOffset.setTime((int)(player.getVideoSyncOffset()-VIDEO_OFFSET_STEP));
+				}else
+					Toast.makeText(context, context.getString(R.string.monitor_setup_unavailable), Toast.LENGTH_SHORT).show();
+			}
+		});
+
+		videoSyncButtons[1].setCallback(new ComponentCallback() {
+			@Override
+			public void stateChanged(UIComponent obj)
+			{
+				if (songLoaded) {
+					player.setVideoSyncOffset(player.getVideoSyncOffset()+VIDEO_OFFSET_STEP);
+					lcdOffset.setTime((int)(player.getVideoSyncOffset()-VIDEO_OFFSET_STEP));
+				}else
+					Toast.makeText(context, context.getString(R.string.monitor_setup_unavailable), Toast.LENGTH_SHORT).show();
+			}
+		});
 
 		// MANOPOLE MAGNETOFONO
 		speedKnob = (UIKnob) addComponent(new UIKnob(1331, 1296, 5, 40, r.getDrawable(R.raw.knob)));

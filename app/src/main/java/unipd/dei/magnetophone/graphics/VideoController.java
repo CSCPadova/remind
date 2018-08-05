@@ -8,6 +8,10 @@ public interface VideoController {
 	public void onSongLoaded(Song song);
 	
 	public void onSeek(float position);
+
+	public void setVideoOffset(float position);
+
+	public float getVideoOffset();
 	
 	public void onPlaybackRateChanged(float multiplier, boolean doPlay);
 	

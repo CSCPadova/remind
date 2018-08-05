@@ -24,6 +24,7 @@ public class MusicPlayer
 
 	private AnimationController actrl = null;
 	private VideoController vctrl = null;
+	private float videoOffset=0;
 	private Song songToPlay = null;
 	private PlayerEqualization lastEqUsed = PlayerEqualization.NAB;
 	private SongSpeed currentSpeed = SongSpeed.SONG_SPEED_30;
@@ -162,7 +163,7 @@ public class MusicPlayer
 			actrl.onSongSpeedChanged(currentSpeed);
 
 			vctrl.onSongLoaded(musicServiceBinder.getSong());
-			vctrl.onSeek(seconds);
+			vctrl.setVideoOffset(videoOffset);
 
 			synchronizeVideoWithSong();
 
@@ -284,11 +285,9 @@ public class MusicPlayer
 		float currentSeconds = getCurrentTimestamp();
 		if (vctrl != null)
 			vctrl.onSeek(currentSeconds);
+
 	}
 
-	// #####################################################################################################
-	// #####################################################################################################
-	// #####################################################################################################
 	// #####################################################################################################
 
 	/**
@@ -303,12 +302,6 @@ public class MusicPlayer
 			musicServiceBinder.setSong(song);
 		else
 			songToPlay = song;
-
-		/*
-		 * if (actrl != null) actrl.onSongChanged(song);
-		 * 
-		 * if (this.vctrl != null) { vctrl.onSongLoaded(song); }
-		 */
 	}
 
 	/**
@@ -345,41 +338,6 @@ public class MusicPlayer
 		// synchronizeVideoWithSong();
 
 		musicServiceBinder.play();
-
-		/*
-		 * if (actrl != null) { actrl.onMusicPlay(); }
-		 * 
-		 * float speed = calculateAudioSpeed();
-		 * 
-		 * if (vctrl != null) { vctrl.onPlaybackRateChanged(speed, true); }
-		 */
-	}
-
-	/**
-	 * Porta il riproduttore a quel secondo nella canzone
-	 * 
-	 * @param position
-	 */
-	public void seekTo(float position)
-	{
-		synchronized (serviceAccessLock)
-		{
-			// if(pdService != null)
-			// pdService.seekTo(position);
-		}
-	}
-
-	/**
-	 * Porta il riproduttore a quel secondo nella canzone
-	 * 
-	 * @param position
-	 */
-	public void loadState()
-	{
-		// synchronized(serviceAccessLock) {
-		// if(pdService != null)
-		// pdService.loadState();
-		// }
 	}
 
 	/**
@@ -559,6 +517,16 @@ public class MusicPlayer
 			return (float) musicServiceBinder.getTime() / 100.0f;
 
 		return 0;
+	}
+
+	public void setVideoSyncOffset(float offset)
+	{
+		vctrl.setVideoOffset(offset);
+	}
+
+	public float getVideoSyncOffset()
+	{
+		return vctrl.getVideoOffset();
 	}
 
 	private boolean isBind()
