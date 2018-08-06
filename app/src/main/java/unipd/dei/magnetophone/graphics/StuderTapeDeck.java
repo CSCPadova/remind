@@ -326,7 +326,6 @@ public class StuderTapeDeck extends TapeDeck {
                 while (isIncrementing()) {
                     video_offset_increment = Math.min(video_offset_increment * 1.05f, 3000);
                     player.setVideoSyncOffset(player.getVideoSyncOffset() + video_offset_increment);
-                    Log.d("DEBUG",""+player.getVideoSyncOffset());
                     lcdOffset.setTime((player.getVideoSyncOffset()));
                     if(count>5) {
                         try {
@@ -495,7 +494,6 @@ public class StuderTapeDeck extends TapeDeck {
                 break;
             }
         }
-        //lcdOffset.setTime( (player.getVideoSyncOffset() * Song.getFloatSpeed(player.getCurrentSpeed())));
-        lcdOffset.setTime( (player.getVideoSyncOffset()));
+        lcdOffset.setTime(player.getScaledTime(player.getVideoSyncOffset()));
     }
 }

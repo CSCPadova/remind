@@ -8,21 +8,15 @@ import java.nio.ByteBuffer;
 import unipd.dei.magnetophone.Song;
 
 import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.media.MediaCodec;
 import android.media.MediaCodec.BufferInfo;
 import android.media.MediaExtractor;
 import android.media.MediaFormat;
-import android.opengl.GLES20;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.View;
 
 public class VideoView extends SurfaceView implements SurfaceHolder.Callback, Runnable, VideoController {
     //private static final String SAMPLE = Environment.getExternalStorageDirectory() + "/Magnetophone/video.mp4";
@@ -34,7 +28,7 @@ public class VideoView extends SurfaceView implements SurfaceHolder.Callback, Ru
 
     private boolean running, seeking, breakPause;
     private long seekTo, musicPos;
-    private long videoOffset;
+    private float videoOffset;
 
     private float playbackRate;
 
@@ -241,24 +235,24 @@ public class VideoView extends SurfaceView implements SurfaceHolder.Callback, Ru
         // Se c'è un video caricato
         if (extractor != null && decoder != null) {
             // Trasformo in microsecondi
-            seekTo = to * 1000 + videoOffset;
-
+            seekTo = to * 1000 + (long)(videoOffset * 1000);
             breakPause = true;
         }
     }
 
     public void setVideoOffset(float offset) {
-        videoOffset = (long) (offset * 1000000);
+        videoOffset = offset * 1000.0f;
         seeking = true;
 
         seek(musicPos);
-        if (seekTo + musicPos * 1000 < 0) {
+        if (seekTo + musicPos < 0) {
             clearSurfaceView = true;
         }
     }
 
     public float getVideoOffset() {
-        return (float) (videoOffset) / 1000000.0f;
+
+        return videoOffset / 1000.0f;
     }
 
     /* Eventi della SurfaceView */
@@ -452,8 +446,8 @@ public class VideoView extends SurfaceView implements SurfaceHolder.Callback, Ru
                     //prestando attenzione all'offset audio-video che si puo' settare
                     //antecedente a zero
                     if (seekTo < -1) {
-                        if (seekTo + musicPos*playbackRate * 1000 >= 0) {
-                            seekTo =(long)( seekTo + musicPos*playbackRate * 1000);
+                        if (seekTo + musicPos * 1000 >= 0) {
+                            seekTo=seekTo + musicPos * 1000;
                         }
                         if (clearSurfaceView) {
                             //TODO dovrebbe pulirla invece di mostrare un frame video statico ma non ci riesco
@@ -540,7 +534,7 @@ public class VideoView extends SurfaceView implements SurfaceHolder.Callback, Ru
     @Override
     public void onProgress(float position) {
         musicPos = Math.round(position * 1000);
-        //Log.d("VideoView", " musicPos: " + musicPos + "with offset" + videoOffset);
+        Log.d("VideoView", " musicPos: " + musicPos + "with offset" + videoOffset);
     }
 
     /**
@@ -555,8 +549,11 @@ public class VideoView extends SurfaceView implements SurfaceHolder.Callback, Ru
     public void onPlaybackRateChanged(float multiplier, boolean doPlay) {
         // Al cambio di velocità ne approfitto per sincronizzarmi con la musica.
         // Evito di farlo in fastreverse per evitare problemi.
-        if (multiplier >= 0)
+        if (multiplier >= 0) {
             seek(musicPos);
+            if(seekTo<-1&&multiplier>0)
+                seekTo=(long)(seekTo*multiplier);
+        }
 
 
         Log.d("VideoView", "Change speed to " + multiplier);
