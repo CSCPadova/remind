@@ -225,11 +225,13 @@ public class StuderTapeDeck extends TapeDeck {
         //video offset UI
 
 
-        int minus_x_pos = 1700, plus_x_pos = 2500, lcd_v_width = 305, y_pos = 300, width_heigth = 100;
+        int minus_x_pos = 1775, plus_x_pos = 2300, lcd_v_width = 305, y_pos = 310, width_heigth = 100;
+
+        addComponent(new UIStatic(minus_x_pos, y_pos, 3, lcd_v_width+width_heigth*2+120, width_heigth+10, r.getDrawable(R.raw.black_square)));
 
         lcdOffset = (UILcdCustom) addComponent(
-                new UILcdCustom((plus_x_pos + minus_x_pos) / 2 - lcd_v_width / 3,
-                        y_pos, 3, lcd_v_width, 50,
+                new UILcdCustom((minus_x_pos + width_heigth)+5,
+                        y_pos+10, 3, lcd_v_width, (int)(width_heigth*0.75),
                         r.getDrawable(R.raw.lcd), 8));
 
         UIButton[] videoSyncButtons = new UIButton[2];
