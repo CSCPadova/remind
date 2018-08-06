@@ -2,6 +2,7 @@ package unipd.dei.magnetophone.graphics;
 
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.MotionEvent;
 
 /**
@@ -51,11 +52,15 @@ public class UIButton extends UIBaseElement {
 		return false;
 	}
 
+	@Override
+	public boolean isPressed() {
+		return pressed;
+	}
+
 
 	@Override
 	protected boolean processTouch(MotionEvent e, int x, int y) {
 		boolean old = pressed;
-		
 		if(e.getAction() == MotionEvent.ACTION_DOWN && !pressed) {
 			pressed = true;
 		} else if(e.getAction() == MotionEvent.ACTION_UP && !latching) {

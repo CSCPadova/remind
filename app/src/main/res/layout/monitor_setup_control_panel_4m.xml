@@ -23,10 +23,12 @@
 
                 <TextView
                     android:id="@+id/monitor_channel1_track_name"
+                    android:gravity="center"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
-                    android:text="TextView" />
+                    android:text="TextView"
+                    android:textAlignment="center" />
 
                 <Button
                     android:id="@+id/buttonLR1"
@@ -35,28 +37,52 @@
                     android:layout_gravity="center_horizontal"
                     android:text="@string/button_equal_volumes" />
 
-                <SeekBar
-                    android:id="@+id/monitor_channel1_vol_l"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginTop="5dp"
-                    android:max="100"
-                    android:progress="50"
-                    android:thumb="@drawable/custom_thumb"/>
-                <!--android:progressDrawable="@android:color/black"
-                android:thumb="@drawable/monitor_setup_speaker"/>-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                <SeekBar
-                    android:id="@+id/monitor_channel1_vol_r"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginTop="5dp"
-                    android:max="100"
-                    android:progress="50"
-                    android:thumb="@drawable/custom_thumb"/>
+                    <TextView
+                        android:id="@+id/n1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:text="@string/label_left" />
 
+                    <SeekBar
+                        android:id="@+id/monitor_channel1_vol_l"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginTop="5dp"
+                        android:max="100"
+                        android:progress="50"
+                        android:thumb="@drawable/custom_thumb" />
+                    <!--android:progressDrawable="@android:color/black"
+                    android:thumb="@drawable/monitor_setup_speaker"/>-->
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/n2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:text="@string/label_right" />
+
+                    <SeekBar
+                        android:id="@+id/monitor_channel1_vol_r"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginTop="5dp"
+                        android:max="100"
+                        android:progress="50"
+                        android:thumb="@drawable/custom_thumb" />
+                </LinearLayout>
 
                 <!--android:progressDrawable="@android:color/black"
                 android:thumb="@drawable/monitor_setup_speaker"/>-->
@@ -72,6 +98,7 @@
                 <!-- seekbar & spinner ch 1-->
                 <TextView
                     android:id="@+id/monitor_channel2_track_name"
+                    android:gravity="center"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
@@ -84,29 +111,53 @@
                     android:layout_gravity="center_horizontal"
                     android:text="@string/button_equal_volumes" />
 
-                <SeekBar
-                    android:id="@+id/monitor_channel2_vol_l"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginTop="5dp"
-                    android:max="100"
-                    android:progress="50"
-                    android:thumb="@drawable/custom_thumb"/>
-                <!--android:progressDrawable="@android:color/black"
-                android:thumb="@drawable/monitor_setup_speaker"/>-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                <SeekBar
-                    android:id="@+id/monitor_channel2_vol_r"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginTop="5dp"
-                    android:max="100"
-                    android:progress="50"
-                    android:thumb="@drawable/custom_thumb"/>
-                <!--android:progressDrawable="@android:color/black"
-                android:thumb="@drawable/monitor_setup_speaker"/>-->
+                    <TextView
+                        android:id="@+id/n3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:text="@string/label_left" />
+
+                    <SeekBar
+                        android:id="@+id/monitor_channel2_vol_l"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginTop="5dp"
+                        android:max="100"
+                        android:progress="50"
+                        android:thumb="@drawable/custom_thumb" />
+                    <!--android:progressDrawable="@android:color/black"
+                    android:thumb="@drawable/monitor_setup_speaker"/>-->
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/n4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:text="@string/label_right" />
+
+                    <SeekBar
+                        android:id="@+id/monitor_channel2_vol_r"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginTop="5dp"
+                        android:max="100"
+                        android:progress="50"
+                        android:thumb="@drawable/custom_thumb" />
+                    <!--android:progressDrawable="@android:color/black"
+                    android:thumb="@drawable/monitor_setup_speaker"/>-->
+                </LinearLayout>
 
 
             </LinearLayout>
@@ -119,6 +170,7 @@
 
                 <TextView
                     android:id="@+id/monitor_channel3_track_name"
+                    android:gravity="center"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
@@ -131,29 +183,53 @@
                     android:layout_gravity="center_horizontal"
                     android:text="@string/button_equal_volumes" />
 
-                <SeekBar
-                    android:id="@+id/monitor_channel3_vol_l"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginTop="5dp"
-                    android:max="100"
-                    android:progress="50"
-                    android:thumb="@drawable/custom_thumb"/>
-                <!--android:progressDrawable="@android:color/black"
-                android:thumb="@drawable/monitor_setup_speaker" />-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                <SeekBar
-                    android:id="@+id/monitor_channel3_vol_r"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginTop="5dp"
-                    android:max="100"
-                    android:progress="50"
-                    android:thumb="@drawable/custom_thumb"/>
-                <!--android:progressDrawable="@android:color/black"
-                android:thumb="@drawable/monitor_setup_speaker" />-->
+                    <TextView
+                        android:id="@+id/n5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:text="@string/label_left" />
+
+                    <SeekBar
+                        android:id="@+id/monitor_channel3_vol_l"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginTop="5dp"
+                        android:max="100"
+                        android:progress="50"
+                        android:thumb="@drawable/custom_thumb" />
+                    <!--android:progressDrawable="@android:color/black"
+                    android:thumb="@drawable/monitor_setup_speaker" />-->
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/n6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:text="@string/label_right" />
+
+                    <SeekBar
+                        android:id="@+id/monitor_channel3_vol_r"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginTop="5dp"
+                        android:max="100"
+                        android:progress="50"
+                        android:thumb="@drawable/custom_thumb" />
+                    <!--android:progressDrawable="@android:color/black"
+                    android:thumb="@drawable/monitor_setup_speaker" />-->
+                </LinearLayout>
 
             </LinearLayout>
 
@@ -167,6 +243,7 @@
 
                 <TextView
                     android:id="@+id/monitor_channel4_track_name"
+                    android:gravity="center"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
@@ -179,29 +256,53 @@
                     android:layout_gravity="center_horizontal"
                     android:text="@string/button_equal_volumes" />
 
-                <SeekBar
-                    android:id="@+id/monitor_channel4_vol_l"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginTop="5dp"
-                    android:max="100"
-                    android:progress="50"
-                    android:thumb="@drawable/custom_thumb"/>
-                <!--android:progressDrawable="@android:color/black"
-                android:thumb="@drawable/monitor_setup_speaker" />-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                <SeekBar
-                    android:id="@+id/monitor_channel4_vol_r"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginTop="5dp"
-                    android:max="100"
-                    android:progress="50"
-                    android:thumb="@drawable/custom_thumb"/>
-                <!--android:progressDrawable="@android:color/black"
-                android:thumb="@drawable/monitor_setup_speaker" />-->
+                    <TextView
+                        android:id="@+id/n7"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:text="@string/label_left" />
+
+                    <SeekBar
+                        android:id="@+id/monitor_channel4_vol_l"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginTop="5dp"
+                        android:max="100"
+                        android:progress="50"
+                        android:thumb="@drawable/custom_thumb" />
+                    <!--android:progressDrawable="@android:color/black"
+                    android:thumb="@drawable/monitor_setup_speaker" />-->
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/n8"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:text="@string/label_right" />
+
+                    <SeekBar
+                        android:id="@+id/monitor_channel4_vol_r"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginTop="5dp"
+                        android:max="100"
+                        android:progress="50"
+                        android:thumb="@drawable/custom_thumb" />
+                    <!--android:progressDrawable="@android:color/black"
+                    android:thumb="@drawable/monitor_setup_speaker" />-->
+                </LinearLayout>
 
             </LinearLayout>
 

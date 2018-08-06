@@ -42,4 +42,9 @@ public class UILed extends UIBaseElement {
 		return false;
 	}
 
+	@Override
+	public boolean isPressed() {
+		return false;
+	}
+
 }

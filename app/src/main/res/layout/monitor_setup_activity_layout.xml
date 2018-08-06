@@ -1,102 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:id="@+id/monitor_setup_main"
-	android:layout_width="fill_parent"
-	android:layout_height="fill_parent"
-	android:layout_gravity="center_vertical|center_horizontal"
-	android:background="@drawable/monitor_setup_background"
-	android:orientation="horizontal" >
+    android:id="@+id/monitor_setup_main"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_gravity="center_vertical|center_horizontal"
+    android:background="@drawable/monitor_setup_background"
+    android:orientation="horizontal">
 
-    	<LinearLayout
-    		android:layout_width="288dp"
-    		android:layout_height="fill_parent"
-    		android:background="#DCFFFFFF"
-    		android:orientation="vertical"
-    		android:paddingLeft="10dp"
-    		android:paddingTop="10dp" >
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    		<TextView
-    			android:id="@+id/monitor_signature_label"
-    			android:layout_width="wrap_content"
-    			android:layout_height="wrap_content"
-    			android:text="Signature:"
-    			android:textAppearance="?android:attr/textAppearanceMedium" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#4DFFFFFF"
+            android:orientation="vertical"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp">
 
-    		<TextView
-    			android:id="@+id/monitor_signature_field"
-    			android:layout_width="wrap_content"
-    			android:layout_height="wrap_content"
-    			android:paddingTop="10dp"
-    			android:text=" " />
+            <TextView
+                android:id="@+id/monitor_signature_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Signature:"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    		<View
-    			style="@style/Divider"
-    			android:background="@color/lvHeaderDividerColor" />
+            <TextView
+                android:id="@+id/monitor_signature_field"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:text=" " />
 
-    		<TextView
-    			android:id="@+id/monitor_type_label"
-    			android:layout_width="wrap_content"
-    			android:layout_height="wrap_content"
-    			android:text="Tracks type:"
-    			android:textAppearance="?android:attr/textAppearanceMedium" />
+            <View
+                style="@style/Divider"
+                android:background="@color/lvHeaderDividerColor" />
 
-    		<TextView
-    			android:id="@+id/monitor_type_field"
-    			android:layout_width="wrap_content"
-    			android:layout_height="wrap_content"
-    			android:paddingTop="10dp"
-    			android:text=" " />
+            <TextView
+                android:id="@+id/monitor_type_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tracks type:"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    		<View
-    			style="@style/Divider"
-    			android:background="@color/lvHeaderDividerColor" />
+            <TextView
+                android:id="@+id/monitor_type_field"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:text=" " />
 
-    		<TextView
-    			android:id="@+id/monitor_tracks_number_label"
-    			android:layout_width="wrap_content"
-    			android:layout_height="wrap_content"
-    			android:text="Tracks count:"
-    			android:textAppearance="?android:attr/textAppearanceMedium" />
+            <View
+                style="@style/Divider"
+                android:background="@color/lvHeaderDividerColor" />
 
-    		<TextView
-    			android:id="@+id/monitor_tracks_number_field"
-    			android:layout_width="wrap_content"
-    			android:layout_height="wrap_content"
-    			android:paddingTop="10dp"
-    			android:text=" " />
+            <TextView
+                android:id="@+id/monitor_tracks_number_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tracks count:"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    		<View
-    			style="@style/Divider"
-    			android:background="@color/lvHeaderDividerColor" />
+            <TextView
+                android:id="@+id/monitor_tracks_number_field"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:text=" " />
 
-    		<LinearLayout
-    			android:id="@+id/monitor_tracks_list_container"
-    			android:layout_width="fill_parent"
-    			android:layout_height="match_parent"
-    			android:orientation="vertical" >
+            <View
+                style="@style/Divider"
+                android:background="@color/lvHeaderDividerColor" />
 
-    			<TextView
-    				android:id="@+id/monitor_tracks_list_label"
-    				android:layout_width="fill_parent"
-    				android:layout_height="wrap_content"
-    				android:layout_marginBottom="10dp"
-    				android:text="Tracks list:"
-    				android:textAppearance="?android:attr/textAppearanceMedium"
-    				android:textColor="@android:color/black" />
+            <LinearLayout
+                android:id="@+id/monitor_tracks_list_container"
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-    		</LinearLayout>
+                <TextView
+                    android:id="@+id/monitor_tracks_list_label"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:text="Tracks list:"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@android:color/black" />
 
-    	</LinearLayout>
 
-    	<FrameLayout
-    		android:layout_width="wrap_content"
-    		android:layout_height="match_parent" >
+                <LinearLayout
+                    android:id="@+id/monitor_mixer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
 
-    		<View
-    			android:id="@+id/view1"
-    			android:layout_width="2dp"
-    			android:layout_height="fill_parent"
-    			android:background="@color/lvHeaderDividerColor" />
-    	</FrameLayout>
 
-    </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

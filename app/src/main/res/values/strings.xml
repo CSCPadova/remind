@@ -300,6 +300,8 @@
     <string name="text_select_frame">Seleziona un frame </string>
     <string name="image_frame">Frame del video</string>
     <string name="button_equal_volumes">L=R</string>
+    <string name="label_left">Sinistra</string>
+    <string name="label_right">Destra \u0020</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

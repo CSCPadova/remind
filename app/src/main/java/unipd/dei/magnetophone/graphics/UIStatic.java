@@ -28,7 +28,12 @@ public class UIStatic extends UIBaseElement {
 		// Immagine statica -> nessuna animazione!
 		return false;
 	}
-	
+
+	@Override
+	public boolean isPressed() {
+		return false;
+	}
+
 	@Override
 	protected boolean processTouch(MotionEvent e, int x, int y) { return false; }
 

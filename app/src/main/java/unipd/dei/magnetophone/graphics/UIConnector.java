@@ -118,4 +118,9 @@ public class UIConnector extends UIComponent {
 	@Override
 	public Rect getBoundingRect() { return new Rect(x0, y0, x1, y1); }
 
+	@Override
+	public boolean isPressed() {
+		return false;
+	}
+
 }

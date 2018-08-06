@@ -15,6 +15,7 @@ public abstract class UIComponent implements Comparable<UIComponent> {
 	protected boolean visible;
 	
 	protected ComponentCallback callback;
+	protected ComponentCallback callbackActUp;
 	
 	
 	protected UIComponent(int zIndex) {
@@ -49,6 +50,10 @@ public abstract class UIComponent implements Comparable<UIComponent> {
 	public void setCallback(ComponentCallback callback) {
 		this.callback = callback;
 	}
+
+	public void setCallbackActUp(ComponentCallback callback) {
+		this.callbackActUp = callback;
+	}
 	
 	public abstract Rect getBoundingRect();
 	
@@ -57,4 +62,6 @@ public abstract class UIComponent implements Comparable<UIComponent> {
 	public abstract void draw(Canvas canvas);
 	
 	public abstract boolean onTouch(MotionEvent e, int x, int y);
+
+	public abstract boolean isPressed();
 }

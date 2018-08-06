@@ -252,7 +252,6 @@ public class VideoView extends SurfaceView implements SurfaceHolder.Callback, Ru
         seeking = true;
 
         seek(musicPos);
-        Log.d("DEBUG", "RES: " + (seekTo + musicPos * 1000));
         if (seekTo + musicPos * 1000 < 0) {
             clearSurfaceView = true;
         }
@@ -453,8 +452,8 @@ public class VideoView extends SurfaceView implements SurfaceHolder.Callback, Ru
                     //prestando attenzione all'offset audio-video che si puo' settare
                     //antecedente a zero
                     if (seekTo < -1) {
-                        if (seekTo + musicPos * 1000 >= 0) {
-                            seekTo = seekTo + musicPos * 1000;
+                        if (seekTo + musicPos*playbackRate * 1000 >= 0) {
+                            seekTo =(long)( seekTo + musicPos*playbackRate * 1000);
                         }
                         if (clearSurfaceView) {
                             //TODO dovrebbe pulirla invece di mostrare un frame video statico ma non ci riesco
@@ -541,7 +540,7 @@ public class VideoView extends SurfaceView implements SurfaceHolder.Callback, Ru
     @Override
     public void onProgress(float position) {
         musicPos = Math.round(position * 1000);
-        Log.d("VideoView", " musicPos: " + musicPos + "with offset" + videoOffset);
+        //Log.d("VideoView", " musicPos: " + musicPos + "with offset" + videoOffset);
     }
 
     /**

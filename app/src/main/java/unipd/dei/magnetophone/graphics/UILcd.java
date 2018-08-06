@@ -7,11 +7,11 @@ import android.view.MotionEvent;
 
 public class UILcd extends UIBaseElement {
 	
-	private Rect digitRect;
-	private Rect[] posRects;
-	private int[] digits;
-	
-	private boolean changed;
+	protected Rect digitRect;
+	protected Rect[] posRects;
+	protected int[] digits;
+
+	protected boolean changed;
 
 	public UILcd(int x, int y, int zIndex, int w, int h, Drawable res) {
 		super(x, y, zIndex, w + 1, h + 1, res);
@@ -40,15 +40,15 @@ public class UILcd extends UIBaseElement {
 		setTime(0);
 	}
 	
-	public void setTime(int seconds) {
-		int time = Math.abs(seconds);
+	public void setTime(float seconds) {
+		int time = Math.abs((int)seconds);
 		
 		// Separo i minuti dai secondi
 		int hour = (int) (time / 3600.0f);
 		int min  = (int) ((time % 3600.0f) / 60);
 		int sec  = (int) (time % 60);
 		
-		if(seconds >= 0)
+		if((int)seconds >= 0)
 			digits[0] = hour;
 		else
 			digits[0] = 10;
@@ -64,11 +64,11 @@ public class UILcd extends UIBaseElement {
 
 	@Override
 	public boolean animate(float frameTime) {
-		if(changed) {
+		if (changed) {
 			changed = false;
 			return true;
 		}
-		
+
 		return false;
 	}
 
@@ -76,21 +76,30 @@ public class UILcd extends UIBaseElement {
 	public void draw(Canvas canvas) {
 		int offset = digitRect.width();
 
-		for(int i = 0; i < 5; i++) {
+		for (int i = 0; i < posRects.length; i++) {
 			digitRect.offsetTo(offset * digits[i], 0);
 
 			canvas.drawBitmap(resource, digitRect, posRects[i], p);
 		}
-		
+
 		digitRect.offsetTo(offset * 11, 0);
-		
-		if(digits[0] != 10)
+
+		if (digits[0] != 10)
 			canvas.drawBitmap(resource, digitRect, posRects[0], p);
-		
+
 		canvas.drawBitmap(resource, digitRect, posRects[2], p);
+		if(digits.length>5)
+			canvas.drawBitmap(resource, digitRect, posRects[4], p);
 	}
 
 	@Override
-	protected boolean processTouch(MotionEvent e, int x, int y) { return false; }
+	protected boolean processTouch(MotionEvent e, int x, int y) {
+		return false;
+	}
+
+	@Override
+	public boolean isPressed() {
+		return false;
+	}
 	
 }

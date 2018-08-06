@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.MotionEvent;
 
 /**
@@ -126,15 +127,16 @@ public abstract class UIBaseElement extends UIComponent {
 	public boolean onTouch(MotionEvent e, int x, int y) {
 		// Fai qualcosa solo se c'è una callback da richiamare
 		if(callback != null && inBounds(x, y)) {
-			
 			if(processTouch(e, x, y)) {
 				// Richiama la callback
 				callback.stateChanged(this);
 			}
-			
+			else if(callbackActUp != null){
+				callbackActUp.stateChanged(this);
+			}
+
 			return true;
 		}
-		
 		return false;
 	}
 	
@@ -152,7 +154,8 @@ public abstract class UIBaseElement extends UIComponent {
 	
 	/**
 	 * Metodo richiamato quando avviene un evento touch all'interno del componente
-	 * @param e MotionEvent che descrive l'evento
+	 * @param e MotionEvent che descrive l'ev
+		Log.d("DEBUG","processTouch");ento
 	 * @param x Coordinata x scalata in cui è avvenuto l'evento
 	 * @param y Coordinata y scalata in cui è avvenuto l'evento
 	 * @return

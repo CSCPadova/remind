@@ -81,15 +81,15 @@ public class MonitorSetupActivity extends Activity {
             /*
              * visualizzo la lista delle tracce
              */
-            LinearLayout trackNameListContainer = (LinearLayout) findViewById(R.id.monitor_tracks_list_container);
-            trackNameListContainer.removeAllViews();
+            //LinearLayout trackNameListContainer = (LinearLayout) findViewById(R.id.monitor_tracks_list_container);
+            //trackNameListContainer.removeAllViews();
 
-            for (Song.Track track : monitorSong.getTrackList()) {
-                TextView trackNameTextView = new TextView(getApplicationContext());
-                trackNameTextView.setText(" - " + track.getName());
-                trackNameTextView.setTextAppearance(getApplicationContext(), R.style.MonitorSetupTrackListItem);
-                trackNameListContainer.addView(trackNameTextView);
-            }
+            //for (Song.Track track : monitorSong.getTrackList()) {
+            //    TextView trackNameTextView = new TextView(getApplicationContext());
+            //    trackNameTextView.setText(" - " + track.getName());
+            //    trackNameTextView.setTextAppearance(getApplicationContext(), R.style.MonitorSetupTrackListItem);
+            //    trackNameListContainer.addView(trackNameTextView);
+            //}
 
             /*
              * Caricamento pannello di controllo
@@ -98,7 +98,7 @@ public class MonitorSetupActivity extends Activity {
              *
              * per cui carico un diverso layout per ciascuna delle tipologie di song - 1 mono - 1 stereo - 2 mono - 4 mono
              */
-            LinearLayout mainLayout = (LinearLayout) findViewById(R.id.monitor_setup_main);
+            LinearLayout mainLayout = (LinearLayout) findViewById(R.id.monitor_mixer);
 
             switch (monitorSong.getNumberOfTracks()) {
                 case 1:

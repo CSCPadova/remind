@@ -152,7 +152,12 @@ public class UIRoundElement extends UIBaseElement {
 		
 		canvas.restoreToCount(savestate);
 	}
-	
+
+	@Override
+	public boolean isPressed() {
+		return false;
+	}
+
 	protected void drawTransformed(Canvas canvas) {
 		super.draw(canvas);
 	}
