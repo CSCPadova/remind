@@ -28,6 +28,7 @@ public class StuderTapeDeck extends TapeDeck
 	private UITapeReel leftReel, rightReel;	// Bobine
 	private UIKnob speedKnob, eqKnob;			// Manopole (per due non conveniva usare un'array)
 	private UILcd lcd;							// Display
+	private UILcd lcdOffset;
 
 	private final float VIDEO_OFFSET_STEP=1.0f;
 
@@ -229,30 +230,31 @@ public class StuderTapeDeck extends TapeDeck
 		//video offset UI
 
 
-		int minus_x_pos=1750,plus_x_pos=2300,lcd_v_width=305;
+		int minus_x_pos=1750,plus_x_pos=2300,lcd_v_width=305,y_pos=300,width_heigth=100;
 
-
-		final UILcd lcdOffset = (UILcd) addComponent(
-				new UILcd((plus_x_pos+minus_x_pos)/2-lcd_v_width/4,
-						300, 3, lcd_v_width, 85,
+		lcdOffset = (UILcd) addComponent(
+				new UILcd((plus_x_pos+minus_x_pos)/2-lcd_v_width/3,
+						y_pos, 3, lcd_v_width, 85,
 						r.getDrawable(R.raw.lcd)));
 
 		UIButton[] videoSyncButtons = new UIButton[2];
 
 		videoSyncButtons[0] = (UIButton) addComponent(new UIButton(minus_x_pos,
-				300, 4, 125, 125,
-				r.getDrawable(R.raw.icon_minus), r.getDrawable(R.raw.icon_minus)));
+				y_pos, 4, width_heigth, width_heigth,
+				r.getDrawable(R.raw.btn_minus), r.getDrawable(R.raw.btn_minus)));
 		videoSyncButtons[1] = (UIButton) addComponent(new UIButton(plus_x_pos,
-				300, 4, 125, 125,
-				r.getDrawable(R.raw.icon_plus), r.getDrawable(R.raw.icon_plus)));
+				y_pos, 4, width_heigth, width_heigth,
+				r.getDrawable(R.raw.btn_plus), r.getDrawable(R.raw.btn_plus)));
 
 		videoSyncButtons[0].setCallback(new ComponentCallback() {
 			@Override
 			public void stateChanged(UIComponent obj)
 			{
 				if (songLoaded) {
+					//cambia l'offset del video (valore che si basa sul secondo e sottomultipli)
 					player.setVideoSyncOffset(player.getVideoSyncOffset()-VIDEO_OFFSET_STEP);
-					lcdOffset.setTime((int)(player.getVideoSyncOffset()-VIDEO_OFFSET_STEP));
+					//converte e mostra il valore in inches di nastro
+					lcdOffset.setTime((int)(player.getVideoSyncOffset()*Song.getFloatSpeed(player.getCurrentSpeed())));
 				}else
 					Toast.makeText(context, context.getString(R.string.monitor_setup_unavailable), Toast.LENGTH_SHORT).show();
 			}
@@ -263,8 +265,10 @@ public class StuderTapeDeck extends TapeDeck
 			public void stateChanged(UIComponent obj)
 			{
 				if (songLoaded) {
+					//cambia l'offset del video (valore che si basa sul secondo e sottomultipli)
 					player.setVideoSyncOffset(player.getVideoSyncOffset()+VIDEO_OFFSET_STEP);
-					lcdOffset.setTime((int)(player.getVideoSyncOffset()-VIDEO_OFFSET_STEP));
+					//converte e mostra il valore in inches di nastro
+					lcdOffset.setTime((int)(player.getVideoSyncOffset()*Song.getFloatSpeed(player.getCurrentSpeed())));
 				}else
 					Toast.makeText(context, context.getString(R.string.monitor_setup_unavailable), Toast.LENGTH_SHORT).show();
 			}
@@ -443,12 +447,12 @@ public class StuderTapeDeck extends TapeDeck
 	public void onSongSpeedChanged(SongSpeed speed)
 	{
 		Log.d("StuderTapeDeck", "onSongSpeedChanged");
-		for (int i = 0; i < speed_values.length; i++)
-			if (speed_values[i] == speed)
-			{
+		for (int i = 0; i < speed_values.length; i++) {
+			if (speed_values[i] == speed) {
 				speedKnob.setStep(i);
 				break;
 			}
-
+		}
+		lcdOffset.setTime((int)(player.getVideoSyncOffset()*Song.getFloatSpeed(player.getCurrentSpeed())));
 	}
 }

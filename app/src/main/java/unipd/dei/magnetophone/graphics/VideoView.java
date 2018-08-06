@@ -8,15 +8,21 @@ import java.nio.ByteBuffer;
 import unipd.dei.magnetophone.Song;
 
 import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.media.MediaCodec;
 import android.media.MediaCodec.BufferInfo;
 import android.media.MediaExtractor;
 import android.media.MediaFormat;
+import android.opengl.GLES20;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
 
 public class VideoView extends SurfaceView implements SurfaceHolder.Callback, Runnable, VideoController {
     //private static final String SAMPLE = Environment.getExternalStorageDirectory() + "/Magnetophone/video.mp4";
@@ -38,6 +44,8 @@ public class VideoView extends SurfaceView implements SurfaceHolder.Callback, Ru
     private String pendingVideo;
     private long pendingSeek;
 
+    private boolean clearSurfaceView;
+
     public VideoView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
@@ -56,6 +64,8 @@ public class VideoView extends SurfaceView implements SurfaceHolder.Callback, Ru
         pendingSeek = -1;
         pendingPlay = false;
         videoOffset = 0;
+
+        clearSurfaceView = false;
     }
 
 
@@ -239,8 +249,13 @@ public class VideoView extends SurfaceView implements SurfaceHolder.Callback, Ru
 
     public void setVideoOffset(float offset) {
         videoOffset = (long) (offset * 1000000);
-        seeking=true;
+        seeking = true;
+
         seek(musicPos);
+        Log.d("DEBUG", "RES: " + (seekTo + musicPos * 1000));
+        if (seekTo + musicPos * 1000 < 0) {
+            clearSurfaceView = true;
+        }
     }
 
     public float getVideoOffset() {
@@ -438,12 +453,16 @@ public class VideoView extends SurfaceView implements SurfaceHolder.Callback, Ru
                     //prestando attenzione all'offset audio-video che si puo' settare
                     //antecedente a zero
                     if (seekTo < -1) {
-                        if (seekTo + musicPos*1000 >= 0) {
-                            seekTo = seekTo + musicPos*1000;
+                        if (seekTo + musicPos * 1000 >= 0) {
+                            seekTo = seekTo + musicPos * 1000;
                         }
-                        extractor.seekTo(0, MediaExtractor.SEEK_TO_PREVIOUS_SYNC);
-                        doFlush = true;
-                        //o per unsa semplice ricerca nel file video
+                        if (clearSurfaceView) {
+                            //TODO dovrebbe pulirla invece di mostrare un frame video statico ma non ci riesco
+                            clearSurfaceViewCanvas();
+                            clearSurfaceView = false;
+                            extractor.seekTo(0, MediaExtractor.SEEK_TO_PREVIOUS_SYNC);
+                            doFlush = true;
+                        }
                     } else if (seekTo >= 0) {
                         // Salto ad keyframe subito precedente al timestamp voluto
                         extractor.seekTo(seekTo, MediaExtractor.SEEK_TO_PREVIOUS_SYNC);
@@ -459,8 +478,7 @@ public class VideoView extends SurfaceView implements SurfaceHolder.Callback, Ru
 
                         // Resetto il tramite con l'esterno così il prossimo giro non ricominicio.
                         seekTo = -1;
-                    }else
-                    {
+                    } else {
                         // Avanza al sample successivo
                         extractor.advance();
                     }
@@ -484,6 +502,10 @@ public class VideoView extends SurfaceView implements SurfaceHolder.Callback, Ru
         }
 
         Log.d("VideoView", "Thread ended");
+    }
+
+    private void clearSurfaceViewCanvas() {
+        //TODO non so come fare
     }
 
     /* Eventi del MusicService */
@@ -519,7 +541,7 @@ public class VideoView extends SurfaceView implements SurfaceHolder.Callback, Ru
     @Override
     public void onProgress(float position) {
         musicPos = Math.round(position * 1000);
-        Log.d("VideoView", " musicPos: " + musicPos + "with offset"+videoOffset);
+        Log.d("VideoView", " musicPos: " + musicPos + "with offset" + videoOffset);
     }
 
     /**
