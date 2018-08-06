@@ -328,7 +328,7 @@ public class StuderTapeDeck extends TapeDeck {
                 while (isIncrementing()) {
                     video_offset_increment = Math.min(video_offset_increment * 1.05f, 3000);
                     player.setVideoSyncOffset(player.getVideoSyncOffset() + video_offset_increment);
-                    lcdOffset.setTime((player.getVideoSyncOffset()));
+                    lcdOffset.setTime(player.getScaledTime(player.getVideoSyncOffset()));
                     if(count>5) {
                         try {
                             sleep(50);
