@@ -49,12 +49,19 @@
 
                     <SeekBar
                         android:id="@+id/monitor_channel1_vol_l"
-                        android:layout_width="fill_parent"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="right"
                         android:layout_marginBottom="5dp"
                         android:layout_marginTop="5dp"
                         android:max="100"
-                        android:progress="50" />
+                        android:progress="50"
+                        android:progressDrawable="@drawable/progress_drawable"
+                        android:thumb="@drawable/thumb_drawable"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:thumbOffset="0dp"
+                        android:splitTrack="false" />
                     <!--android:progressDrawable="@android:color/black"
                     android:thumb="@drawable/monitor_setup_speaker"/>-->
                 </LinearLayout>
@@ -72,12 +79,19 @@
 
                     <SeekBar
                         android:id="@+id/monitor_channel1_vol_r"
-                        android:layout_width="fill_parent"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="right"
                         android:layout_marginBottom="5dp"
                         android:layout_marginTop="5dp"
                         android:max="100"
-                        android:progress="50" />
+                        android:progress="50"
+                        android:progressDrawable="@drawable/progress_drawable"
+                        android:thumb="@drawable/thumb_drawable"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:thumbOffset="0dp"
+                        android:splitTrack="false" />
                     <!--android:progressDrawable="@android:color/black"
                     android:thumb="@drawable/monitor_setup_speaker"/>-->
                 </LinearLayout>
@@ -118,12 +132,19 @@
 
                     <SeekBar
                         android:id="@+id/monitor_channel2_vol_l"
-                        android:layout_width="fill_parent"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="right"
                         android:layout_marginBottom="5dp"
                         android:layout_marginTop="5dp"
                         android:max="100"
-                        android:progress="50" />
+                        android:progress="50"
+                        android:progressDrawable="@drawable/progress_drawable"
+                        android:thumb="@drawable/thumb_drawable"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:thumbOffset="0dp"
+                        android:splitTrack="false"/>
                     <!--android:progressDrawable="@android:color/black"
                     android:thumb="@drawable/monitor_setup_speaker"/>-->
                 </LinearLayout>
@@ -141,12 +162,19 @@
 
                     <SeekBar
                         android:id="@+id/monitor_channel2_vol_r"
-                        android:layout_width="fill_parent"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="right"
                         android:layout_marginBottom="5dp"
                         android:layout_marginTop="5dp"
                         android:max="100"
-                        android:progress="50" />
+                        android:progress="50"
+                        android:progressDrawable="@drawable/progress_drawable"
+                        android:thumb="@drawable/thumb_drawable"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:thumbOffset="0dp"
+                        android:splitTrack="false" />
                     <!--android:progressDrawable="@android:color/black"
                     android:thumb="@drawable/monitor_setup_speaker"/>-->
                 </LinearLayout>

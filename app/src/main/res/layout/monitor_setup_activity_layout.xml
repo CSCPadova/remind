@@ -33,41 +33,43 @@
                 android:paddingTop="10dp"
                 android:text=" " />
 
-            <View
-                style="@style/Divider"
-                android:background="@color/lvHeaderDividerColor" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/monitor_type_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Tracks type:"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                <TextView
+                    android:id="@+id/monitor_type_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:text="Tracks type:"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
 
-            <TextView
-                android:id="@+id/monitor_type_field"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingTop="10dp"
-                android:text=" " />
+                <TextView
+                    android:id="@+id/monitor_type_field"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:paddingLeft="10dp"
+                    android:text=" " />
 
-            <View
-                style="@style/Divider"
-                android:background="@color/lvHeaderDividerColor" />
+                <TextView
+                    android:id="@+id/monitor_tracks_number_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:paddingLeft="10dp"
+                    android:text="Tracks count:"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
 
-            <TextView
-                android:id="@+id/monitor_tracks_number_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Tracks count:"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-
-            <TextView
-                android:id="@+id/monitor_tracks_number_field"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingTop="10dp"
-                android:text=" " />
+                <TextView
+                    android:id="@+id/monitor_tracks_number_field"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:paddingLeft="10dp"
+                    android:text=" " />
+            </LinearLayout>
 
             <View
                 style="@style/Divider"
