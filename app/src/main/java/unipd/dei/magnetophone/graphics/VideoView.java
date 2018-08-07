@@ -534,7 +534,7 @@ public class VideoView extends SurfaceView implements SurfaceHolder.Callback, Ru
     @Override
     public void onProgress(float position) {
         musicPos = Math.round(position * 1000);
-        Log.d("VideoView", " musicPos: " + musicPos + "with offset" + videoOffset);
+        //Log.d("VideoView", " musicPos: " + musicPos + "with offset" + videoOffset);
     }
 
     /**
