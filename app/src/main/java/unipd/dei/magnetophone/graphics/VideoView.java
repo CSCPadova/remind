@@ -1,12 +1,5 @@
 package unipd.dei.magnetophone.graphics;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.nio.ByteBuffer;
-
-import unipd.dei.magnetophone.Song;
-
 import android.content.Context;
 import android.graphics.Rect;
 import android.media.MediaCodec;
@@ -17,6 +10,13 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+
+import unipd.dei.magnetophone.Song;
 
 public class VideoView extends SurfaceView implements SurfaceHolder.Callback, Runnable, VideoController {
     //private static final String SAMPLE = Environment.getExternalStorageDirectory() + "/Magnetophone/video.mp4";
@@ -235,9 +235,14 @@ public class VideoView extends SurfaceView implements SurfaceHolder.Callback, Ru
         // Se c'è un video caricato
         if (extractor != null && decoder != null) {
             // Trasformo in microsecondi
-            seekTo = to * 1000 + (long)(videoOffset * 1000);
+            seekTo = to * 1000 + (long) (videoOffset * 1000);
             breakPause = true;
         }
+    }
+
+    public float getVideoOffset() {
+
+        return videoOffset / 1000.0f;
     }
 
     public void setVideoOffset(float offset) {
@@ -250,13 +255,7 @@ public class VideoView extends SurfaceView implements SurfaceHolder.Callback, Ru
         }
     }
 
-    public float getVideoOffset() {
-
-        return videoOffset / 1000.0f;
-    }
-
     /* Eventi della SurfaceView */
-
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
@@ -270,7 +269,6 @@ public class VideoView extends SurfaceView implements SurfaceHolder.Callback, Ru
             try {
                 init(pendingVideo);
             } catch (IOException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
 
@@ -370,6 +368,7 @@ public class VideoView extends SurfaceView implements SurfaceHolder.Callback, Ru
                     try {
                         Thread.sleep(100);
                     } catch (InterruptedException e1) {
+                        e1.printStackTrace();
                     }
                     break;
 
@@ -447,7 +446,7 @@ public class VideoView extends SurfaceView implements SurfaceHolder.Callback, Ru
                     //antecedente a zero
                     if (seekTo < -1) {
                         if (seekTo + musicPos * 1000 >= 0) {
-                            seekTo=seekTo + musicPos * 1000;
+                            seekTo = seekTo + musicPos * 1000;
                         }
                         if (clearSurfaceView) {
                             //TODO dovrebbe pulirla invece di mostrare un frame video statico ma non ci riesco
@@ -515,7 +514,6 @@ public class VideoView extends SurfaceView implements SurfaceHolder.Callback, Ru
             try {
                 init(path);
             } catch (IOException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
@@ -551,8 +549,8 @@ public class VideoView extends SurfaceView implements SurfaceHolder.Callback, Ru
         // Evito di farlo in fastreverse per evitare problemi.
         if (multiplier >= 0) {
             seek(musicPos);
-            if(seekTo<-1&&multiplier>0)
-                seekTo=(long)(seekTo*multiplier);
+            if (seekTo < -1 && multiplier > 0)
+                seekTo = (long) (seekTo * multiplier);
         }
 
 

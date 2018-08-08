@@ -1,10 +1,7 @@
 package unipd.dei.magnetophone.graphics;
 
-import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
-import android.view.MotionEvent;
 
 import java.util.concurrent.TimeUnit;
 
@@ -54,18 +51,18 @@ public class UILcdCustom extends UILcd {
 
         long sec = TimeUnit.MILLISECONDS.toSeconds(millis);
 
-        if(seconds >= 0)
-            digits[0] = (int)hour;
+        if (seconds >= 0)
+            digits[0] = (int) hour;
         else
             digits[0] = 10;
 
-        digits[1]=(int)(min / 10);
-        digits[2]=(int)(min % 10);
-        digits[3]=(int)(sec / 10);
-        digits[4]=(int)(sec % 10);
-        int i=digits.length-1;
-        while (i>=5 ) {
-            digits[i]=(int)( millis % 10);
+        digits[1] = (int) (min / 10);
+        digits[2] = (int) (min % 10);
+        digits[3] = (int) (sec / 10);
+        digits[4] = (int) (sec % 10);
+        int i = digits.length - 1;
+        while (i >= 5) {
+            digits[i] = (int) (millis % 10);
             millis = millis / 10;
             i--;
         }

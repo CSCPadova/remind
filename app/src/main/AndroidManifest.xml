@@ -7,14 +7,14 @@
         android:targetSdkVersion="19" />
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme.SettingsTheme"
-        android:largeHeap="true">
+        android:largeHeap="true"
+        android:theme="@style/AppTheme.SettingsTheme">
         <!--android:theme="@style/AppTheme"-->
         <service
             android:name="unipd.dei.magnetophone.MusicService"
@@ -23,8 +23,8 @@
 
         <activity
             android:name="unipd.dei.magnetophone.MagnetophoneActivity"
-            android:theme="@style/AppFullScreenTheme"
-            android:screenOrientation="landscape" >
+            android:screenOrientation="landscape"
+            android:theme="@style/AppFullScreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -33,27 +33,22 @@
         </activity>
         <activity
             android:name="unipd.dei.magnetophone.SettingsActivity"
-            android:theme="@style/AppTheme.SettingsTheme"
+            android:label="@string/title_activity_settings"
             android:screenOrientation="landscape"
-            android:label="@string/title_activity_settings" >
-        </activity>
+            android:theme="@style/AppTheme.SettingsTheme"></activity>
         <activity
             android:name="unipd.dei.magnetophone.SongList"
-            android:label="@string/title_activity_library" >
-        </activity>
+            android:label="@string/title_activity_library"></activity>
         <activity
             android:name="unipd.dei.magnetophone.SingleSongSettingsActivity"
-            android:label="@string/title_activity_single_song_settings" >
-        </activity>
+            android:label="@string/title_activity_single_song_settings"></activity>
         <activity
             android:name="unipd.dei.magnetophone.ImportSongActivity"
-            android:screenOrientation="landscape"
-            android:label="@string/title_activity_import_song" >
-        </activity>
+            android:label="@string/title_activity_import_song"
+            android:screenOrientation="landscape"></activity>
         <activity
             android:name="unipd.dei.magnetophone.AudioFilePickerActivity"
-            android:label="@string/title_activity_audio_file_picker" >
-        </activity>
+            android:label="@string/title_activity_audio_file_picker"></activity>
 
         <!-- I didn't find it
         <activity
@@ -63,9 +58,8 @@
 
         <activity
             android:name="unipd.dei.magnetophone.SongListActivity"
-            android:screenOrientation="landscape"
-            android:label="@string/title_activity_library" >
-        </activity>
+            android:label="@string/title_activity_library"
+            android:screenOrientation="landscape"></activity>
         <activity
             android:name="unipd.dei.magnetophone.SongDetailActivity"
             android:label="@string/app_name">
@@ -75,19 +69,18 @@
         </activity>
         <activity
             android:name="unipd.dei.magnetophone.MonitorSetupActivity"
-            android:screenOrientation="landscape"
-            android:label="@string/monitor_setup_label">
-        </activity>
+            android:label="@string/monitor_setup_label"
+            android:screenOrientation="landscape"></activity>
         <activity
             android:name="unipd.dei.magnetophone.SlideShowActivity"
-            android:label="@string/app_name">
-        </activity>
-        <activity android:name="unipd.dei.magnetophone.SearchActivity" >
+            android:label="@string/app_name"></activity>
+        <activity android:name="unipd.dei.magnetophone.SearchActivity">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
-            <meta-data android:name="android.app.searchable"
-                android:resource="@xml/searchable"/>
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
         </activity>
         <!-- I guess this is not impotant for a primary porting job
         <activity

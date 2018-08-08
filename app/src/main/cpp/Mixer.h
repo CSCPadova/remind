@@ -41,6 +41,7 @@ public:
     }
 
     float getTrackVolumeL(int trackNumber);
+
     float getTrackVolumeR(int trackNumber);
 
     void flush();

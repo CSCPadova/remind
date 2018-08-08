@@ -1,10 +1,5 @@
 package unipd.dei.magnetophone;
 
-/**
- * Activity che realizza lo slide show delle foto della song a tutto schermo
- */
-import java.io.File;
-
 import android.app.ActionBar;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -23,8 +18,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import java.io.File;
+
+/**
+ * Activity che realizza lo slide show delle foto della song a tutto schermo
+ */
+
 public class SlideShowActivity extends FragmentActivity {
 
+    private static Song slideSong;
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide fragments representing
      * each object in a collection. We use a {@link android.support.v4.app.FragmentStatePagerAdapter}
@@ -33,58 +35,54 @@ public class SlideShowActivity extends FragmentActivity {
      * allowing navigation between objects in a potentially large collection.
      */
     DemoCollectionPagerAdapter mDemoCollectionPagerAdapter;
-
     /**
      * The {@link android.support.v4.view.ViewPager} that will display the object collection.
      */
     ViewPager mViewPager;
-    
-    private static Song slideSong;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.slide_show);
-        
+
         Intent myIntent = getIntent();
-        int id = myIntent.getIntExtra("song_id",-1);
+        int id = myIntent.getIntExtra("song_id", -1);
 //        int index = myIntent.getIntExtra("photo_index", -1);
 //        View photoView = findViewById(R.id.photoImage);
-        
+
         slideSong = null;
         //prendo la canzone il cui id mi è stato passato
-        if(id!=-1)
-        {
-        	slideSong = DatabaseManager.getSongFromDatabase(id, this);
+        if (id != -1) {
+            slideSong = DatabaseManager.getSongFromDatabase(id, this);
         }
-        
+
         mDemoCollectionPagerAdapter = new DemoCollectionPagerAdapter(getSupportFragmentManager());
 
         // Set up action bar.
         final ActionBar actionBar = getActionBar();
 
         //TODO vedere se è possibile far vedere direttamente l'index desiderato
-        
-        
+
         // Specify that the Home button should show an "Up" caret, indicating that touching the
         // button will take the user one step up in the application's hierarchy.
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        if (actionBar!=null)
+            actionBar.setDisplayHomeAsUpEnabled(true);
 
         // Set up the ViewPager, attaching the adapter.
-        mViewPager = (ViewPager) findViewById(R.id.pager);
+        mViewPager = findViewById(R.id.pager);
         mViewPager.setAdapter(mDemoCollectionPagerAdapter);
     }
 
-  //chiamato quando qualche icona della action bar viene selezionata
-  		@Override
-  		public boolean onOptionsItemSelected(MenuItem item) {
-  			int id = item.getItemId();
-  			if (id == android.R.id.home) {
-  				//http://developer.android.com/design/patterns/navigation.html#up-vs-back
-  				NavUtils.navigateUpTo(this,new Intent(this, SongListActivity.class));
-  				return true;
-  			}
-  			return super.onOptionsItemSelected(item);
-  		}
+    //chiamato quando qualche icona della action bar viene selezionata
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            //http://developer.android.com/design/patterns/navigation.html#up-vs-back
+            NavUtils.navigateUpTo(this, new Intent(this, SongListActivity.class));
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     /**
      * A {@link android.support.v4.app.FragmentStatePagerAdapter} that returns a fragment
@@ -92,7 +90,7 @@ public class SlideShowActivity extends FragmentActivity {
      */
     public static class DemoCollectionPagerAdapter extends FragmentStatePagerAdapter {
 
-        public DemoCollectionPagerAdapter(FragmentManager fm) {
+        private DemoCollectionPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
@@ -100,15 +98,15 @@ public class SlideShowActivity extends FragmentActivity {
         public Fragment getItem(int i) {
             Fragment fragment = new DemoObjectFragment();
             Bundle args = new Bundle();
-            args.putInt(DemoObjectFragment.ARG_OBJECT, i); 
+            args.putInt(DemoObjectFragment.ARG_OBJECT, i);
             fragment.setArguments(args);
             return fragment;
         }
 
         @Override
         public int getCount() {
-        	//ritorno il numero di foto presenti nella cartella
-        	return slideSong.getPhotosFiles().length;
+            //ritorno il numero di foto presenti nella cartella
+            return slideSong.getPhotosFiles().length;
         }
 
         @Override
@@ -121,30 +119,29 @@ public class SlideShowActivity extends FragmentActivity {
      * Un fragment che si occuperà di rivestire una posizione nello slide show, facendo comparire
      * una delle foto della cartella
      */
-    public static class DemoObjectFragment extends Fragment
-    {
+    public static class DemoObjectFragment extends Fragment {
         public static final String ARG_OBJECT = "object";
 
         @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
-        {
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.single_photo_full_screen_layout, container, false);
             Bundle args = getArguments();
-            int photoIndex = args.getInt(ARG_OBJECT);//prendo l'indice della foto
-            
-            try
-			{
-            	File photoFile = slideSong.getPhotosFiles()[photoIndex];
-				
-				if(photoFile.exists()) {
-					Bitmap myBitmap = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
+            int photoIndex=0;
+            if(args!=null)
+                photoIndex = args.getInt(ARG_OBJECT);//prendo l'indice della foto
 
-					ImageView myImage = (ImageView) rootView.findViewById(R.id.photoImage);
-					
-					//int height = myBitmap.getHeight(), width = myBitmap.getWidth();
-					
+            try {
+                File photoFile = slideSong.getPhotosFiles()[photoIndex];
+
+                if (photoFile.exists()) {
+                    Bitmap myBitmap = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
+
+                    ImageView myImage = rootView.findViewById(R.id.photoImage);
+
+                    //int height = myBitmap.getHeight(), width = myBitmap.getWidth();
+
 //					######################################################
-					//comressione delle foto, da tenere solo se necessario
+                    //comressione delle foto, da tenere solo se necessario
 //					if(height>4096 || width>4096) 
 //					{
 //						BitmapFactory.Options options = new BitmapFactory.Options();
@@ -156,16 +153,14 @@ public class SlideShowActivity extends FragmentActivity {
 //					}
 //					else
 //					{
-						myImage.setImageBitmap(myBitmap);
+                    myImage.setImageBitmap(myBitmap);
 //					}
 
-				}
-			}
-			catch(NullPointerException e)
-			{
-				Log.e("SlideShowActivity", "photos directory not available for this Song");
-			}
-			
+                }
+            } catch (NullPointerException e) {
+                Log.e("SlideShowActivity", "photos directory not available for this Song");
+            }
+
             return rootView;
         }
     }

@@ -49,16 +49,16 @@
                     android:id="@+id/monitor_type_field"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingTop="10dp"
                     android:paddingLeft="10dp"
+                    android:paddingTop="10dp"
                     android:text=" " />
 
                 <TextView
                     android:id="@+id/monitor_tracks_number_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingTop="10dp"
                     android:paddingLeft="10dp"
+                    android:paddingTop="10dp"
                     android:text="Tracks count:"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -66,8 +66,8 @@
                     android:id="@+id/monitor_tracks_number_field"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingTop="10dp"
                     android:paddingLeft="10dp"
+                    android:paddingTop="10dp"
                     android:text=" " />
             </LinearLayout>
 

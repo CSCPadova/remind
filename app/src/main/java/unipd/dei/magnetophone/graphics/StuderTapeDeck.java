@@ -1,5 +1,12 @@
 package unipd.dei.magnetophone.graphics;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Rect;
+import android.util.Log;
+import android.widget.Toast;
+
 import unipd.dei.magnetophone.MonitorSetupActivity;
 import unipd.dei.magnetophone.PlayerEqualization;
 import unipd.dei.magnetophone.R;
@@ -8,47 +15,37 @@ import unipd.dei.magnetophone.Song;
 import unipd.dei.magnetophone.Song.SongSpeed;
 import unipd.dei.magnetophone.SongListActivity;
 import unipd.dei.magnetophone.graphics.UIConnector.Side;
-//import unipd.dei.whatsnew.main.MainActivity;
-//import it.unipd.dei.esp1314.magnetophone.R;
-import android.content.Context;
-import android.content.Intent;
-import android.content.res.Resources;
-import android.graphics.Rect;
-import android.util.Log;
-import android.widget.Toast;
 
 import static java.lang.Thread.sleep;
 
+//import unipd.dei.whatsnew.main.MainActivity;
+//import it.unipd.dei.esp1314.magnetophone.R;
+
 public class StuderTapeDeck extends TapeDeck {
-    // Componenti che cambieranno stato ma che sono simili tra loro
-    private UILed[] controlLeds;
-    private UILed tapeKnob;
-    private UIConnector[] tapeChunks;
-
-    // Componenti che userò spesso
-    private UITapeReel leftReel, rightReel;    // Bobine
-    private UIKnob speedKnob, eqKnob;            // Manopole (per due non conveniva usare un'array)
-    private UILcd lcd;                            // Display
-    private UILcdCustom lcdOffset;
-
     private final float VIDEO_OFFSET_STEP = 0.001f;
-    private float video_offset_increment;
-    private int thread_sleep;
-    private boolean threadRun;
-
     private final PlayerEqualization[] eq_values = {
             PlayerEqualization.CCIR,
             PlayerEqualization.NAB,
             PlayerEqualization.FLAT
     };
-
     private final SongSpeed speed_values[] = {
             SongSpeed.SONG_SPEED_30,
             SongSpeed.SONG_SPEED_15,
             SongSpeed.SONG_SPEED_7_5,
             SongSpeed.SONG_SPEED_3_75
     };
-
+    // Componenti che cambieranno stato ma che sono simili tra loro
+    private UILed[] controlLeds;
+    private UILed tapeKnob;
+    private UIConnector[] tapeChunks;
+    // Componenti che userò spesso
+    private UITapeReel leftReel, rightReel;    // Bobine
+    private UIKnob speedKnob, eqKnob;            // Manopole (per due non conveniva usare un'array)
+    private UILcd lcd;                            // Display
+    private UILcdCustom lcdOffset;
+    private float video_offset_increment;
+    private int thread_sleep;
+    private boolean threadRun;
     private boolean songLoaded;
     private float songDuration;
 
@@ -227,11 +224,11 @@ public class StuderTapeDeck extends TapeDeck {
 
         int minus_x_pos = 1778, plus_x_pos = 2305, lcd_v_width = 305, y_pos = 320, width_heigth = 90;
 
-        addComponent(new UIStatic(minus_x_pos-14, y_pos-10, 3, lcd_v_width+width_heigth*2+160, width_heigth+20, r.getDrawable(R.raw.background_video_offset)));
+        addComponent(new UIStatic(minus_x_pos - 14, y_pos - 10, 3, lcd_v_width + width_heigth * 2 + 160, width_heigth + 20, r.getDrawable(R.raw.background_video_offset)));
 
         lcdOffset = (UILcdCustom) addComponent(
-                new UILcdCustom((minus_x_pos + width_heigth)+29,
-                        y_pos+12, 3, lcd_v_width, (int)(width_heigth*0.76),
+                new UILcdCustom((minus_x_pos + width_heigth) + 29,
+                        y_pos + 12, 3, lcd_v_width, (int) (width_heigth * 0.76),
                         r.getDrawable(R.raw.lcd), 8));
 
         UIButton[] videoSyncButtons = new UIButton[2];
@@ -318,25 +315,24 @@ public class StuderTapeDeck extends TapeDeck {
     }
 
     private void startIncrementing(boolean forward) {
-        video_offset_increment=VIDEO_OFFSET_STEP;
-        if(!forward)
-            video_offset_increment=video_offset_increment*-1;
+        video_offset_increment = VIDEO_OFFSET_STEP;
+        if (!forward)
+            video_offset_increment = video_offset_increment * -1;
         setIsIncrementing(true);
         new Thread(new Runnable() {
             public void run() {
-                int count=0;
+                int count = 0;
                 while (isIncrementing()) {
                     video_offset_increment = Math.min(video_offset_increment * 1.05f, 3000);
                     player.setVideoSyncOffset(player.getVideoSyncOffset() + video_offset_increment);
                     lcdOffset.setTime(player.getScaledTime(player.getVideoSyncOffset()));
-                    if(count>5) {
+                    if (count > 5) {
                         try {
                             sleep(50);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
-                    }
-                    else{
+                    } else {
                         try {
                             sleep(200);
                         } catch (InterruptedException e) {

@@ -282,7 +282,6 @@ void NativePlayer::fastFunction() {
             currentTime = 0;
             igo = false;
         }
-
         timeUpdate();
         std::this_thread::sleep_for(dura);
     }

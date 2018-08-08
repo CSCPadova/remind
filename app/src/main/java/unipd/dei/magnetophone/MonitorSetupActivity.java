@@ -1,7 +1,5 @@
 package unipd.dei.magnetophone;
 
-import unipd.dei.magnetophone.MusicService.MusicServiceBinder;
-
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
@@ -12,51 +10,17 @@ import android.os.IBinder;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
-import android.widget.Spinner;
 import android.widget.TextView;
+
+import unipd.dei.magnetophone.MusicService.MusicServiceBinder;
 
 public class MonitorSetupActivity extends Activity {
     private final float VOLUME_SEEKBAR_MAX_VALUE = 100;
     protected MusicServiceBinder musicServiceBinder;
     private TextView trackNamesTextViews[] = new TextView[4];
-
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.monitor_setup_activity_layout);
-        //TODO SISTEMARE MEGLIO
-        if (getActionBar() != null)
-            getActionBar().setDisplayHomeAsUpEnabled(true);
-    }
-
-    protected void onResume() {
-        super.onResume();
-        /*
-         * eseguo il bind con il music service se è avviato
-         */
-        if (MusicService.RUNNING) {
-            Log.d("MonitorSetupActivity", "Tentativo bind da MonitorSetupActivity");
-            bindService(new Intent(getApplicationContext(), MusicService.class), musicServiceConnection, Context.BIND_ABOVE_CLIENT);
-        }
-    }
-
-    protected void onPause() {
-        /*
-         * eseguo il bind con il music service se è avviato
-         */
-        Log.d("MonitorSetupActivity", "onPause MonitorSetupActivity");
-        if (musicServiceBinder != null) {
-            unbindService(musicServiceConnection);
-            musicServiceBinder = null;
-        }
-        super.onPause();
-    }
-
     private final ServiceConnection musicServiceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder binder) {
@@ -169,6 +133,38 @@ public class MonitorSetupActivity extends Activity {
         public void onServiceDisconnected(ComponentName name) {
         }
     };
+
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.monitor_setup_activity_layout);
+        //TODO SISTEMARE MEGLIO
+        if (getActionBar() != null)
+            getActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    protected void onResume() {
+        super.onResume();
+        /*
+         * eseguo il bind con il music service se è avviato
+         */
+        if (MusicService.RUNNING) {
+            Log.d("MonitorSetupActivity", "Tentativo bind da MonitorSetupActivity");
+            bindService(new Intent(getApplicationContext(), MusicService.class), musicServiceConnection, Context.BIND_ABOVE_CLIENT);
+        }
+    }
+
+    protected void onPause() {
+        /*
+         * eseguo il bind con il music service se è avviato
+         */
+        Log.d("MonitorSetupActivity", "onPause MonitorSetupActivity");
+        if (musicServiceBinder != null) {
+            unbindService(musicServiceConnection);
+            musicServiceBinder = null;
+        }
+        super.onPause();
+    }
 
     /*
      * inizializzazione pannello controlli per una song con una traccia stereo

@@ -1,9 +1,5 @@
 #include "Mixer.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <utility>        // swap
-#include <algorithm>    // max, min
 #include "log.h"
 
 Mixer::Mixer(SongType songType, int samplingFrequency) {
@@ -76,6 +72,8 @@ void Mixer::setTrackVolume(int trackNumber, float volumeL, float volumeR) {
             track4L = volumeL;
             track4R = volumeR;
             break;
+        default:
+            int nothing=0;
     }
 }
 
@@ -93,8 +91,9 @@ float Mixer::getTrackVolumeL(int trackNumber) {
             return track3L;
         case 4:
             return track4L;
+        default:
+            return -1;
     }
-    return -1;
 }
 
 float Mixer::getTrackVolumeR(int trackNumber) {
@@ -107,8 +106,9 @@ float Mixer::getTrackVolumeR(int trackNumber) {
             return track3R;
         case 4:
             return track4R;
+        default:
+            return -1;
     }
-    return -1;
 }
 
 int Mixer::getChannelEnabled(int channel) {
@@ -204,7 +204,7 @@ void MixerProcessor4M::process(audio::AudioBuffer (&buffers)[4], audio::AudioBuf
     auto &inputBuffer_2 = mixer->trackEnabled[1] ? buffers[mixer->trackMap[1]] : silence;
     auto &inputBuffer_3 = mixer->trackEnabled[2] ? buffers[mixer->trackMap[2]] : silence;
     auto &inputBuffer_4 = mixer->trackEnabled[3] ? buffers[mixer->trackMap[3]] : silence;
-    
+
     for (unsigned int i = 0; i < outLeft.size(); i++) {
 
         outLeft[i] = (inputBuffer_1[i] * this->mixer->track1L) +
