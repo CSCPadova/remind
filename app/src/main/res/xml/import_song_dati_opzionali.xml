@@ -55,7 +55,7 @@
     </PreferenceCategory>
     
     <PreferenceCategory android:title="@string/categoria_4_importazione" >
-        <it.unipd.dei.esp1314.magnetophone.ImageViewPreference android:key="immagineImportazioneBrano" />
+        <unipd.dei.magnetophone.ImageViewPreference android:key="immagineImportazioneBrano" />
     </PreferenceCategory>
 
     <Preference

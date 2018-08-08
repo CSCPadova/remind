@@ -1,16 +1,16 @@
 package unipd.dei.magnetophone;
 
-import android.app.ActionBar;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -24,7 +24,7 @@ import java.io.File;
  * Activity che realizza lo slide show delle foto della song a tutto schermo
  */
 
-public class SlideShowActivity extends FragmentActivity {
+public class SlideShowActivity extends AppCompatActivity {
 
     private static Song slideSong;
     /**
@@ -57,15 +57,16 @@ public class SlideShowActivity extends FragmentActivity {
 
         mDemoCollectionPagerAdapter = new DemoCollectionPagerAdapter(getSupportFragmentManager());
 
+        //TODO GASPA: VEDERE SE CRASH
         // Set up action bar.
-        final ActionBar actionBar = getActionBar();
+        final ActionBar actionBar = getSupportActionBar();
 
         //TODO vedere se è possibile far vedere direttamente l'index desiderato
 
         // Specify that the Home button should show an "Up" caret, indicating that touching the
         // button will take the user one step up in the application's hierarchy.
-        if (actionBar!=null)
-            actionBar.setDisplayHomeAsUpEnabled(true);
+
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         // Set up the ViewPager, attaching the adapter.
         mViewPager = findViewById(R.id.pager);

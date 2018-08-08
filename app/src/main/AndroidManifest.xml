@@ -4,7 +4,7 @@
 
     <uses-sdk
         android:minSdkVersion="16"
-        android:targetSdkVersion="19" />
+        android:targetSdkVersion="28" />
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -14,7 +14,8 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:largeHeap="true"
-        android:theme="@style/AppTheme.SettingsTheme">
+        android:theme="@style/AppBaseTheme">
+        <!--android:theme="@style/AppTheme.SettingsTheme">-->
         <!--android:theme="@style/AppTheme"-->
         <service
             android:name="unipd.dei.magnetophone.MusicService"
@@ -24,7 +25,8 @@
         <activity
             android:name="unipd.dei.magnetophone.MagnetophoneActivity"
             android:screenOrientation="landscape"
-            android:theme="@style/AppFullScreenTheme">
+            android:theme="@style/Theme.AppCompat.Light">
+            <!--android:theme="@style/AppFullScreenTheme">-->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -35,20 +37,25 @@
             android:name="unipd.dei.magnetophone.SettingsActivity"
             android:label="@string/title_activity_settings"
             android:screenOrientation="landscape"
-            android:theme="@style/AppTheme.SettingsTheme"></activity>
+            android:theme="@style/AppBaseTheme"></activity>
+        <!--android:theme="@style/AppTheme.SettingsTheme">-->
         <activity
             android:name="unipd.dei.magnetophone.SongList"
-            android:label="@string/title_activity_library"></activity>
+            android:label="@string/title_activity_library"
+            android:theme="@style/Theme.AppCompat.Light"></activity>
         <activity
             android:name="unipd.dei.magnetophone.SingleSongSettingsActivity"
-            android:label="@string/title_activity_single_song_settings"></activity>
+            android:label="@string/title_activity_single_song_settings"
+            android:theme="@style/Theme.AppCompat.Light"></activity>
         <activity
             android:name="unipd.dei.magnetophone.ImportSongActivity"
             android:label="@string/title_activity_import_song"
-            android:screenOrientation="landscape"></activity>
+            android:screenOrientation="landscape"
+            android:theme="@style/Theme.AppCompat.Light"></activity>
         <activity
             android:name="unipd.dei.magnetophone.AudioFilePickerActivity"
-            android:label="@string/title_activity_audio_file_picker"></activity>
+            android:label="@string/title_activity_audio_file_picker"
+            android:theme="@style/Theme.AppCompat.Light"></activity>
 
         <!-- I didn't find it
         <activity
@@ -59,10 +66,12 @@
         <activity
             android:name="unipd.dei.magnetophone.SongListActivity"
             android:label="@string/title_activity_library"
-            android:screenOrientation="landscape"></activity>
+            android:screenOrientation="landscape"
+            android:theme="@style/Theme.AppCompat.Light"></activity>
         <activity
             android:name="unipd.dei.magnetophone.SongDetailActivity"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:theme="@style/Theme.AppCompat.Light">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".SongListActivity" />
@@ -70,11 +79,15 @@
         <activity
             android:name="unipd.dei.magnetophone.MonitorSetupActivity"
             android:label="@string/monitor_setup_label"
-            android:screenOrientation="landscape"></activity>
+            android:screenOrientation="landscape"
+            android:theme="@style/Theme.AppCompat.Light"></activity>
         <activity
             android:name="unipd.dei.magnetophone.SlideShowActivity"
-            android:label="@string/app_name"></activity>
-        <activity android:name="unipd.dei.magnetophone.SearchActivity">
+            android:label="@string/app_name"
+            android:theme="@style/Theme.AppCompat.Light"></activity>
+        <activity
+            android:name="unipd.dei.magnetophone.SearchActivity"
+            android:theme="@style/Theme.AppCompat.Light">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
@@ -82,7 +95,8 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
-        <!-- I guess this is not impotant for a primary porting job
+
+        <!--
         <activity
             android:name="unipd.dei.whatsnew.main.MainActivity"
             android:label="@string/title_activity_main"

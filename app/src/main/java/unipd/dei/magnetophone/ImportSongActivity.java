@@ -12,6 +12,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDialog;
 import android.support.v7.preference.EditTextPreference;
 import android.support.v7.preference.ListPreference;
@@ -36,7 +37,7 @@ import unipd.dei.magnetophone.Song.Track;
  * Una volta confermate le decisioni, si salveranno i dati sul database in maniera permanente.
  */
 
-public class ImportSongActivity extends FragmentActivity {
+public class ImportSongActivity extends AppCompatActivity {
 
     private static int RESULT_LOAD_AUDIO_FILE = 2;    //Codice per l'intent di scelta brano
     private static int INDEX_OF_TRACK;                //indice della track che l'utente sta attulmente scegliendo
@@ -89,9 +90,9 @@ public class ImportSongActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_import_song);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //Cambio titolo all'action bar
-        getActionBar().setTitle(getString(R.string.action_bar_campi_obbligatori_importazione));
+        getSupportActionBar().setTitle(getString(R.string.action_bar_campi_obbligatori_importazione));
 
         if (savedInstanceState == null) {
             obligatoryFrag = new ObligatoryFragment();

@@ -19,23 +19,24 @@ import java.util.LinkedList;
 
 public class Song {
     private static final String INVALID = "[INVALID]";
-    private String author; // nome dell'autore della canzone
-    private String title; // nome della canzone
-    private String year; // anno di pubblicazione
+    //valori =INVALID per mia scelta arbitraria
+    private String author=INVALID; // nome dell'autore della canzone
+    private String title=INVALID; // nome della canzone
+    private String year=INVALID; // anno di pubblicazione
     private float speed; // velocità di riproduzione, anche nota come Tape
     // Transfer Rate
-    private String equalization;// equalizzazione
-    private String signature;// una sigla che va con la song
-    private String provenance;// fondo, archivio o altro luogo di provenienza
+    private String equalization=INVALID;// equalizzazione
+    private String signature=INVALID;// una sigla che va con la song
+    private String provenance=INVALID;// fondo, archivio o altro luogo di provenienza
     // della song
     private float duration;// durata della song in secondi e millisecondi
-    private String extension;// estensione del file delle track che compongono
+    private String extension=INVALID;// estensione del file delle track che compongono
     private int bitdepth;// profondità di bit utilizzata per il singolo sample
     // della canzone, per noi 16
     private int sampleRate;// numero di sample letti al secondo per la canzone,
-    private String tapeWidth; // larghezza del nastro, sarà 1/4, 1/2 o 1 inch
+    private String tapeWidth=INVALID; // larghezza del nastro, sarà 1/4, 1/2 o 1 inch
     // la song, ad esempio .wav
-    private String description;// descrizione legata alla song
+    private String description=INVALID;// descrizione legata alla song
     private int xmlref; // id di riferimento all'xml associato
     // es. 96 kHz
     private int songId; // id di riferimento della song nel database
@@ -90,8 +91,8 @@ public class Song {
      * Costruttore della canzone stereo (2 tracce)
      *
      * @param i : id della song
-     * @param t : prima traccia della song
-     * @param t : seconda traccia della song
+     * @param track : prima traccia della song
+     * @param track2 : seconda traccia della song
      */
     public Song(int i, String track, String track2) {
         this.songId = i;
@@ -251,9 +252,9 @@ public class Song {
 
             s = new Song(id, leftPath, leftPath2, rightPath, rightPath2);
         }
-        //s.setTitle(title);
-        //s.setAuthor(author);
-        //s.setYear(year);
+        s.setTitle(title);
+        s.setAuthor(author);
+        s.setYear(year);
         s.setSpeed(speed);
         s.setEqualization(equalization);
 
@@ -344,6 +345,8 @@ public class Song {
     }
 
     public String getYear() {
+        if(year==null)
+            return "0000";
         return year;
     }
 
@@ -527,7 +530,7 @@ public class Song {
      * inserisce i metadati della track nella song
      *
      * @param p path della traccia
-     * @param i indice che si desidera far avere alla traccia
+     * @param ind indice che si desidera far avere alla traccia
      */
     public void setTrack(String p, int ind) {
         if (p != null) {

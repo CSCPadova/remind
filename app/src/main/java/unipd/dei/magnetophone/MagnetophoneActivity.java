@@ -32,6 +32,9 @@ public class MagnetophoneActivity extends AppCompatActivity {
         Log.d("MagnetophoneActivity", "oncreate MagnetophoneActivity");
         setContentView(R.layout.activity_magnetophone);
 
+        getSupportActionBar().hide();
+
+
         canvasView = (MagnetoCanvasView) findViewById(R.id.canvas);
         videoView = (VideoView) findViewById(R.id.video);
 
@@ -42,6 +45,10 @@ public class MagnetophoneActivity extends AppCompatActivity {
         startService(new Intent(this, MusicService.class));
         player.setContext(this);
 
+        //SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        //SharedPreferences.Editor editor = sharedPref.edit();
+        //editor.putBoolean("ImportareImpostazioni", true);
+        //editor.commit();
 
         isStoragePermissionGranted();
     }

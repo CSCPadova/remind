@@ -15,9 +15,9 @@ import android.content.SharedPreferences.Editor;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDialog;
 import android.support.v7.app.AppCompatDialogFragment;
 import android.support.v7.widget.SearchView;
@@ -35,12 +35,7 @@ import android.widget.Toast;
 
 import java.util.LinkedList;
 
-//import android.app.AlertDialog;
-//import android.app.Dialog;
-//import android.app.DialogFragment;
-
-
-public class SongListActivity extends FragmentActivity implements
+public class SongListActivity extends AppCompatActivity implements
         SongListFragment.Callbacks {
 
     /**
@@ -111,8 +106,7 @@ public class SongListActivity extends FragmentActivity implements
 
         setContentView(R.layout.activity_song_twopane);
 
-        if (getActionBar() != null)
-            getActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         if (findViewById(R.id.song_detail_container) != null) //se siamo con 2 fragment
         {
@@ -359,12 +353,15 @@ public class SongListActivity extends FragmentActivity implements
 
         //prendo l'oggetto "widget di ricerca"
         MenuItem searchItem = menu.findItem(R.id.ic_action_search);
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+
+        //TODO GASPA: DA SISTEMARE
+        //SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         //informo il sistema che la classe SearchActivity si preoccupa della gestione della ricerca
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(
-                new ComponentName("it.unipd.dei.esp1314.magnetophone", SearchActivity.class.getName())));
-        searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
-        searchView.setSubmitButtonEnabled(true);
+        //searchView.setSearchableInfo(searchManager.getSearchableInfo(
+                //new ComponentName("it.unipd.dei.esp1314.magnetophone", SearchActivity.class.getName())));
+        //        new ComponentName("unipd.dei.magnetophone", SearchActivity.class.getName())));
+        //searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
+        //searchView.setSubmitButtonEnabled(true);
 
         return super.onCreateOptionsMenu(menu);
     }

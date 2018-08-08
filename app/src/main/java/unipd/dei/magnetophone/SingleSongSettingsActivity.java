@@ -15,6 +15,7 @@ import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
+import android.support.v7.app.AppCompatActivity;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.view.KeyEvent;
@@ -41,14 +42,14 @@ import android.widget.Toast;
  * Le modifiche fatte saranno salvate direttamente su database in maniera permanente.
  */
 
-public class SingleSongSettingsActivity extends PreferenceActivity {
+public class SingleSongSettingsActivity extends AppCompatActivity {
     private static int MAX_CHARACTER = 30;            //Numero massimo di caratteri per l'inserimento del nome dell'autore e della canzone
     private SettingsFragment frag;                    //Fragment che contiene la lista
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         frag = new SettingsFragment();
         getFragmentManager().beginTransaction().replace(android.R.id.content, frag).commit();
     }
@@ -235,7 +236,7 @@ public class SingleSongSettingsActivity extends PreferenceActivity {
             prefTapeWidth.setValue(songToUpdate.getTapeWidth());
 
             //setto i contenuti predefiniti dei testi (quelli che si aprono in popup)
-            if (!songToUpdate.getYear().equals(getString(R.string.sconosciuto)))
+            if (songToUpdate!=null && !songToUpdate.getYear().equals(getString(R.string.sconosciuto)))
                 prefYear.setText(songToUpdate.getYear());
             else
                 prefYear.setText("");

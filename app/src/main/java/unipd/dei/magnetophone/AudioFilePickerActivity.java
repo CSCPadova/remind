@@ -8,6 +8,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -32,7 +33,7 @@ import java.util.List;
  * conferma scelta del file.
  * Se sto gia' riproducendo con il magnetofono, il player non parte per evitare di disturbare l'ascolto.
  */
-public class AudioFilePickerActivity extends Activity {
+public class AudioFilePickerActivity extends AppCompatActivity {
     private String fileFormatFilter = ".wav";                //formato dei file da filtrare
     private ListView listView;                                //UI lista
     private String fileName;                                //Path assoluto del file scelto
@@ -45,7 +46,7 @@ public class AudioFilePickerActivity extends Activity {
         setContentView(R.layout.activity_audio_file_picker);
 
         //Permetto la pressione di back nell'action bar
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         listView = (ListView) findViewById(R.id.fileList);
 

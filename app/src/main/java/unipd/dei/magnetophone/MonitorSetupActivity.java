@@ -1,12 +1,12 @@
 package unipd.dei.magnetophone;
 
-import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 import unipd.dei.magnetophone.MusicService.MusicServiceBinder;
 
-public class MonitorSetupActivity extends Activity {
+public class MonitorSetupActivity extends AppCompatActivity {
     private final float VOLUME_SEEKBAR_MAX_VALUE = 100;
     protected MusicServiceBinder musicServiceBinder;
     private TextView trackNamesTextViews[] = new TextView[4];
@@ -139,8 +139,7 @@ public class MonitorSetupActivity extends Activity {
 
         setContentView(R.layout.monitor_setup_activity_layout);
         //TODO SISTEMARE MEGLIO
-        if (getActionBar() != null)
-            getActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     protected void onResume() {

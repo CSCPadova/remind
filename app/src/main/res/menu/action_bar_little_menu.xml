@@ -12,6 +12,4 @@
 	    android:icon="@drawable/ic_action_refresh"
 	    android:title="@string/monitor_setup_option"
 	    android:showAsAction="ifRoom"/>
-    
-
 </menu>

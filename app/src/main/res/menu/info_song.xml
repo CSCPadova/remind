@@ -1,6 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="it.unipd.dei.esp1314.magnetophone.InfoSongActivity" >
+    tools:context="unipd.dei.magnetophone.InfoSongActivity" >
 
     <item
         android:id="@+id/action_settings"

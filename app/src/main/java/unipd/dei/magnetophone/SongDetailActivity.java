@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NavUtils;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -17,7 +18,7 @@ import android.view.View;
  * This activity is mostly just a 'shell' activity containing nothing more than
  * a {@link SongDetailFragment}.
  */
-public class SongDetailActivity extends FragmentActivity {
+public class SongDetailActivity extends AppCompatActivity {
 
 
     @Override
@@ -25,8 +26,7 @@ public class SongDetailActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_song_detail);
 
-        if (getActionBar() != null)
-            getActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // http://developer.android.com/guide/components/fragments.html
 

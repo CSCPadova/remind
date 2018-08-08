@@ -11,6 +11,7 @@ import android.os.Environment;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDialog;
 import android.support.v7.app.AppCompatDialogFragment;
 import android.support.v7.preference.CheckBoxPreference;
@@ -38,7 +39,7 @@ import java.util.LinkedList;
  * •esportare il database in formato xml nella directory di riferimento
  */
 
-public class SettingsActivity extends FragmentActivity {
+public class SettingsActivity extends AppCompatActivity {
     private static CheckBoxPreference prefAdvancedOptions;
     // preference in un activity e' deprecato
     //	private Spinner language_spinner;
@@ -96,8 +97,7 @@ public class SettingsActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //poniamo la possibilità sulla action bar del tasto indietro
-        if (getActionBar() != null)
-            getActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         imp = new XmlImport();
         //ci creiamo il nostro fragment

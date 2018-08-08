@@ -7,6 +7,6 @@
 	    android:layout_height="match_parent"
 	    android:layout_marginLeft="16dp"
 	    android:layout_marginRight="16dp"
-	    tools:context="it.unipd.dei.esp1314.magnetophone.SongListActivity"
+	    tools:context="unipd.dei.magnetophone.SongListActivity"
     	tools:layout="@android:layout/list_content" 
 	    />

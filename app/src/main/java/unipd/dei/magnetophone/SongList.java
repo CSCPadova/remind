@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v7.app.AppCompatActivity;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
@@ -51,7 +52,7 @@ import java.util.LinkedList;
  * Tutti i caratteri nella chiave sono minuscoli
  */
 
-public class SongList extends Activity {
+public class SongList extends AppCompatActivity {
     private static long lastModified;
     private LinkedList<Song> finalList;            //Lista di Song caricate dal database, passate all'adapter
     private ListView listView;                    //Layout della lista definito in list_layout
@@ -65,9 +66,7 @@ public class SongList extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.list_layout);
-
-        if(getActionBar()!=null)
-            getActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         imp = new XmlImport();
 
