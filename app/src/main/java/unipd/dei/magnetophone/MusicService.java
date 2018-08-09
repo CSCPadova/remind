@@ -1,10 +1,14 @@
 package unipd.dei.magnetophone;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
+import android.os.Build;
+import android.os.Environment;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -17,6 +21,8 @@ public class MusicService extends Service {
     public static int PLAYBACK_STATE_INITIALIZED = 0;
     public static int PLAYBACK_STATE_PAUSED = 1;
     public static int PLAYBACK_STATE_PLAYING = 2;
+
+    public static final String EXT_STORAGE_EQU_FOLDER = "MagnetophoneEqu";
 
     static {
         System.loadLibrary("native-player");
@@ -33,7 +39,7 @@ public class MusicService extends Service {
 
     public native void init();
 
-    public native void loadSong(String paths[], int songType, int songSpeed, String equalization);
+    public native void loadSong(String paths[], int songType, int songSpeed, String equalization, String equPath);
 
     public native void unloadSong();
 
@@ -85,6 +91,7 @@ public class MusicService extends Service {
                 .setContentText("magnetofono in riproduzione")
                 .setSmallIcon(R.drawable.ic_launcher)
                 .setContentIntent(pendingIntent).build();
+
         init();
         MusicService.RUNNING = true;
     }
@@ -217,7 +224,9 @@ public class MusicService extends Service {
 
             currentSpeed = Song.getEnumSpeed(currentSong.getSpeed());
             Log.d("MusicService", "speed " + currentSpeed.getValue());
-            MusicService.this.loadSong(pathsArray, songType.getValue(), currentSpeed.getValue(), playerEqualization.name());
+
+            String outDir = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + EXT_STORAGE_EQU_FOLDER;
+            MusicService.this.loadSong(pathsArray, songType.getValue(), currentSpeed.getValue(), playerEqualization.name(), outDir);
         }
 
         public void addOnTimeUpdateListener(OnTimeUpdateListener l) {
@@ -232,8 +241,18 @@ public class MusicService extends Service {
             return MusicService.this.getTime();
         }
 
+        public static final String NOTIFICATION_CHANNEL_ID_SERVICE = "dunipd.dei.magnetophone.MusicService";
+        public static final String NOTIFICATION_CHANNEL_ID_INFO = "com.package.download_info";
+
         public void startForeground() {
-            MusicService.this.startForeground(ONGOING_NOTIFICATION_ID, not);
+            //MusicService.this.startForeground(ONGOING_NOTIFICATION_ID, not);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                nm.createNotificationChannel(new NotificationChannel(NOTIFICATION_CHANNEL_ID_SERVICE, "App Service", NotificationManager.IMPORTANCE_DEFAULT));
+            } else {
+                MusicService.this.startForeground(1, not);
+            }
         }
 
         public void stopForeground() {

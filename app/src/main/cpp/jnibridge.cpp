@@ -95,13 +95,14 @@ JNIEXPORT void JNICALL Java_unipd_dei_magnetophone_MusicService_loadSong(JNIEnv 
                                                                          jobjectArray pathsArray,
                                                                          jint songTypeNum,
                                                                          jint songSpeedNum,
-                                                                         jstring songEquStr) {
+                                                                         jstring songEquStr,
+                                                                         jstring equPath) {
     if (engine == nullptr) {
         LOGE("Engine is null, you must call createEngine before calling this method");
         return;
     }
 
-    engine->loadSong(env, clazz, pathsArray, songTypeNum, songSpeedNum, songEquStr);
+    engine->loadSong(env, clazz, pathsArray, songTypeNum, songSpeedNum, songEquStr, equPath);
 }
 
 JNIEXPORT void JNICALL
@@ -123,7 +124,7 @@ Java_unipd_dei_magnetophone_MusicService_setEqualization(JNIEnv *env, jclass cla
     }
 
     SongEqualization desiredEqu = engine->convertJavaEqualization(env, equal);
-    engine->setFFTFilters(engine->getSongEqu(), desiredEqu);
+    engine->setFFTFilters(env, engine->getSongEqu(), desiredEqu);
 }
 
 JNIEXPORT void JNICALL

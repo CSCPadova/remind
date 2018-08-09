@@ -35,23 +35,185 @@ void NativePlayer::closeOutputStream() {
     }
 }
 
-void NativePlayer::setFFTFilters(SongEqualization inputEqu, SongEqualization outputEqu) {
+void
+NativePlayer::setFFTFilters(JNIEnv *env, SongEqualization inputEqu, SongEqualization outputEqu) {
+//#################     ORIGINALE       ######################
+//    constexpr int size = audio::AudioBufferSize;
+//    std::vector<float> filter(size, 0.0f);
+//
+//    //--- filtri passa basso temporanei per test ---
+//    int to = outputEqu == SongEqualization::CCIR ? size / 12 :
+//             outputEqu == SongEqualization::NAB ? size / 4 : size;
+//
+//    for (int i = 0; i < to; i++) {
+//        filter[i] = 1.0f;
+//    }
+//    //----------------------------------------------
+//
+//    fftconvolver[0].setFilter(filter.data(), size);
+//    fftconvolver[1].setFilter(filter.data(), size);
+//    fftconvolver[2].setFilter(filter.data(), size);
+//    fftconvolver[3].setFilter(filter.data(), size);
+
+    //################      MOD         #################
+
+    // --- Crea WaveReader ---
+
+    //strcat(eqPath, "/NAB_CCIR_Approximated.wav");
+
+    //char const *path[1] = {nullptr};
+    //path[0] = buf;
+    //WaveReader *wavImpRes = new WaveReader(path, 1);
+
+    //if (!wavImpRes->isValid()) {
+    //    LOGE("native-player loadSong: Errore nel creare WaveReader");
+    //    return;
+    //}
+    //SongSpeed SongSpeed;
+    //RateConverter *impResRateConverter = new RateConverter(songSpeed, 1);
+    //audio::InputStream impResp;
+
+    //audio::connect(wavImpRes->outStreams[0], impResRateConverter->inStreams[0]);
+    //audio::connect(impResRateConverter->outStreams[0], impResp);
+
+    //filtro base neutro
     constexpr int size = audio::AudioBufferSize;
-    std::vector<float> filter(size, 0.0f);
-
-    //--- filtri passa basso temporanei per test ---
-    int to = outputEqu == SongEqualization::CCIR ? size / 12 :
-             outputEqu == SongEqualization::NAB ? size / 4 : size;
-
-    for (int i = 0; i < to; i++) {
+    std::vector<float> filter(size, 1.0f);
+    for (int i = 0; i < size; i++) {
         filter[i] = 1.0f;
     }
-    //----------------------------------------------
 
-    fftconvolver[0].setFilter(filter.data(), size);
-    fftconvolver[1].setFilter(filter.data(), size);
-    fftconvolver[2].setFilter(filter.data(), size);
-    fftconvolver[3].setFilter(filter.data(), size);
+    char eqTOLoad[2000];
+    strcpy(eqTOLoad,eqPath);
+
+    //cerca le risposte impulsive per le varie combinazioni
+    //se non trova il file viene dato per scontato che la risposta impulsiva sia neutra.
+    //prima genera il nome del file che serve
+    switch (songSpeedOriginal) {
+        case SONG_SPEED_3_75:
+            strcat(eqTOLoad, "/3.75_");
+            break;
+        case SONG_SPEED_7_5:
+            strcat(eqTOLoad, "/7.5_");
+            break;
+        case SONG_SPEED_15:
+            strcat(eqTOLoad, "/15_");
+            break;
+        case SONG_SPEED_30:
+            strcat(eqTOLoad, "/30_");
+            break;
+        default:
+            //non dovrebbe mai andar qui
+            return;
+    }
+
+    switch (songEquOriginal) {
+        case SongEqualization::CCIR:
+            strcat(eqTOLoad, "CCIR_");
+            break;
+        case SongEqualization::NAB:
+            strcat(eqTOLoad, "NAB_");
+            break;
+        case SongEqualization::FLAT:
+            strcat(eqTOLoad, "FLAT_");
+            break;
+    }
+
+    switch (outputEqu) {
+        case SongEqualization::CCIR:
+            strcat(eqTOLoad, "CCIR_");
+            break;
+        case SongEqualization::NAB:
+            strcat(eqTOLoad, "NAB_");
+            break;
+        case SongEqualization::FLAT:
+            strcat(eqTOLoad, "FLAT_");
+            break;
+    }
+
+    switch (songSpeed) {
+        case SONG_SPEED_3_75:
+            strcat(eqTOLoad, "3.75");
+            break;
+        case SONG_SPEED_7_5:
+            strcat(eqTOLoad, "7.5");
+            break;
+        case SONG_SPEED_15:
+            strcat(eqTOLoad, "15");
+            break;
+        case SONG_SPEED_30:
+            strcat(eqTOLoad, "30");
+            break;
+        default:
+            //non dovrebbe mai andar qui
+            return;
+    }
+
+    strcat(eqTOLoad, ".wav");
+
+    int fd = open(eqTOLoad, O_RDONLY);
+    //se non trova il file allora carica la risposta predefinita
+    if(fd==-1){
+        LOGD("File %s non trovato: caricamento filtro di default",eqTOLoad);
+        fftconvolver[0].setFilter(filter.data(), size);
+        fftconvolver[1].setFilter(filter.data(), size);
+        fftconvolver[2].setFilter(filter.data(), size);
+        fftconvolver[3].setFilter(filter.data(), size);
+        return;
+    }
+
+//    LOGD("File %s trovato: caricamento filtro in corso",eqTOLoad);
+//    //altrimenti ciude il file e continua
+//    close(fd);
+//
+//    char const *paths[1] = {nullptr};
+//    paths[0] = eqTOLoad;
+//    WaveReader *wavImpRes = new WaveReader(paths, 1);
+//
+//    RateConverter *impResRateConverter = new RateConverter(songSpeedOriginal, 1);
+//    impResRateConverter->setSpeed(songSpeed);
+//
+//    audio::InputStream impResp;
+//
+//    audio::connect(wavImpRes->outStreams[0], impResRateConverter->inStreams[0]);
+//    audio::connect(impResRateConverter->outStreams[0], impResp);
+//
+//    //i sampling rate devono combaciare
+//    if(wavImpRes->getSamplerate()!=currentSampleRate)
+//    {
+//        LOGD("Adeguamento sample rate");
+//
+//    } else
+//    {
+//
+//    }
+//
+//    delete impResRateConverter;
+//    delete wavImpRes;
+
+    //################      TEST VARI       ##############
+
+//    int size = sizeof(CCIR_NAB_Stable_) / sizeof(CCIR_NAB_Stable_[0]);
+//    std::vector<float> filter(size);
+//    int i;
+//    float max = 0;
+//    for (i = 0; i < size; i++) {
+//        if (CCIR_NAB_Stable_[i] > max)
+//            max = CCIR_NAB_Stable_[i];
+//        if (CCIR_NAB_Stable_[i] * -1 > max)
+//            max = CCIR_NAB_Stable_[i] * -1;
+//    }
+//    max = 1 / max;
+//    for (i = 0; i < size; i++) {
+//        filter[i] = CCIR_NAB_Stable_[i] * max;
+//    }
+//    //LOGD("DEBUG %.5f",CCIR_NAB_Stable[i]);
+//    //----------------------------------------------
+//
+//    fftconvolver[0].setFilter(filter.data(), size);
+//    fftconvolver[1].setFilter(filter.data(), size);
+//    fftconvolver[2].setFilter(filter.data(), size);
+//    fftconvolver[3].setFilter(filter.data(), size);
 }
 
 SongEqualization NativePlayer::convertJavaEqualization(JNIEnv *env, jstring javaEqu) {
@@ -306,6 +468,9 @@ oboe::DataCallbackResult NativePlayer::onAudioReady(
         oboe::AudioStream *oboeStream,
         void *audioData,
         int32_t numFrames) {
+
+    if (callback_cpu_ids_.size() > 0 && !is_thread_affinity_set_) setThreadAffinity();
+
     //controlla che il buffer non sia mai stato vuoto
     int32_t underrunCount = (oboeStream->getXRunCount()).value();
     aaudio_result_t bufferSize = oboeStream->getBufferSizeInFrames();
@@ -347,19 +512,22 @@ oboe::DataCallbackResult NativePlayer::onAudioReady(
     int16_t *temp = static_cast<int16_t *>(audioData);
 
     int i = 0;
+    float max = 0;
 
     if (!intermediateAudioBuffer.empty() &&
         intermediateAudioBuffer.size() > numFrames * currentSampleChannels) {
 
         for (i = 0; i < numFrames * 2; i++) {
-            temp[i] = intermediateAudioBuffer.at(i);
+            temp[i] = intermediateAudioBuffer.at(i) * FINAL_VOLUME;
+            if (max < abs(temp[i]))
+                max = temp[i];
         }
         intermediateAudioBuffer.erase(intermediateAudioBuffer.begin(),
                                       intermediateAudioBuffer.begin() + i);
     }
 
     //TODO decidere se tenere un numero magico
-    intermAudioBufferFillValue = numFrames * 2 * 2 * 2;
+    intermAudioBufferFillValue = numFrames * 2 * 2 * 4;
 
     threadReadLock.unlock();
 
@@ -462,8 +630,10 @@ void NativePlayer::unloadSong() {
     playbackChange(0, false);
 }
 
-void NativePlayer::loadSong(JNIEnv *env, jclass clazz, jobjectArray pathsArray, jint songTypeNum,
-                            jint songSpeedNum, jstring songEquStr) {
+//TODO verificare che songSpeedNum sia il valore originale della canzone e non quello selezionato dlla manopola
+void
+NativePlayer::loadSong(JNIEnv *env, jclass clazz, jobjectArray pathsArray,
+                       jint songTypeNum, jint songSpeedNum, jstring songEquStr, jstring equPath) {
     if (playbackState != PLAYBACK_STATE_INITIALIZED)
         return;
 
@@ -485,6 +655,7 @@ void NativePlayer::loadSong(JNIEnv *env, jclass clazz, jobjectArray pathsArray, 
             songSpeed = SONG_SPEED_30;
             break;
     }
+    songSpeedOriginal = songSpeed;
 
     switch (songTypeNum) {
         case SONG_TYPE_1M:
@@ -504,9 +675,6 @@ void NativePlayer::loadSong(JNIEnv *env, jclass clazz, jobjectArray pathsArray, 
             ntracce = 4;
             break;
     }
-
-    songEqu = convertJavaEqualization(env, songEquStr);
-    setFFTFilters(songEqu, desiredEqu);
 
     // --- Crea WaveReader ---
     jstring string[4];
@@ -532,6 +700,17 @@ void NativePlayer::loadSong(JNIEnv *env, jclass clazz, jobjectArray pathsArray, 
     mixer = new Mixer(songType, songSampleRate);
 
     rateConverter = new RateConverter(songSpeed, ntracce);
+
+    songEqu = convertJavaEqualization(env, songEquStr);
+
+    songEquOriginal=songEqu;
+
+    //loadEquImpResp(env, songSampleRate, songSpeed, songEqu, equPath);
+    char const *pathsEQ[1] = {nullptr};
+    paths[0] = env->GetStringUTFChars(equPath, nullptr);
+    strcat(eqPath, paths[0]);
+    setFFTFilters(env, songEqu, desiredEqu);
+    env->ReleaseStringUTFChars(equPath, paths[0]);
 
     // --- Connessione dei filtri ---
     audio::connect(waveReader->outStreams[0], fftconvolver[0].input);
@@ -740,4 +919,34 @@ void NativePlayer::timeUpdate() {
 
     if (check == JNI_EDETACHED)
         jvm->DetachCurrentThread();
+}
+
+void NativePlayer::setThreadAffinity() {
+
+    pid_t current_thread_id = gettid();
+    cpu_set_t cpu_set;
+    CPU_ZERO(&cpu_set);
+
+    // If the callback cpu ids aren't specified then bind to the current cpu
+    if (callback_cpu_ids_.empty()) {
+        int current_cpu_id = sched_getcpu();
+        LOGD("Current CPU ID is %d", current_cpu_id);
+        CPU_SET(current_cpu_id, &cpu_set);
+    } else {
+
+        for (size_t i = 0; i < callback_cpu_ids_.size(); i++) {
+            int cpu_id = callback_cpu_ids_.at(i);
+            LOGD("CPU ID %d added to cores set", cpu_id);
+            CPU_SET(cpu_id, &cpu_set);
+        }
+    }
+
+    int result = sched_setaffinity(current_thread_id, sizeof(cpu_set_t), &cpu_set);
+    if (result == 0) {
+        LOGD("Thread affinity set");
+    } else {
+        LOGD("Error setting thread affinity. Error no: %d", result);
+    }
+
+    is_thread_affinity_set_ = true;
 }

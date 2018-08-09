@@ -1,3 +1,4 @@
+#include <liboboe/common/OboeDebug.h>
 #include "WaveReader.h"
 
 WaveReader::WaveReader(const char * paths[], int nPaths)

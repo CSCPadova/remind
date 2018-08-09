@@ -4,12 +4,13 @@
 #include <assert.h>
 #include <jni.h>
 #include "Mixer.h"
-#include "log.h"
 #include "RateConverter.h"
 #include "WaveReader.h"
 #include "fftconvolver.h"
 #include <aaudio/AAudio.h>
 #include <liboboe/AudioStream.h>
+#include <android/asset_manager.h>
+#include <android/asset_manager_jni.h>
 
 #define PLAYBACK_STATE_INITIALIZED 0
 #define PLAYBACK_STATE_STOPPED 1
@@ -30,6 +31,8 @@ class NativePlayer : oboe::AudioStreamCallback {
     int songSampleRate;
     int loadState;
 
+    float FINAL_VOLUME = 1.0f;
+
     bool songReady;
 
     double time;
@@ -37,7 +40,8 @@ class NativePlayer : oboe::AudioStreamCallback {
     double currentTime = 0; //tempo espresso in centesimi di secondo
 
     SongSpeed songSpeed;
-    SongEqualization songEqu, desiredEqu;
+    SongSpeed songSpeedOriginal;
+    SongEqualization songEquOriginal, songEqu, desiredEqu;
     FFTConvolver fftconvolver[4];
 
     WaveReader *waveReader = nullptr;
@@ -88,6 +92,7 @@ class NativePlayer : oboe::AudioStreamCallback {
 
 private:
 
+    char eqPath[2000];
 
     int32_t playStreamUnderrunCount_;
     std::vector<float> intermediateAudioBuffer;
@@ -103,6 +108,12 @@ private:
 
     void threadReadData();
 
+    // Performance options
+    void setThreadAffinity();
+
+    bool is_thread_affinity_set_ = false;
+    std::vector<int> callback_cpu_ids_;
+
 public:
     NativePlayer();
 
@@ -112,7 +123,7 @@ public:
 
     void play();
 
-    void setFFTFilters(SongEqualization inputEqu, SongEqualization outputEqu);
+    void setFFTFilters(JNIEnv *env, SongEqualization inputEqu, SongEqualization outputEqu);
 
     //SongEqualization convertJavaEqualization(const char *equName);
     SongEqualization convertJavaEqualization(JNIEnv *env, jstring javaEqu);
@@ -126,7 +137,7 @@ public:
     void unloadSong();
 
     void loadSong(JNIEnv *env, jclass clazz, jobjectArray pathsArray, jint songTypeNum,
-                  jint songSpeedNum, jstring songEquStr);
+                  jint songSpeedNum, jstring songEquStr, jstring equPath);
 
     void mixerSetTrackVolume(int trackNumber, float volumeL, float volumeR);
 

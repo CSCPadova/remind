@@ -1,7 +1,6 @@
 #ifndef WAVE_READER_H
 #define WAVE_READER_H
 #include "filterbase.h"
-#include "log.h"
 #include <libsndfile/sndfile.hh>
 #include <stdio.h>
 #include <sys/types.h>
