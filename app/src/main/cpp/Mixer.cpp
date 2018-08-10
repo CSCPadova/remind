@@ -181,6 +181,15 @@ void MixerProcessor1M::process(audio::AudioBuffer (&buffers)[4], audio::AudioBuf
 
 void MixerProcessor1S::process(audio::AudioBuffer (&buffers)[4], audio::AudioBuffer &outLeft,
                                audio::AudioBuffer &outRight) {
+    auto &inputBuffer_1 = mixer->trackEnabled[0] ? buffers[0] : silence;
+    auto &inputBuffer_2 = mixer->trackEnabled[1] ? buffers[1] : silence;
+
+    for (unsigned int i = 0; i < outLeft.size(); i++) {
+        outLeft[i] = (inputBuffer_1[i] * this->mixer->track1L) +
+                     (inputBuffer_2[i] * this->mixer->track2L);
+        outRight[i] = (inputBuffer_1[i] * this->mixer->track1R) +
+                      (inputBuffer_2[i] * this->mixer->track2R);
+    }
 }
 
 void MixerProcessor2M::process(audio::AudioBuffer (&buffers)[4], audio::AudioBuffer &outLeft,

@@ -41,7 +41,7 @@ class NativePlayer : oboe::AudioStreamCallback {
 
     SongSpeed songSpeed;
     SongSpeed songSpeedOriginal;
-    SongEqualization songEquOriginal, songEqu, desiredEqu;
+    SongEqualization EQOriginal, EQCurrent;
     FFTConvolver fftconvolver[4];
 
     WaveReader *waveReader = nullptr;
@@ -54,7 +54,7 @@ class NativePlayer : oboe::AudioStreamCallback {
     SongType songType;
     std::thread *fastThread = nullptr;
 
-    std::thread *getAudioDataThread = nullptr;
+    //std::thread *getAudioDataThread = nullptr;
 
     bool reverse;
 
@@ -94,6 +94,8 @@ private:
 
     char eqPath[2000];
 
+    std::vector<std::tuple<std::string, std::vector<float>>> loadedEQs;
+
     int32_t playStreamUnderrunCount_;
     std::vector<float> intermediateAudioBuffer;
     //quanto riempire il buffer?
@@ -106,7 +108,7 @@ private:
                                  int sampleChannels_,
                                  int sampleRate_);
 
-    void threadReadData();
+    //void threadReadData();
 
     // Performance options
     void setThreadAffinity();
@@ -123,12 +125,14 @@ public:
 
     void play();
 
-    void setFFTFilters(JNIEnv *env, SongEqualization inputEqu, SongEqualization outputEqu);
+    void setFFTFilters(SongEqualization newEqu);
 
     //SongEqualization convertJavaEqualization(const char *equName);
     SongEqualization convertJavaEqualization(JNIEnv *env, jstring javaEqu);
 
     SongEqualization getSongEqu();
+
+    SongEqualization getCurrentEqu();
 
     int getPlaybackState();
 

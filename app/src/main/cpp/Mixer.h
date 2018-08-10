@@ -110,11 +110,9 @@ public:
 
 class MixerProcessor2M : public MixerProcessor {
 private:
-    DelayBuffer leftDelayBuffer, rightDelayBuffer;
 public:
     MixerProcessor2M(Mixer *mixer)
-            : MixerProcessor(mixer), leftDelayBuffer(mixer->samplingFrequency * 8 / 1000),
-              rightDelayBuffer(mixer->samplingFrequency * 8 / 1000) {
+            : MixerProcessor(mixer) {
     }
 
     void process(audio::AudioBuffer (&buffers)[4], audio::AudioBuffer &outLeft,
@@ -123,18 +121,10 @@ public:
 
 class MixerProcessor4M : public MixerProcessor {
 private:
-    DelayBuffer leftFrontDelayBuffer, rightFrontDelayBuffer;
-    DelayBuffer leftBackDelayBuffer, rightBackDelayBuffer;
-    DelayBuffer reverb[3];
 public:
+
     MixerProcessor4M(Mixer *mixer)
-            : MixerProcessor(mixer), leftFrontDelayBuffer(mixer->samplingFrequency * 7 / 10000),
-              rightFrontDelayBuffer(
-                      mixer->samplingFrequency * 7 / 10000),
-              leftBackDelayBuffer(mixer->samplingFrequency * 7 / 10000), rightBackDelayBuffer(
-                    mixer->samplingFrequency * 7 / 10000), reverb
-                      {mixer->samplingFrequency * 44 / 1000, mixer->samplingFrequency * 40 / 1000,
-                       mixer->samplingFrequency * 38 / 1000} {
+    : MixerProcessor(mixer) {
     }
 
     ~MixerProcessor4M() {

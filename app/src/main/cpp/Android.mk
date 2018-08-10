@@ -14,20 +14,21 @@ LOCAL_MODULE    := native-player
 
 LOCAL_SRC_FILES := native-player.cpp
 LOCAL_SRC_FILES += Mixer.cpp
-LOCAL_SRC_FILES += Reverber.cpp
-LOCAL_SRC_FILES += QuadraphonicFilter.cpp
 LOCAL_SRC_FILES += audiostreams.cpp
 LOCAL_SRC_FILES += filterbase.cpp
-LOCAL_SRC_FILES += DelayBuffer.cpp
 LOCAL_SRC_FILES += RateConverter.cpp
 LOCAL_SRC_FILES += WaveReader.cpp
 LOCAL_SRC_FILES += fftconvolver.cpp
 LOCAL_SRC_FILES += audiocommon.cpp
 LOCAL_SRC_FILES += jnibridge.cpp
 
+#Classi tolte definitivamente dalla compilazione ma i file sono ancora presenti nel progetto
+#LOCAL_SRC_FILES += Reverber.cpp
+#LOCAL_SRC_FILES += QuadraphonicFilter.cpp
+#LOCAL_SRC_FILES += DelayBuffer.cpp
+
 # for native audio
 LOCAL_LDLIBS    := -lOpenSLES
-#LOCAL_LDLIBS    := -laaudio
 # for logging
 LOCAL_LDLIBS    += -llog
 # for native asset manager

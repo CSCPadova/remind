@@ -124,7 +124,7 @@ Java_unipd_dei_magnetophone_MusicService_setEqualization(JNIEnv *env, jclass cla
     }
 
     SongEqualization desiredEqu = engine->convertJavaEqualization(env, equal);
-    engine->setFFTFilters(env, engine->getSongEqu(), desiredEqu);
+    engine->setFFTFilters(desiredEqu);
 }
 
 JNIEXPORT void JNICALL
