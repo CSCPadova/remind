@@ -384,6 +384,8 @@ void NativePlayer::seek(double timeCentisec) {
     if (playbackState != PLAYBACK_STATE_STOPPED)
         return;
 
+    stop();
+
     /*
      * ++++++++ NOTA ++++++++++
      * Il problema è che i join sui filtri bloccano tutto finchè i loro thread
@@ -506,8 +508,9 @@ void NativePlayer::fastFunction() {
         timeUpdate();
         std::this_thread::sleep_for(dura);
     }
-    seek(currentTime);
+
     threadGo = false;
+    seek(currentTime);
 }
 
 //void NativePlayer::threadReadData() {
@@ -551,7 +554,8 @@ oboe::DataCallbackResult NativePlayer::onAudioReady(
         bufferSize += framesPerBurst_; // Increase buffer size by one burst
         shouldChangeBufferSize = true;
         //LOGD("UNDERRUN DETECTED");
-    } else if (bufferSizeSelection_ > 0 && (bufferSizeSelection_ * framesPerBurst_) != bufferSize) {
+    } else if (bufferSizeSelection_ > 0 &&
+               (bufferSizeSelection_ * framesPerBurst_) != bufferSize) {
 
         // If the buffer size selection has changed then update it here
         bufferSize = bufferSizeSelection_ * framesPerBurst_;
@@ -570,10 +574,15 @@ oboe::DataCallbackResult NativePlayer::onAudioReady(
     }
     int16_t *temp = static_cast<int16_t *>(audioData);
 
+    if (playbackState == PLAYBACK_STATE_STOPPED) {
+        //zeroing the audio buffer for silence
+        memset(temp, 0, sizeof(int16_t) * 2 * numFrames);
+        return oboe::DataCallbackResult::Continue;
+    }
+
     int i = 0;
     float max = 0;
-
-
+    
     if (!intermediateAudioBuffer.empty() &&
         intermediateAudioBuffer.size() > numFrames * currentSampleChannels) {
 
@@ -588,12 +597,8 @@ oboe::DataCallbackResult NativePlayer::onAudioReady(
 
     //TODO decidere se tenere un numero magico
     intermAudioBufferFillValue = numFrames * 2 * 2;
-    if(intermediateAudioBuffer.size()<intermAudioBufferFillValue)
+    if (intermediateAudioBuffer.size() < intermAudioBufferFillValue)
         playbackCallback();
-
-    //threadReadLock.unlock();
-
-    //calculateCurrentOutputLatencyMillis(stream, &currentOutputLatencyMillis_);
 
     return oboe::DataCallbackResult::Continue;
 }

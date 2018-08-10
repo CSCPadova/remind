@@ -22,6 +22,8 @@ import android.support.v7.preference.PreferenceScreen;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -108,7 +110,6 @@ public class SettingsActivity extends AppCompatActivity {
                 .replace(android.R.id.content, frag).commit();
 
     }
-
 
     //######################## PREFERENCE FRAGMENT #######################################
 

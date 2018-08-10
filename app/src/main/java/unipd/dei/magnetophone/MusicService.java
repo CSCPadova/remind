@@ -10,6 +10,8 @@ import android.os.Binder;
 import android.os.Build;
 import android.os.Environment;
 import android.os.IBinder;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
 
 import unipd.dei.magnetophone.Song.SongSpeed;
@@ -23,6 +25,8 @@ public class MusicService extends Service {
     public static int PLAYBACK_STATE_PLAYING = 2;
 
     public static final String EXT_STORAGE_EQU_FOLDER = "MagnetophoneEqu";
+
+    private NotificationCompat.Builder mBuilder;
 
     static {
         System.loadLibrary("native-player");
@@ -86,11 +90,13 @@ public class MusicService extends Service {
         notificationIntent.addCategory(Intent.CATEGORY_LAUNCHER);
         PendingIntent pendingIntent = PendingIntent.getActivity(MusicService.this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        not = new Notification.Builder(MusicService.this)
+        String channelID = getResources().getString(R.string.CHANNEL_ID);
+
+        mBuilder = new NotificationCompat.Builder(this, channelID)
+                .setSmallIcon(R.drawable.ic_launcher)
                 .setContentTitle("Magnetofono")
                 .setContentText("magnetofono in riproduzione")
-                .setSmallIcon(R.drawable.ic_launcher)
-                .setContentIntent(pendingIntent).build();
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
         init();
         MusicService.RUNNING = true;
@@ -197,6 +203,8 @@ public class MusicService extends Service {
 
         public void stop() {
             MusicService.this.stop();
+            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getBaseContext());
+            notificationManager.cancel(ONGOING_NOTIFICATION_ID);
         }
 
         public Song getSong() {
@@ -245,22 +253,20 @@ public class MusicService extends Service {
         public static final String NOTIFICATION_CHANNEL_ID_INFO = "com.package.download_info";
 
         public void startForeground() {
-            //MusicService.this.startForeground(ONGOING_NOTIFICATION_ID, not);
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-                nm.createNotificationChannel(new NotificationChannel(NOTIFICATION_CHANNEL_ID_SERVICE, "App Service", NotificationManager.IMPORTANCE_DEFAULT));
-            } else {
-                MusicService.this.startForeground(1, not);
-            }
+            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getBaseContext());
+            notificationManager.notify(ONGOING_NOTIFICATION_ID, mBuilder.build());
         }
 
         public void stopForeground() {
             MusicService.this.stopForeground(true);
+            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getBaseContext());
+            notificationManager.cancel(ONGOING_NOTIFICATION_ID);
         }
 
         public void stopService() {
             MusicService.this.stopSelf();
+            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getBaseContext());
+            notificationManager.cancel(ONGOING_NOTIFICATION_ID);
         }
 
         public void setEqualization(PlayerEqualization eq) {

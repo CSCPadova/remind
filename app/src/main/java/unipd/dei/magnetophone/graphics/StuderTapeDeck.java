@@ -184,7 +184,7 @@ public class StuderTapeDeck extends TapeDeck {
         uiButtons[0].setCallback(new ComponentCallback() {
             @Override
             public void stateChanged(UIComponent obj) {
-                player.stop();
+                //player.stop();
                 context.startActivity(new Intent(context, SettingsActivity.class));
             }
         });
@@ -193,7 +193,7 @@ public class StuderTapeDeck extends TapeDeck {
         uiButtons[1].setCallback(new ComponentCallback() {
             @Override
             public void stateChanged(UIComponent obj) {
-                player.stop();
+                //player.stop();
                 context.startActivity(new Intent(context, SongListActivity.class));
             }
         });
@@ -202,7 +202,7 @@ public class StuderTapeDeck extends TapeDeck {
         uiButtons[2].setCallback(new ComponentCallback() {
             @Override
             public void stateChanged(UIComponent obj) {
-                player.stop();
+                //player.stop();
                 if (songLoaded)
                     context.startActivity(new Intent(context, MonitorSetupActivity.class));
                 else
@@ -376,10 +376,12 @@ public class StuderTapeDeck extends TapeDeck {
      * @param multiplier Fattore moltiplicativo della velocità.
      */
     private void updateRotatingElementSpeed(float multiplier) {
-        float s = -multiplier * Song.getFloatSpeed(player.getCurrentSpeed()) * 2.54f;
+        if (player.getCurrentSpeed() != null) {
+            float s = -multiplier * Song.getFloatSpeed(player.getCurrentSpeed()) * 2.54f;
 
-        leftReel.setLinearSpeed(s);
-        rightReel.setLinearSpeed(s);
+            leftReel.setLinearSpeed(s);
+            rightReel.setLinearSpeed(s);
+        }
     }
 
     private void setLeds(int index) {
