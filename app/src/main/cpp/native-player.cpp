@@ -14,7 +14,6 @@ NativePlayer::NativePlayer() {
     currentPlaybackDeviceId = -1;
     currentSampleFormat = oboe::AudioFormat::Unspecified;
     currentSampleChannels = -1;
-    currentSampleRate = -1;
     playbackState = PLAYBACK_STATE_INITIALIZED;
 }
 
@@ -37,45 +36,6 @@ void NativePlayer::closeOutputStream() {
 
 void
 NativePlayer::setFFTFilters(JNIEnv *env, SongEqualization inputEqu, SongEqualization outputEqu) {
-//#################     ORIGINALE       ######################
-//    constexpr int size = audio::AudioBufferSize;
-//    std::vector<float> filter(size, 0.0f);
-//
-//    //--- filtri passa basso temporanei per test ---
-//    int to = outputEqu == SongEqualization::CCIR ? size / 12 :
-//             outputEqu == SongEqualization::NAB ? size / 4 : size;
-//
-//    for (int i = 0; i < to; i++) {
-//        filter[i] = 1.0f;
-//    }
-//    //----------------------------------------------
-//
-//    fftconvolver[0].setFilter(filter.data(), size);
-//    fftconvolver[1].setFilter(filter.data(), size);
-//    fftconvolver[2].setFilter(filter.data(), size);
-//    fftconvolver[3].setFilter(filter.data(), size);
-
-    //################      MOD         #################
-
-    // --- Crea WaveReader ---
-
-    //strcat(eqPath, "/NAB_CCIR_Approximated.wav");
-
-    //char const *path[1] = {nullptr};
-    //path[0] = buf;
-    //WaveReader *wavImpRes = new WaveReader(path, 1);
-
-    //if (!wavImpRes->isValid()) {
-    //    LOGE("native-player loadSong: Errore nel creare WaveReader");
-    //    return;
-    //}
-    //SongSpeed SongSpeed;
-    //RateConverter *impResRateConverter = new RateConverter(songSpeed, 1);
-    //audio::InputStream impResp;
-
-    //audio::connect(wavImpRes->outStreams[0], impResRateConverter->inStreams[0]);
-    //audio::connect(impResRateConverter->outStreams[0], impResp);
-
     //filtro base neutro
     constexpr int size = audio::AudioBufferSize;
     std::vector<float> filter(size, 1.0f);
@@ -84,7 +44,7 @@ NativePlayer::setFFTFilters(JNIEnv *env, SongEqualization inputEqu, SongEqualiza
     }
 
     char eqTOLoad[2000];
-    strcpy(eqTOLoad,eqPath);
+    strcpy(eqTOLoad, eqPath);
 
     //cerca le risposte impulsive per le varie combinazioni
     //se non trova il file viene dato per scontato che la risposta impulsiva sia neutra.
@@ -103,7 +63,7 @@ NativePlayer::setFFTFilters(JNIEnv *env, SongEqualization inputEqu, SongEqualiza
             strcat(eqTOLoad, "/30_");
             break;
         default:
-            //non dovrebbe mai andar qui
+            //non dovrebbe mai andare qui
             return;
     }
 
@@ -145,7 +105,7 @@ NativePlayer::setFFTFilters(JNIEnv *env, SongEqualization inputEqu, SongEqualiza
             strcat(eqTOLoad, "30");
             break;
         default:
-            //non dovrebbe mai andar qui
+            //non dovrebbe mai andare qui
             return;
     }
 
@@ -153,8 +113,9 @@ NativePlayer::setFFTFilters(JNIEnv *env, SongEqualization inputEqu, SongEqualiza
 
     int fd = open(eqTOLoad, O_RDONLY);
     //se non trova il file allora carica la risposta predefinita
-    if(fd==-1){
-        LOGD("File %s non trovato: caricamento filtro di default",eqTOLoad);
+    if (fd == -1) {
+        LOGD("NativePlayer_setFFTFilters: file %s non trovato: caricamento filtro di default",
+             eqTOLoad);
         fftconvolver[0].setFilter(filter.data(), size);
         fftconvolver[1].setFilter(filter.data(), size);
         fftconvolver[2].setFilter(filter.data(), size);
@@ -162,58 +123,112 @@ NativePlayer::setFFTFilters(JNIEnv *env, SongEqualization inputEqu, SongEqualiza
         return;
     }
 
-//    LOGD("File %s trovato: caricamento filtro in corso",eqTOLoad);
-//    //altrimenti ciude il file e continua
-//    close(fd);
-//
-//    char const *paths[1] = {nullptr};
-//    paths[0] = eqTOLoad;
-//    WaveReader *wavImpRes = new WaveReader(paths, 1);
-//
-//    RateConverter *impResRateConverter = new RateConverter(songSpeedOriginal, 1);
-//    impResRateConverter->setSpeed(songSpeed);
-//
-//    audio::InputStream impResp;
-//
-//    audio::connect(wavImpRes->outStreams[0], impResRateConverter->inStreams[0]);
-//    audio::connect(impResRateConverter->outStreams[0], impResp);
-//
-//    //i sampling rate devono combaciare
-//    if(wavImpRes->getSamplerate()!=currentSampleRate)
-//    {
-//        LOGD("Adeguamento sample rate");
-//
-//    } else
-//    {
-//
-//    }
-//
-//    delete impResRateConverter;
-//    delete wavImpRes;
+    LOGD("NativePlayer_setFFTFilters: file %s trovato: caricamento filtro in corso", eqTOLoad);
+    //altrimenti chiude il file e continua
+    close(fd);
 
-    //################      TEST VARI       ##############
+    //legge il file .wav contenente la risposta impulsiva
+    char const *paths[1] = {nullptr};
+    paths[0] = eqTOLoad;
+    WaveReader *wavImpRes = new WaveReader(paths, 1);
 
-//    int size = sizeof(CCIR_NAB_Stable_) / sizeof(CCIR_NAB_Stable_[0]);
-//    std::vector<float> filter(size);
-//    int i;
-//    float max = 0;
-//    for (i = 0; i < size; i++) {
-//        if (CCIR_NAB_Stable_[i] > max)
-//            max = CCIR_NAB_Stable_[i];
-//        if (CCIR_NAB_Stable_[i] * -1 > max)
-//            max = CCIR_NAB_Stable_[i] * -1;
-//    }
-//    max = 1 / max;
-//    for (i = 0; i < size; i++) {
-//        filter[i] = CCIR_NAB_Stable_[i] * max;
-//    }
-//    //LOGD("DEBUG %.5f",CCIR_NAB_Stable[i]);
-//    //----------------------------------------------
-//
-//    fftconvolver[0].setFilter(filter.data(), size);
-//    fftconvolver[1].setFilter(filter.data(), size);
-//    fftconvolver[2].setFilter(filter.data(), size);
-//    fftconvolver[3].setFilter(filter.data(), size);
+    audio::InputStream streamImpResp;
+
+    audio::connect(wavImpRes->outStreams[0], streamImpResp);
+
+    audio::AudioBuffer filterBuffer;
+
+    filter.clear();
+    if (wavImpRes != NULL) {
+        LOGD("NativePlayer_setFFTFilters: partita lettura wave reader impulse response");
+        wavImpRes->run();
+    }
+    //TODO tutti e due necessari?
+    while (!streamImpResp.hasData()) {
+        LOGD("NativePlayer_setFFTFilters Waiting for data");
+    }
+    while (!wavImpRes->isEof() && streamImpResp.hasData()) {
+
+        audio::Status impResStatus = streamImpResp.pullData(filterBuffer);
+
+        if (impResStatus == audio::Status::OK) {
+            for (int i = 0; i < audio::AudioBufferSize; i++) {
+                filter.push_back(filterBuffer[i]);
+            }
+        } else {
+            LOGE("NativePlayer_setFFTFilters: wave reader status NOT OK");
+        }
+    }
+    if (wavImpRes != NULL) {
+        wavImpRes->scheduleStop();
+        wavImpRes->join();
+    }
+
+    if (filter.size() == 0)
+        LOGE("NativePlayer_setFFTFilters: errore, il filtro e' vuoto");
+
+    //filter contiene ora tutti i campioni
+
+    //controlla che i sampling rate combacino
+    if (wavImpRes->getSamplerate() != songSampleRate) {
+
+        LOGD("NativePlayer_setFFTFilters: need resampling");
+        //fase di setup
+        double ratio = (double) (songSampleRate) / (double) (wavImpRes->getSamplerate());
+
+        float *arrayFilterIn;
+        arrayFilterIn = new float[filter.size()];
+
+        for (int i = 0; i < filter.size(); i++) {
+            arrayFilterIn[i] = filter.at(i);
+        }
+
+        float *arrayFilterOut;
+        arrayFilterOut = new float[(int(filter.size() * ratio) + 1)];
+
+        //inizializzazione della conversione
+        SRC_DATA samplerate;
+
+        /* samplerate params config */
+        samplerate.data_in = arrayFilterIn;
+        samplerate.input_frames = (long) filter.size();
+        samplerate.data_out = arrayFilterOut;
+        samplerate.end_of_input = 0;
+        samplerate.src_ratio = ratio;
+        samplerate.output_frames = (long) ((size_t) (ratio + 1)) * filter.size();
+
+        size_t nread = 0;
+
+        int error;
+        SRC_STATE *state;
+        if ((state = src_new(SRC_SINC_BEST_QUALITY, 1, &error)) == NULL) {
+            LOGE("NativePlayer_setFFTFilters resample failed");
+            exit(EXIT_FAILURE);
+        }
+
+        //conversione
+        if ((error = src_process(state, &samplerate)))
+            LOGE("NativePlayer_setFFTFilters: src_process failed : %s", src_strerror(error));
+
+        //pulisce e riempie il filtro con la risposta impulsiva ricampionata
+        filter.clear();
+        for (int i = 0; i < samplerate.output_frames; i++) {
+            filter[i] = arrayFilterOut[i];
+        }
+        LOGE("NativePlayer_setFFTFilters: resample avvenuto");
+
+        src_delete(state);
+        delete arrayFilterIn;
+        delete arrayFilterOut;
+    }
+    LOGE("NativePlayer_setFFTFilters: caricamento filtro");
+
+    fftconvolver[0].setFilter(filter.data(), size);
+    fftconvolver[1].setFilter(filter.data(), size);
+    fftconvolver[2].setFilter(filter.data(), size);
+    fftconvolver[3].setFilter(filter.data(), size);
+
+    delete wavImpRes;
 }
 
 SongEqualization NativePlayer::convertJavaEqualization(JNIEnv *env, jstring javaEqu) {
@@ -633,7 +648,8 @@ void NativePlayer::unloadSong() {
 //TODO verificare che songSpeedNum sia il valore originale della canzone e non quello selezionato dlla manopola
 void
 NativePlayer::loadSong(JNIEnv *env, jclass clazz, jobjectArray pathsArray,
-                       jint songTypeNum, jint songSpeedNum, jstring songEquStr, jstring equPath) {
+                       jint songTypeNum, jint songSpeedNum, jstring songEquStr,
+                       jstring equPathJStr) {
     if (playbackState != PLAYBACK_STATE_INITIALIZED)
         return;
 
@@ -703,14 +719,15 @@ NativePlayer::loadSong(JNIEnv *env, jclass clazz, jobjectArray pathsArray,
 
     songEqu = convertJavaEqualization(env, songEquStr);
 
-    songEquOriginal=songEqu;
+    songEquOriginal = songEqu;
 
     //loadEquImpResp(env, songSampleRate, songSpeed, songEqu, equPath);
     char const *pathsEQ[1] = {nullptr};
-    paths[0] = env->GetStringUTFChars(equPath, nullptr);
+    paths[0] = env->GetStringUTFChars(equPathJStr, nullptr);
+    memset(eqPath, 0, sizeof eqPath);
     strcat(eqPath, paths[0]);
-    setFFTFilters(env, songEqu, desiredEqu);
-    env->ReleaseStringUTFChars(equPath, paths[0]);
+    //setFFTFilters(env, songEqu, desiredEqu);
+    env->ReleaseStringUTFChars(equPathJStr, paths[0]);
 
     // --- Connessione dei filtri ---
     audio::connect(waveReader->outStreams[0], fftconvolver[0].input);
