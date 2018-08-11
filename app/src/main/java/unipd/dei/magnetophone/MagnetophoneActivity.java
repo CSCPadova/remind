@@ -13,6 +13,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -34,6 +35,8 @@ public class MagnetophoneActivity extends AppCompatActivity {
     private VideoView videoView = null;
 
     private MusicPlayer player;
+
+    public static final int PERMISSION_CODE = 1;
 
     /**
      * onCreate dell'activity
@@ -147,12 +150,31 @@ public class MagnetophoneActivity extends AppCompatActivity {
             } else {
 
                 Log.v("DEBUG", "Permission is revoked");
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_CODE);
                 return false;
             }
         } else { //permission is automatically granted on sdk<23 upon installation
             Log.v("DEBUG", "Permission is granted");
             return true;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSION_CODE: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // permission was granted, yay!
+                    copyAssets();
+                } else {
+                    // permission denied, boo!
+                    Toast.makeText(getApplicationContext(), this.getString(R.string.permission_denied), Toast.LENGTH_SHORT).show();
+                }
+                return;
+            }
         }
     }
 

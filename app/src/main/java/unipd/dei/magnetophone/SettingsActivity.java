@@ -98,13 +98,15 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         //poniamo la possibilità sulla action bar del tasto indietro
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         imp = new XmlImport();
         //ci creiamo il nostro fragment
         frag = new SettingsFragment(); //classe creata più giù
-
 
         getSupportFragmentManager().beginTransaction()
                 .replace(android.R.id.content, frag).commit();

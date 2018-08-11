@@ -48,7 +48,7 @@
     <string name="empty_folder2"> non contiene cartelle valide</string>
 
     <!-- stringhe per il monitor setup -->
-    <string name="monitor_setup_option">Monitor Setup</string>
+    <string name="monitor_setup_option">Ricarica lista</string>
     <string name="monitor_setup_label">Monitor Setup</string>
     <string name="left_channel">LEFT CHANNEL</string>
     <string name="right_channel">RIGHT CHANNEL</string>
@@ -302,6 +302,7 @@
     <string name="button_equal_volumes">L=R</string>
     <string name="label_left">Sinistra</string>
     <string name="label_right">Destra \u0020</string>
+    <string name="permission_denied">Senza i permessi non sarà impossibile riprodurre i brani</string>
 
     <!-- stringhe per la notifica-->
     <string name="channel_name">Magnetofono</string>

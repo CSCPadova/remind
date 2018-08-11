@@ -385,6 +385,7 @@ void NativePlayer::seek(double timeCentisec) {
         return;
 
     stop();
+    intermediateAudioBuffer.clear();
 
     /*
      * ++++++++ NOTA ++++++++++
@@ -487,6 +488,8 @@ void NativePlayer::fastFunction() {
     LOGD("thread partito");
     std::chrono::milliseconds dura(100);
 
+    intermediateAudioBuffer.clear();
+
     float speedRatio;
     double songDuration = waveReader->getSongDuration();
     SongSpeed originalSongSpeed = rateConverter->getOriginalSongSpeed();
@@ -576,27 +579,35 @@ oboe::DataCallbackResult NativePlayer::onAudioReady(
 
     if (playbackState == PLAYBACK_STATE_STOPPED) {
         //zeroing the audio buffer for silence
-        memset(temp, 0, sizeof(int16_t) * 2 * numFrames);
+        memset(temp, 0, sizeof(int16_t) * currentSampleChannels * numFrames);
         return oboe::DataCallbackResult::Continue;
     }
 
-    int i = 0;
-    float max = 0;
-    
-    if (!intermediateAudioBuffer.empty() &&
-        intermediateAudioBuffer.size() > numFrames * currentSampleChannels) {
+    if(intermediateAudioBuffer.empty() ||
+       intermediateAudioBuffer.size()< numFrames * currentSampleChannels)
+    {
+        memset(temp, 0, sizeof(int16_t) * currentSampleChannels * numFrames);
+        playbackCallback();
+        return oboe::DataCallbackResult::Continue;
+    }
 
+    //float max = 0;
+
+    if (!intermediateAudioBuffer.empty() &&
+        intermediateAudioBuffer.size() >= numFrames * currentSampleChannels) {
+
+        int i;
         for (i = 0; i < numFrames * 2; i++) {
             temp[i] = intermediateAudioBuffer.at(i) * FINAL_VOLUME;
-            if (max < abs(temp[i]))
-                max = temp[i];
+            //if (max < abs(temp[i]))
+            //    max = temp[i];
         }
         intermediateAudioBuffer.erase(intermediateAudioBuffer.begin(),
                                       intermediateAudioBuffer.begin() + i);
     }
 
     //TODO decidere se tenere un numero magico
-    intermAudioBufferFillValue = numFrames * 2 * 2;
+    intermAudioBufferFillValue = numFrames * 2 * 2*4;
     if (intermediateAudioBuffer.size() < intermAudioBufferFillValue)
         playbackCallback();
 

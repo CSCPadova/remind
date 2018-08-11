@@ -27,6 +27,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
@@ -103,6 +104,9 @@ public class SongListActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setContentView(R.layout.activity_song_twopane);
 
@@ -354,14 +358,13 @@ public class SongListActivity extends AppCompatActivity implements
         //prendo l'oggetto "widget di ricerca"
         MenuItem searchItem = menu.findItem(R.id.ic_action_search);
 
-        //TODO GASPA: DA SISTEMARE
-        //SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        SearchView searchView = (SearchView) searchItem.getActionView();
         //informo il sistema che la classe SearchActivity si preoccupa della gestione della ricerca
-        //searchView.setSearchableInfo(searchManager.getSearchableInfo(
-                //new ComponentName("it.unipd.dei.esp1314.magnetophone", SearchActivity.class.getName())));
-        //        new ComponentName("unipd.dei.magnetophone", SearchActivity.class.getName())));
-        //searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
-        //searchView.setSubmitButtonEnabled(true);
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(
+        //        new ComponentName("it.unipd.dei.esp1314.magnetophone", SearchActivity.class.getName())));
+                new ComponentName("unipd.dei.magnetophone", SearchActivity.class.getName())));
+        searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
+        searchView.setSubmitButtonEnabled(true);
 
         return super.onCreateOptionsMenu(menu);
     }

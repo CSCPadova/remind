@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- menu chiamato quando l'utente tiene premuto 1 elemento della lista -->
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:magnetophone="http://schemas.android.com/apk/res-auto">
     
     <item android:id="@+id/menu1"
           android:icon="@drawable/ic_launcher"
           android:title="@string/optionDelete"
-          android:showAsAction="ifRoom"/>
+          magnetophone:showAsAction="ifRoom"/>
     
     <item android:id="@+id/menu2"
           android:icon="@drawable/ic_launcher"
           android:title="@string/optionFormulation"
-          android:showAsAction="ifRoom"/>
+          magnetophone:showAsAction="ifRoom"/>
     
     <item android:id="@+id/menu3"
           android:title="@string/optionRevert"
-          android:showAsAction="ifRoom"/>
+          magnetophone:showAsAction="ifRoom"/>
 </menu>

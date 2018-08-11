@@ -20,6 +20,7 @@ import android.text.InputFilter;
 import android.text.InputType;
 import android.view.KeyEvent;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 /**
@@ -49,6 +50,9 @@ public class SingleSongSettingsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         frag = new SettingsFragment();
         getFragmentManager().beginTransaction().replace(android.R.id.content, frag).commit();

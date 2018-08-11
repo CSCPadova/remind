@@ -22,6 +22,7 @@ import android.support.v7.preference.PreferenceFragmentCompat;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
@@ -90,6 +91,9 @@ public class ImportSongActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_import_song);
+
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //Cambio titolo all'action bar
         getSupportActionBar().setTitle(getString(R.string.action_bar_campi_obbligatori_importazione));

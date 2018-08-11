@@ -15,6 +15,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -24,6 +25,8 @@ import android.widget.Toast;
 import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
+
+import static unipd.dei.magnetophone.MusicService.EXT_STORAGE_EQU_FOLDER;
 
 /**
  * Activity che serve per scegliere un file audio .wav (il formato supportato da Pure Data)
@@ -44,6 +47,8 @@ public class AudioFilePickerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_audio_file_picker);
+
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         //Permetto la pressione di back nell'action bar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -102,7 +107,8 @@ public class AudioFilePickerActivity extends AppCompatActivity {
         for (int i = 0; i < cursor.getCount(); i++) {
             cursor.moveToPosition(i);
             filePath = cursor.getString(columnIndex);
-            if (filePath.endsWith(filter))
+            //esclude i file .wav delle risposte impulsive che l'app copia nell'external storage
+            if (filePath.endsWith(filter)&&!filePath.contains("/"+EXT_STORAGE_EQU_FOLDER+"/"))
                 fileList.add(new File(filePath));
         }
 
