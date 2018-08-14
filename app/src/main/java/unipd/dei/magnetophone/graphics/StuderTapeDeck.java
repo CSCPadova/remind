@@ -4,10 +4,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Rect;
+import android.os.Environment;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.io.File;
+
 import unipd.dei.magnetophone.MonitorSetupActivity;
+import unipd.dei.magnetophone.PDFActivity;
 import unipd.dei.magnetophone.PlayerEqualization;
 import unipd.dei.magnetophone.R;
 import unipd.dei.magnetophone.SettingsActivity;
@@ -210,7 +214,6 @@ public class StuderTapeDeck extends TapeDeck {
             }
         });
         // WHAT'S NEW: Callback del pulsante
-        //Rimosso perche' non credo serva per il porting
 		/*uiButtons[4].setCallback(new ComponentCallback() {
 			@Override
 			public void stateChanged(UIComponent obj)
@@ -218,6 +221,20 @@ public class StuderTapeDeck extends TapeDeck {
 					context.startActivity(new Intent(context, MainActivity.class));
 			}
 		});*/
+
+        uiButtons[3].setCallback(new ComponentCallback() {
+            @Override
+            public void stateChanged(UIComponent obj)
+            {
+                String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/";
+                String file = "sample.pdf";
+
+                Intent i = new Intent(context, PDFActivity.class);
+                i.putExtra("path", path);
+                i.putExtra("file", file);
+                context.startActivity(i);
+            }
+        });
 
         //video offset UI
 

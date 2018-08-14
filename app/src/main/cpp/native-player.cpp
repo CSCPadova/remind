@@ -171,11 +171,15 @@ NativePlayer::setFFTFilters(SongEqualization newEqu) {
         LOGD("NativePlayer_setFFTFilters: partita lettura wave reader impulse response");
         wavImpRes->run();
     }
-    //TODO tutti e due necessari?
+
     while (!streamImpResp.hasData()) {
         LOGD("NativePlayer_setFFTFilters Waiting for data");
+        streamImpResp.waitIfEmpty();
     }
-    while (!wavImpRes->isEof() && streamImpResp.hasData()) {
+    //while (!wavImpRes->isEof() && streamImpResp.hasData()) {
+    while (!wavImpRes->isEof()) {
+
+        streamImpResp.waitIfEmpty();
 
         audio::Status impResStatus = streamImpResp.pullData(filterBuffer);
 
@@ -298,12 +302,16 @@ SongEqualization NativePlayer::getCurrentEqu() {
 void NativePlayer::playbackCallback() {
     audio::AudioBuffer leftBuffer, rightBuffer;
 
-    if (waveReader->isEof() && !inLeft.hasData() && !inRight.hasData()) {
+    //if (waveReader->isEof() && !inLeft.hasData() && !inRight.hasData()) {
+    if (waveReader->isEof()) {
         //controllo stato bufferqueue
         LOGD("dati finiti");
         stop();
         return;
     }
+
+    inLeft.waitIfEmpty();
+    inRight.waitIfEmpty();
 
     audio::Status leftStat = inLeft.pullData(leftBuffer);
     audio::Status rightStat = inRight.pullData(rightBuffer);

@@ -8,6 +8,7 @@
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
         android:allowBackup="true"
@@ -16,18 +17,20 @@
         android:largeHeap="true"
         android:screenOrientation="landscape"
         android:theme="@style/AppTheme">
-        <!--android:theme="@style/AppTheme.SettingsTheme">-->
-        <!--android:theme="@style/AppTheme"-->
+
+        <!-- android:theme="@style/AppTheme.SettingsTheme"> -->
+        <!-- android:theme="@style/AppTheme" -->
         <service
-            android:name="unipd.dei.magnetophone.MusicService"
+            android:name=".MusicService"
             android:exported="false"
             android:label="@string/app_name" />
 
         <activity
-            android:name="unipd.dei.magnetophone.MagnetophoneActivity"
+            android:name=".MagnetophoneActivity"
             android:screenOrientation="landscape"
             android:theme="@style/Theme.AppCompat.Light">
-            <!--android:theme="@style/AppFullScreenTheme">-->
+
+            <!-- android:theme="@style/AppFullScreenTheme"> -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -35,45 +38,51 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="unipd.dei.magnetophone.SettingsActivity"
+            android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"
             android:screenOrientation="landscape"
-            android:theme="@style/AppTheme"></activity>
-        <!--android:theme="@style/AppTheme.SettingsTheme">-->
+            android:theme="@style/AppTheme" />
         <activity
-            android:name="unipd.dei.magnetophone.SongList"
+            android:name=".SongList"
             android:label="@string/title_activity_library"
             android:screenOrientation="landscape"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
         <activity
-            android:name="unipd.dei.magnetophone.SingleSongSettingsActivity"
+            android:name=".SingleSongSettingsActivity"
             android:label="@string/title_activity_single_song_settings"
             android:screenOrientation="landscape"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
         <activity
-            android:name="unipd.dei.magnetophone.ImportSongActivity"
+            android:name=".ImportSongActivity"
             android:label="@string/title_activity_import_song"
             android:screenOrientation="landscape"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
         <activity
-            android:name="unipd.dei.magnetophone.AudioFilePickerActivity"
+            android:name=".PDFActivity"
+            android:label="@string/title_activity_import_song"
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".AudioFilePickerActivity"
             android:label="@string/title_activity_audio_file_picker"
             android:screenOrientation="landscape"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
 
-        <!-- I didn't find it
+        <!--
+        I didn't find it
         <activity
             android:name="unipd.dei.magnetophone.ImageFilePickerActivity"
             android:label="@string/title_activity_image_picker" >
-        </activity>-->
+        </activity>
+        -->
 
         <activity
-            android:name="unipd.dei.magnetophone.SongListActivity"
+            android:name=".SongListActivity"
             android:label="@string/title_activity_library"
             android:screenOrientation="landscape"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
         <activity
-            android:name="unipd.dei.magnetophone.SongDetailActivity"
+            android:name=".SongDetailActivity"
             android:label="@string/app_name"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme">
@@ -82,22 +91,23 @@
                 android:value=".SongListActivity" />
         </activity>
         <activity
-            android:name="unipd.dei.magnetophone.MonitorSetupActivity"
+            android:name=".MonitorSetupActivity"
             android:label="@string/monitor_setup_label"
             android:screenOrientation="landscape"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
         <activity
-            android:name="unipd.dei.magnetophone.SlideShowActivity"
+            android:name=".SlideShowActivity"
             android:label="@string/app_name"
             android:screenOrientation="landscape"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
         <activity
-            android:name="unipd.dei.magnetophone.SearchActivity"
+            android:name=".SearchActivity"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
+
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
@@ -121,8 +131,8 @@
         </activity>
         <service
             android:name="unipd.dei.whatsnew.videoprocessing.VideoProcessingService"
-            android:exported="false"/>-->
-
+            android:exported="false"/>
+        -->
     </application>
 
 </manifest>
