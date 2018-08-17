@@ -15,7 +15,6 @@ import android.content.SharedPreferences.Editor;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDialog;
@@ -35,6 +34,8 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.util.LinkedList;
+
+import static unipd.dei.magnetophone.Utility.showSupportActionBar;
 
 public class SongListActivity extends AppCompatActivity implements
         SongListFragment.Callbacks {
@@ -110,7 +111,7 @@ public class SongListActivity extends AppCompatActivity implements
 
         setContentView(R.layout.activity_song_twopane);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        showSupportActionBar(this, null);
 
         if (findViewById(R.id.song_detail_container) != null) //se siamo con 2 fragment
         {

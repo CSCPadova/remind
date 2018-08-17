@@ -144,7 +144,6 @@ public class XmlImport {
                             query.close();
                         }//fine for per l'analisi dei file xml
                     }
-
                 }
             } else {
                 //se non ci sono sottocartelle

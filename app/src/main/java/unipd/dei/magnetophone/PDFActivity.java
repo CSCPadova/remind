@@ -1,7 +1,7 @@
 package unipd.dei.magnetophone;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.WindowManager;
@@ -16,6 +16,8 @@ import com.shockwave.pdfium.PdfDocument;
 
 import java.io.File;
 import java.util.List;
+
+import static unipd.dei.magnetophone.Utility.showSupportActionBar;
 
 public class PDFActivity extends AppCompatActivity implements OnPageChangeListener, OnLoadCompleteListener,
         OnPageErrorListener {
@@ -34,7 +36,7 @@ public class PDFActivity extends AppCompatActivity implements OnPageChangeListen
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         //poniamo la possibilità sulla action bar del tasto indietro
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        showSupportActionBar(this, null);
 
         Bundle p = getIntent().getExtras();
         String path =p.getString("path");

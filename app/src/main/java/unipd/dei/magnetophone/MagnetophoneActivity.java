@@ -3,7 +3,9 @@ package unipd.dei.magnetophone;
 import android.Manifest;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.os.Build;
@@ -24,6 +26,7 @@ import java.io.OutputStream;
 import unipd.dei.magnetophone.graphics.MagnetoCanvasView;
 import unipd.dei.magnetophone.graphics.VideoView;
 
+import static unipd.dei.magnetophone.MagnetophoneOpenHelper.DATABASE_NAME;
 import static unipd.dei.magnetophone.MusicService.EXT_STORAGE_EQU_FOLDER;
 
 /**
@@ -70,7 +73,22 @@ public class MagnetophoneActivity extends AppCompatActivity {
         //editor.putBoolean("ImportareImpostazioni", true);
         //editor.commit();
 
+        checkTheFirstTime();
         copyAssets();
+    }
+
+    private int checkTheFirstTime() {
+        SharedPreferences pref = this.getSharedPreferences("first_time", Context.MODE_PRIVATE);
+        int toReturn = pref.getInt("FirstTime", 0);
+        if(toReturn==0)
+        {
+            this.deleteDatabase(DATABASE_NAME);
+        }
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putInt("FirstTime", toReturn + 1);
+        editor.commit();
+
+        return toReturn;
     }
 
     /**
@@ -178,7 +196,7 @@ public class MagnetophoneActivity extends AppCompatActivity {
         }
     }
 
-    //copy i file wav di equalizzazione nell'external storage per facilitare la vita nel codice nativo
+    //copia i file wav di equalizzazione nell'external storage per facilitare la vita nel codice nativo
     private void copyAssets() {
         AssetManager assetManager = getAssets();
         String[] files = null;

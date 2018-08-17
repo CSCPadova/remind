@@ -1,6 +1,5 @@
 package unipd.dei.magnetophone;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -27,6 +26,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import static unipd.dei.magnetophone.MusicService.EXT_STORAGE_EQU_FOLDER;
+import static unipd.dei.magnetophone.Utility.showSupportActionBar;
 
 /**
  * Activity che serve per scegliere un file audio .wav (il formato supportato da Pure Data)
@@ -51,7 +51,7 @@ public class AudioFilePickerActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         //Permetto la pressione di back nell'action bar
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        showSupportActionBar(this, null);
 
         listView = (ListView) findViewById(R.id.fileList);
 

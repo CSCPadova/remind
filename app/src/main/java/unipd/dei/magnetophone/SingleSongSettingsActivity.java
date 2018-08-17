@@ -13,7 +13,6 @@ import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
-import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputFilter;
@@ -22,6 +21,8 @@ import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.Toast;
+
+import static unipd.dei.magnetophone.Utility.showSupportActionBar;
 
 /**
  * Activity che gestisce le impostazioni di un singolo brano, e' possibile cambiare i seguenti campi:
@@ -53,7 +54,7 @@ public class SingleSongSettingsActivity extends AppCompatActivity {
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        showSupportActionBar(this, null);
         frag = new SettingsFragment();
         getFragmentManager().beginTransaction().replace(android.R.id.content, frag).commit();
     }

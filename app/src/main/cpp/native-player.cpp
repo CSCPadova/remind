@@ -7,7 +7,7 @@
 NativePlayer::NativePlayer() {
     time = 0;
     playbackDeviceId_ = 0;
-    intermAudioBufferFillValue = 2000;
+    intermAudioBufferFillValue = audio::AudioBufferSize;
     threadGo = false;
 
     currentSampleRate = -1;
@@ -615,7 +615,7 @@ oboe::DataCallbackResult NativePlayer::onAudioReady(
     }
 
     //TODO decidere se tenere un numero magico
-    intermAudioBufferFillValue = numFrames * 2 * 2*4;
+    intermAudioBufferFillValue = numFrames * 2 * 2;
     if (intermediateAudioBuffer.size() < intermAudioBufferFillValue)
         playbackCallback();
 

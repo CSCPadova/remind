@@ -108,9 +108,9 @@ public class SongListFragment extends ListFragment {
     private int checkTheFirstTime() {
         SharedPreferences pref = getActivity().getSharedPreferences("first_time", Context.MODE_PRIVATE);
         int toReturn = pref.getInt("FirstTime", 0);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putInt("FirstTime", toReturn + 1);
-        editor.commit();
+        //SharedPreferences.Editor editor = pref.edit();
+        //editor.putInt("FirstTime", toReturn + 1);
+        //editor.commit();
 
         return toReturn;
     }

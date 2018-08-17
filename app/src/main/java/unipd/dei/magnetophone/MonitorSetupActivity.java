@@ -18,6 +18,8 @@ import android.widget.TextView;
 
 import unipd.dei.magnetophone.MusicService.MusicServiceBinder;
 
+import static unipd.dei.magnetophone.Utility.showSupportActionBar;
+
 public class MonitorSetupActivity extends AppCompatActivity {
     private final float VOLUME_SEEKBAR_MAX_VALUE = 100;
     protected MusicServiceBinder musicServiceBinder;
@@ -141,7 +143,7 @@ public class MonitorSetupActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setContentView(R.layout.monitor_setup_activity_layout);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        showSupportActionBar(this, null);
     }
 
     protected void onResume() {

@@ -4,12 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+
+import static unipd.dei.magnetophone.Utility.showSupportActionBar;
 
 /**
  * An activity representing a single Song detail screen. This activity is only
@@ -30,7 +31,7 @@ public class SongDetailActivity extends AppCompatActivity {
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        showSupportActionBar(this,null);
 
         // http://developer.android.com/guide/components/fragments.html
 

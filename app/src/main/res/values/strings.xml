@@ -46,6 +46,7 @@
     <string name="unable_to_edit">Impossible to modify the tape</string>
     <string name="empty_folder1">Il percorso </string>
     <string name="empty_folder2"> non contiene cartelle valide</string>
+    <string name="exit_without_saving">Uscire senza salvare?</string>
 
     <!-- stringhe per il monitor setup -->
     <string name="monitor_setup_option">Ricarica lista</string>

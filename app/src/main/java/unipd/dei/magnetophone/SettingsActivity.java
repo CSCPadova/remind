@@ -9,7 +9,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDialog;
@@ -22,7 +21,6 @@ import android.support.v7.preference.PreferenceScreen;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -30,6 +28,8 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.util.LinkedList;
+
+import static unipd.dei.magnetophone.Utility.showSupportActionBar;
 
 /**
  * Activity che gestisce le impostazioni generali del magnetofono.
@@ -102,7 +102,7 @@ public class SettingsActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         //poniamo la possibilità sulla action bar del tasto indietro
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        showSupportActionBar(this, null);
 
         imp = new XmlImport();
         //ci creiamo il nostro fragment

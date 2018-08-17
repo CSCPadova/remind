@@ -57,8 +57,9 @@ public class MagnetophoneOpenHelper extends SQLiteOpenHelper {
     public static final String PHOTOSNAME = "Photos_Name";
     public static final String PHOTOSPATH = "Photos_Path";
     public static final String PHOTOSSONG = "Respective_Photos_Song";
-    private static final String DATABASE_NAME = "magnetophonedb.db";
-    private static final int DATABASE_VERSION = 1;
+
+    public static final String DATABASE_NAME = "magnetophonedb.db";
+    public static final int DATABASE_VERSION = 1;
 
 
     public MagnetophoneOpenHelper(Context context) {

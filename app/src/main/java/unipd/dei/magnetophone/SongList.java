@@ -1,6 +1,5 @@
 package unipd.dei.magnetophone;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -26,6 +25,8 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.util.LinkedList;
+
+import static unipd.dei.magnetophone.Utility.showSupportActionBar;
 
 /**
  * Questa Activity produce la lista dei brani.
@@ -70,7 +71,7 @@ public class SongList extends AppCompatActivity {
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        showSupportActionBar(this, null);
 
         imp = new XmlImport();
 
@@ -466,9 +467,9 @@ public class SongList extends AppCompatActivity {
     private int checkTheFirstTime() {
         SharedPreferences pref = this.getSharedPreferences("first_time", Context.MODE_PRIVATE);
         int toReturn = pref.getInt("FirstTime", 0);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putInt("FirstTime", toReturn + 1);
-        editor.commit();
+        //SharedPreferences.Editor editor = pref.edit();
+        //editor.putInt("FirstTime", toReturn + 1);
+        //editor.commit();
 
         return toReturn;
     }

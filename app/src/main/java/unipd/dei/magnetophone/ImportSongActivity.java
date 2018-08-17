@@ -10,7 +10,6 @@ import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDialog;
@@ -31,6 +30,8 @@ import java.security.InvalidParameterException;
 import java.util.LinkedList;
 
 import unipd.dei.magnetophone.Song.Track;
+
+import static unipd.dei.magnetophone.Utility.showSupportActionBar;
 
 /**
  * Activity che si occupa di gestire l'importazione di brani.
@@ -94,9 +95,7 @@ public class ImportSongActivity extends AppCompatActivity {
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        //Cambio titolo all'action bar
-        getSupportActionBar().setTitle(getString(R.string.action_bar_campi_obbligatori_importazione));
+        showSupportActionBar(this, getString(R.string.action_bar_campi_obbligatori_importazione));
 
         if (savedInstanceState == null) {
             obligatoryFrag = new ObligatoryFragment();
@@ -113,7 +112,8 @@ public class ImportSongActivity extends AppCompatActivity {
      */
     @Override
     public void onBackPressed() {
-        goToSongsList();
+        //goToSongsList();
+        showExitDialog();
     }
 
     /**
@@ -125,11 +125,30 @@ public class ImportSongActivity extends AppCompatActivity {
         // Handle item selection
         switch (item.getItemId()) {
             case android.R.id.home:
-                goToSongsList();
+                //goToSongsList();
+                showExitDialog();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void showExitDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.edit)
+                .setMessage(R.string.exit_without_saving)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        goToSongsList(false);
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // do nothing
+                    }
+                })
+                //.setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 
     /**
@@ -180,11 +199,15 @@ public class ImportSongActivity extends AppCompatActivity {
     /**
      * Metodo che si occupa di uscire dall'activity e richiamare la lista dei brani
      */
-    private void goToSongsList() {
+    private void goToSongsList(boolean newSong) {
         //informo la lista che dovrà far vedere la nuova canzone importata
         SharedPreferences shared = this.getSharedPreferences("selected", Context.MODE_PRIVATE);
         Editor editor = shared.edit();
-        editor.putInt("song_id", songToAdd.getId());
+        if(newSong)
+            editor.putInt("song_id", songToAdd.getId());
+        else
+            editor.putInt("song_id", -1);
+
         editor.commit();
 
         Intent intent = new Intent(this, SongListActivity.class);    //Passo alla lista dei brani
@@ -907,7 +930,7 @@ public class ImportSongActivity extends AppCompatActivity {
 //				imp = new XmlImport(getActivity());
                 //mi prendo i path e i nomi delle cartelle
                 LinkedList<String> directoriesName = new LinkedList<String>();//lista che conterrà solo i nomi delle cartelle
-                final LinkedList<String> pathList = getTheFilesList(getActivity(),directoriesName);//lista che conterrà i path
+                final LinkedList<String> pathList = getTheFilesList(getActivity(), directoriesName);//lista che conterrà i path
 
                 final ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.select_dialog_singlechoice, directoriesName);
 
@@ -984,7 +1007,7 @@ public class ImportSongActivity extends AppCompatActivity {
                     Toast.makeText(getActivity(), getString(R.string.toast_activity_second_page_import), Toast.LENGTH_SHORT).show();
 
                     //Passo alla lista dei brani (esco dall'importazione)
-                    ((ImportSongActivity) getActivity()).goToSongsList();
+                    ((ImportSongActivity) getActivity()).goToSongsList(true);
                 }
             });    //fine setPositiveButton
 
@@ -995,7 +1018,7 @@ public class ImportSongActivity extends AppCompatActivity {
                 public void onClick(DialogInterface dialog, int id) {
                     Toast.makeText(getActivity(), getString(R.string.toast_activity_cancel_import), Toast.LENGTH_SHORT).show();
                     //Passo alla lista dei brani (esco dall'importazione)
-                    ((ImportSongActivity) getActivity()).goToSongsList();
+                    ((ImportSongActivity) getActivity()).goToSongsList(false);
                 }
             }); //fine setNegativeButton
             return builder.create();
