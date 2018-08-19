@@ -107,6 +107,7 @@ public class MonitorSetupActivity extends AppCompatActivity {
             switch (monitorSong.getNumberOfTracks()) {
                 case 1:
                     if (monitorSong.getTrackAtIndex(0).isMono()) {
+                        initOneMonoControls();
                         /*
                          * initOneMonoControls();
                          *
@@ -170,21 +171,24 @@ public class MonitorSetupActivity extends AppCompatActivity {
     }
 
     /*
-     * inizializzazione pannello controlli per una song con una traccia stereo
+     * inizializzazione pannello controlli per una song con una traccia mono
      */
-    private void initOneStereoControls() {
+    private void initOneMonoControls(){
+        trackNamesTextViews[0] = (TextView) findViewById(R.id.monitor_channel1_track_name);
+
+        /*
+         * popolo gli TextView con i nomi delle tracce
+         */
+        trackNamesTextViews[0].setText(musicServiceBinder.getSong().getTrackList().get(0).getName());
+
         /*
          * recupero le 2 seekbar
          */
         final SeekBar seekbarSatelliteChannel1L = (SeekBar) findViewById(R.id.monitor_channel1_vol_l);
         final SeekBar seekbarSatelliteChannel1R = (SeekBar) findViewById(R.id.monitor_channel1_vol_r);
-        final SeekBar seekbarSatelliteChannel2L = (SeekBar) findViewById(R.id.monitor_channel2_vol_l);
-        final SeekBar seekbarSatelliteChannel2R = (SeekBar) findViewById(R.id.monitor_channel2_vol_r);
 
         seekbarSatelliteChannel1L.setProgress((int) (musicServiceBinder.getTrackVolumeL(1) * VOLUME_SEEKBAR_MAX_VALUE));
         seekbarSatelliteChannel1R.setProgress((int) (musicServiceBinder.getTrackVolumeR(1) * VOLUME_SEEKBAR_MAX_VALUE));
-        seekbarSatelliteChannel2L.setProgress((int) (musicServiceBinder.getTrackVolumeL(2) * VOLUME_SEEKBAR_MAX_VALUE));
-        seekbarSatelliteChannel2R.setProgress((int) (musicServiceBinder.getTrackVolumeR(2) * VOLUME_SEEKBAR_MAX_VALUE));
 
         seekbarSatelliteChannel1L.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -216,6 +220,38 @@ public class MonitorSetupActivity extends AppCompatActivity {
             }
         });
 
+        Button equalVolumes1 = findViewById(R.id.buttonLR1);
+
+        equalVolumes1.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                seekbarSatelliteChannel1L.setProgress(seekbarSatelliteChannel1R.getProgress());
+            }
+        });
+    }
+
+    /*
+     * inizializzazione pannello controlli per una song con una traccia stereo
+     */
+    private void initOneStereoControls() {
+
+        initOneMonoControls();
+
+        trackNamesTextViews[1] = (TextView) findViewById(R.id.monitor_channel2_track_name);
+
+        /*
+         * popolo gli TextView con i nomi delle tracce
+         */
+        trackNamesTextViews[1].setText(musicServiceBinder.getSong().getTrackList().get(0).getName());
+
+        /*
+         * recupero la seekbar
+         */
+        final SeekBar seekbarSatelliteChannel2L = (SeekBar) findViewById(R.id.monitor_channel2_vol_l);
+        final SeekBar seekbarSatelliteChannel2R = (SeekBar) findViewById(R.id.monitor_channel2_vol_r);
+
+        seekbarSatelliteChannel2L.setProgress((int) (musicServiceBinder.getTrackVolumeL(2) * VOLUME_SEEKBAR_MAX_VALUE));
+        seekbarSatelliteChannel2R.setProgress((int) (musicServiceBinder.getTrackVolumeR(2) * VOLUME_SEEKBAR_MAX_VALUE));
+
         seekbarSatelliteChannel2L.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -243,14 +279,6 @@ public class MonitorSetupActivity extends AppCompatActivity {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-            }
-        });
-
-        Button equalVolumes1 = findViewById(R.id.buttonLR1);
-
-        equalVolumes1.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                seekbarSatelliteChannel1L.setProgress(seekbarSatelliteChannel1R.getProgress());
             }
         });
 
