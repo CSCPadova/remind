@@ -172,7 +172,7 @@ MixerProcessor::MixerProcessor(Mixer *mixer) {
 void MixerProcessor1M::process(audio::AudioBuffer (&buffers)[4], audio::AudioBuffer &outLeft,
                                audio::AudioBuffer &outRight) {
     auto &inputBuffer = mixer->trackEnabled[0] ? buffers[0] : silence;
-    for (unsigned int i = 0; i < outLeft.size(); i++) {
+    for (unsigned int i = 0; i < audio::AudioBufferSize; i++) {
         outLeft[i] = inputBuffer[i] * this->mixer->track1L;
         outRight[i] = inputBuffer[i] * this->mixer->track1R;
     }
@@ -184,7 +184,7 @@ void MixerProcessor1S::process(audio::AudioBuffer (&buffers)[4], audio::AudioBuf
     auto &inputBuffer_1 = mixer->trackEnabled[0] ? buffers[0] : silence;
     auto &inputBuffer_2 = mixer->trackEnabled[1] ? buffers[1] : silence;
 
-    for (unsigned int i = 0; i < outLeft.size(); i++) {
+    for (unsigned int i = 0; i < audio::AudioBufferSize; i++) {
         outLeft[i] = (inputBuffer_1[i] * this->mixer->track1L) +
                      (inputBuffer_2[i] * this->mixer->track2L);
         outRight[i] = (inputBuffer_1[i] * this->mixer->track1R) +
@@ -198,7 +198,7 @@ void MixerProcessor2M::process(audio::AudioBuffer (&buffers)[4], audio::AudioBuf
     auto &inputBuffer_1 = mixer->trackEnabled[0] ? buffers[0] : silence;
     auto &inputBuffer_2 = mixer->trackEnabled[1] ? buffers[1] : silence;
 
-    for (unsigned int i = 0; i < outLeft.size(); i++) {
+    for (unsigned int i = 0; i < audio::AudioBufferSize; i++) {
         outLeft[i] = (inputBuffer_1[i] * this->mixer->track1L) +
                      (inputBuffer_2[i] * this->mixer->track2L);
         outRight[i] = (inputBuffer_1[i] * this->mixer->track1R) +
@@ -214,7 +214,7 @@ void MixerProcessor4M::process(audio::AudioBuffer (&buffers)[4], audio::AudioBuf
     auto &inputBuffer_3 = mixer->trackEnabled[2] ? buffers[mixer->trackMap[2]] : silence;
     auto &inputBuffer_4 = mixer->trackEnabled[3] ? buffers[mixer->trackMap[3]] : silence;
 
-    for (unsigned int i = 0; i < outLeft.size(); i++) {
+    for (unsigned int i = 0; i < audio::AudioBufferSize; i++) {
 
         outLeft[i] = (inputBuffer_1[i] * this->mixer->track1L) +
                      (inputBuffer_2[i] * this->mixer->track2L) +
