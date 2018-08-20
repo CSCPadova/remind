@@ -15,7 +15,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ImageView;
 
 import java.io.File;
@@ -46,8 +45,7 @@ public class SlideShowActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.slide_show);
 
-
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        showSupportActionBar(this, null, getWindow().getDecorView());
 
         Intent myIntent = getIntent();
         int id = myIntent.getIntExtra("song_id", -1);
@@ -62,7 +60,7 @@ public class SlideShowActivity extends AppCompatActivity {
 
         mDemoCollectionPagerAdapter = new DemoCollectionPagerAdapter(getSupportFragmentManager());
 
-        showSupportActionBar(this, null);
+
 
         //TODO vedere se è possibile far vedere direttamente l'index desiderato
 

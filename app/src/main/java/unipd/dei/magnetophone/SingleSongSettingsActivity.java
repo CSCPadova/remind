@@ -19,7 +19,6 @@ import android.text.InputFilter;
 import android.text.InputType;
 import android.view.KeyEvent;
 import android.view.MenuItem;
-import android.view.WindowManager;
 import android.widget.Toast;
 
 import static unipd.dei.magnetophone.Utility.showSupportActionBar;
@@ -52,9 +51,7 @@ public class SingleSongSettingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-        showSupportActionBar(this, null);
+        showSupportActionBar(this, null, getWindow().getDecorView());
         frag = new SettingsFragment();
         getFragmentManager().beginTransaction().replace(android.R.id.content, frag).commit();
     }
@@ -381,8 +378,8 @@ public class SingleSongSettingsActivity extends AppCompatActivity {
                 return false;
             }
 
-            //se l'anno e' da 0 a 9999 e non inizia per 0, faccio un piccolo controllo di bound dei numeri
-            if (numericYear < 9999 && numericYear > 0 && !year.startsWith("0"))
+            //faccio un piccolo controllo di bound dei numeri
+            if (numericYear < 9999 && numericYear > 0)
                 return true;
 
             toast.show(); //se ho anno fuori dai numeri mostro toast di errore

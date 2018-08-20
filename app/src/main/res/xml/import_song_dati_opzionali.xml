@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory android:title="@string/import_third_step" >
+    <PreferenceCategory android:title="@string/import_third_step">
         <EditTextPreference
             android:key="nomeAutoreImportazioneBrano"
             android:summary="@string/song_author_activity_single_song_settings"
             android:title="@string/song_author_title_activity_single_song_settings" />
         <EditTextPreference
+            android:digits="0123456789"
+            android:inputType="numberDecimal"
             android:key="annoImportazioneBrano"
             android:summary="@string/song_year_activity_single_song_settings"
             android:title="@string/song_year_title_activity_single_song_settings" />
-        
-        <!-- da terminare, attenzione 
-        sistemare number of tracks-->
         <EditTextPreference
             android:key="Signature"
             android:summary="@string/signature_summary"
@@ -22,21 +21,21 @@
             android:summary="@string/provenance_summary"
             android:title="@string/provenance_title" />
         <ListPreference
-            android:key="TapeWidth"
             android:entries="@array/tape_width_list"
             android:entryValues="@array/tape_width_list"
+            android:key="TapeWidth"
             android:summary="@string/tape_width_summary"
             android:title="@string/tape_width_title" />
         <ListPreference
-            android:key="Extension"
             android:entries="@array/extension_list"
             android:entryValues="@array/extension_list"
+            android:key="Extension"
             android:summary="@string/extension_summary"
             android:title="@string/extension_title" />
         <ListPreference
-            android:key="BitDepth"
             android:entries="@array/bit_depth_list"
             android:entryValues="@array/bit_depth_list"
+            android:key="BitDepth"
             android:summary="@string/bitdepth_summary"
             android:title="@string/bitdepth_title" />
         <EditTextPreference
@@ -51,10 +50,10 @@
             android:key="Photos"
             android:summary="@string/photos_path_summary"
             android:title="@string/photos_path_title" />
-        
+
     </PreferenceCategory>
-    
-    <PreferenceCategory android:title="@string/categoria_4_importazione" >
+
+    <PreferenceCategory android:title="@string/categoria_4_importazione">
         <unipd.dei.magnetophone.ImageViewPreference android:key="immagineImportazioneBrano" />
     </PreferenceCategory>
 

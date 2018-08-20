@@ -8,7 +8,6 @@ import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 
 import static unipd.dei.magnetophone.Utility.showSupportActionBar;
 
@@ -28,10 +27,7 @@ public class SongDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_song_detail);
 
-
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-        showSupportActionBar(this,null);
+        showSupportActionBar(this,null, getWindow().getDecorView());
 
         // http://developer.android.com/guide/components/fragments.html
 

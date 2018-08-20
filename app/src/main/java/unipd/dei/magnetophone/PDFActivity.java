@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.github.barteksc.pdfviewer.PDFView;
@@ -34,9 +33,8 @@ public class PDFActivity extends AppCompatActivity implements OnPageChangeListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pdf);
 
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         //poniamo la possibilità sulla action bar del tasto indietro
-        showSupportActionBar(this, null);
+        showSupportActionBar(this, null, getWindow().getDecorView());
 
         Bundle p = getIntent().getExtras();
         String path =p.getString("path");

@@ -21,7 +21,6 @@ import android.support.v7.preference.PreferenceScreen;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -99,10 +98,8 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
         //poniamo la possibilità sulla action bar del tasto indietro
-        showSupportActionBar(this, null);
+        showSupportActionBar(this, null, getWindow().getDecorView());
 
         imp = new XmlImport();
         //ci creiamo il nostro fragment

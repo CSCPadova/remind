@@ -21,7 +21,6 @@ import android.support.v7.preference.PreferenceFragmentCompat;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
@@ -93,9 +92,7 @@ public class ImportSongActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_import_song);
 
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-        showSupportActionBar(this, getString(R.string.action_bar_campi_obbligatori_importazione));
+        showSupportActionBar(this, getString(R.string.action_bar_campi_obbligatori_importazione), getWindow().getDecorView());
 
         if (savedInstanceState == null) {
             obligatoryFrag = new ObligatoryFragment();
@@ -289,14 +286,6 @@ public class ImportSongActivity extends AppCompatActivity {
             //tape width, default: unknown
             prefTapeWidth = (ListPreference) findPreference("TapeWidth");
 
-            //---------- prefereceCategory temporanea ------------------
-//			//sample rate, default: 41000
-//			prefSampleRate = (ListPreference)findPreference("listaSampleRate");
-//			//Extension, default: .wav
-//			prefExtension = (ListPreference)findPreference("Extension");
-//			//BitDepth, degault: 16
-//			prefBitDepth = (ListPreference)findPreference("BitDepth");
-
             //------------ descrizione ---------------
             prefDescription = (EditTextPreference) findPreference("Description");
 
@@ -318,10 +307,6 @@ public class ImportSongActivity extends AppCompatActivity {
             isa.songToAdd.setTitle(getString(R.string.sconosciuto));
             isa.songToAdd.setYear(getString(R.string.sconosciuto));
             isa.songToAdd.setTapeWidth((String) prefTapeWidth.getEntryValues()[0]);
-
-//			isa.songToAdd.setSampleRate(Integer.parseInt((String)prefSampleRate.getEntryValues()[2]));
-//			isa.songToAdd.setExtension((String)prefExtension.getEntries()[0]);
-//			isa.songToAdd.setBitDepth(Integer.parseInt((String)prefBitDepth.getEntryValues()[1]));
 
             // ######### Setto i valori di default per le preference #################
             prefSignature.setText("");
@@ -355,17 +340,11 @@ public class ImportSongActivity extends AppCompatActivity {
             prefYear.setText("");
             prefTapeWidth.setValue((String) prefTapeWidth.getEntryValues()[0]);
 
-//			prefSampleRate.setValue((String)prefSampleRate.getEntryValues()[2]);
-//			//Extension, default: .wav
-//			prefExtension.setValue((String)prefExtension.getEntryValues()[0]);;
-//			//BitDepth, degault: 16
-//			prefBitDepth.setValue((String)prefBitDepth.getEntryValues()[1]);;
-
             prefDescription.setText("");
 
-
             //Setto la possibilità di inserire solo numeri in questa preference
-            //TODO risolvere questa mancanza
+            // MAYBE_TODO risolvere questa mancanza
+            // questa mancanza sembra essere un bug della libraria
             //prefYear.getEditText().setInputType(InputType.TYPE_CLASS_NUMBER);
 
 
@@ -531,23 +510,6 @@ public class ImportSongActivity extends AppCompatActivity {
                             //aggiorno la canzone che alla fine si importerà
                             ((ImportSongActivity) getActivity()).songToAdd.setTapeWidth((String) newValue);
                             break;
-
-//						case "listaSampleRate":
-//							prefSampleRate.setValue((String)newValue);
-//							preference.setTitle(getString(R.string.sample_rate_title) + ": " + prefSampleRate.getEntry());
-//							((ImportSongActivity)getActivity()).songToAdd.setSampleRate(Integer.parseInt((String)newValue));
-//							break;
-//						case "Extension":
-//							prefExtension.setValue((String)newValue);
-//							preference.setTitle(getString(R.string.extension_title) + ": " + prefExtension.getEntry());
-//							((ImportSongActivity)getActivity()).songToAdd.setExtension((String)newValue);
-//							break;
-//						case "BitDepth":
-//							prefBitDepth.setValue((String)newValue);
-//							preference.setTitle(getString(R.string.bitdepth_title) + ": " + prefBitDepth.getEntry());
-//							((ImportSongActivity)getActivity()).songToAdd.setBitDepth(Integer.parseInt((String)newValue));
-//							break;
-
                         case "Description":
                             preference.setTitle(getString(R.string.description_title) +
                                     ": " + (String) newValue);
@@ -632,12 +594,7 @@ public class ImportSongActivity extends AppCompatActivity {
             prefYear.setOnPreferenceChangeListener(eventChange);
             prefTapeWidth.setOnPreferenceChangeListener(eventChange);
 
-//			prefSampleRate.setOnPreferenceChangeListener(eventChange);
-//			prefExtension.setOnPreferenceChangeListener(eventChange);
-//			prefBitDepth.setOnPreferenceChangeListener(eventChange);
-
             prefDescription.setOnPreferenceChangeListener(eventChange);
-
 
         } //fine oncreate
 
@@ -735,8 +692,6 @@ public class ImportSongActivity extends AppCompatActivity {
                     }
 
                     //setto il valore dell'estensione
-//					prefExtension.setValue(ext);
-//					prefExtension.setTitle(getString(R.string.extension_title) + ": " + prefExtension.getEntry());
                     ((ImportSongActivity) getActivity()).songToAdd.setExtension(ext);
 
                     //eseguo il parsing dell'header del file e ne ottengo le informazioni che vengono inserite nel wavHeader
@@ -857,8 +812,8 @@ public class ImportSongActivity extends AppCompatActivity {
                 return false;
             }
 
-            //se l'anno è da 0 a 9999 e non inizia per 0, faccio un piccolo controllo di bound dei numeri
-            if (numericYear < 9999 && numericYear > 0 && !year.startsWith("0"))
+            //faccio un piccolo controllo di bound dei numeri
+            if (numericYear < 9999 && numericYear > 0)
                 return true;
 
             toast.show();        //se ho un anno fuori dai numeri massimi mostro toast di errore
