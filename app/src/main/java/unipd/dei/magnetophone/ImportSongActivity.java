@@ -41,6 +41,7 @@ import static unipd.dei.magnetophone.Utility.showSupportActionBar;
 public class ImportSongActivity extends AppCompatActivity {
 
     private static int RESULT_LOAD_AUDIO_FILE = 2;    //Codice per l'intent di scelta brano
+    private static int RESULT_LOAD_PDF_FILE = 3;    //Codice per l'intent di scelta del pdf
     private static int INDEX_OF_TRACK;                //indice della track che l'utente sta attulmente scegliendo
     private Fragment obligatoryFrag;                //Reference al primo fragment: campi obbligatori
     private Song songToAdd = new Song();            //Canzone da aggiungere al database
@@ -200,7 +201,7 @@ public class ImportSongActivity extends AppCompatActivity {
         //informo la lista che dovrà far vedere la nuova canzone importata
         SharedPreferences shared = this.getSharedPreferences("selected", Context.MODE_PRIVATE);
         Editor editor = shared.edit();
-        if(newSong)
+        if (newSong)
             editor.putInt("song_id", songToAdd.getId());
         else
             editor.putInt("song_id", -1);
@@ -222,6 +223,7 @@ public class ImportSongActivity extends AppCompatActivity {
     public static class ObligatoryFragment extends PreferenceFragmentCompat {
         private static Preference prefPhotos;
         private static Preference prefVideo;
+        private static Preference prefPDFFile;
         private static XmlImport imp;
         private EditTextPreference prefSignature;
         private EditTextPreference prefProvenance;
@@ -289,9 +291,10 @@ public class ImportSongActivity extends AppCompatActivity {
             //------------ descrizione ---------------
             prefDescription = (EditTextPreference) findPreference("Description");
 
-            //--------- photos e video -----------------
+            //--------- photos, video & pdf -----------------
             prefPhotos = findPreference("Photos");
             prefVideo = findPreference("Video");
+            prefPDFFile = findPreference("Pdf");
 
 
             //################# la song da importare dovrà in ogni caso avere dei valori di default già pronti a parte per quelli obbligatori########
@@ -579,6 +582,15 @@ public class ImportSongActivity extends AppCompatActivity {
                 }
             });
 
+            prefPDFFile.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+
+                    getPDFFile();
+                    return false;
+                }
+            });
+
 
             //Setto l'evento alle preference a cui è collegato
             prefSignature.setOnPreferenceChangeListener(eventChange);
@@ -672,6 +684,15 @@ public class ImportSongActivity extends AppCompatActivity {
         }
 
         /**
+         * Metodo che chiama l'activity PDFFilePickerActivity per scegliere un file pdf,
+         */
+        private void getPDFFile()
+                throws InvalidParameterException {
+            Intent intent = new Intent(getActivity(), PDFFilePickerActivity.class);
+            startActivityForResult(intent, RESULT_LOAD_PDF_FILE);
+        }
+
+        /**
          * metodo chiamato al ritorno dalla scelta del file audio. Setta i valori del file audio leggendone i dati.
          */
         @Override
@@ -737,7 +758,12 @@ public class ImportSongActivity extends AppCompatActivity {
                             fourthSelected = true;
                             break;
                     }
+                }
+                if (requestCode == RESULT_LOAD_PDF_FILE && resultCode == RESULT_OK && data != null){
+                    String filePath = data.getStringExtra("filePDFAbsPath");    //prendo la path assoluta
 
+                    prefPDFFile.setSummary(getString(R.string.pdf_path_summary) + " : " + filePath);
+                    ((ImportSongActivity) getActivity()).songToAdd.setPDF(filePath); //salvo nella song il path della cartella delle foto
                 }
             }
         }

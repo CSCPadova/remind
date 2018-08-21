@@ -35,6 +35,7 @@ public class DatabaseConverter {
     private static final String NUMBEROFTRACKS = "numberoftracks";
     private static final String TAPEWIDTH = "tapewidth";
     private static final String DESCRIPTION = "description";
+    private static final String PDF = "pdf";
     private static final String XMLID = "xml_id";
     private static final String TRACK = "track";
     private static final String NAME = "name";
@@ -62,9 +63,11 @@ public class DatabaseConverter {
         Cursor songs = db.query(MagnetophoneOpenHelper.SONG, null, null, null, null, null, null, null);
         songs.moveToFirst();
 
+        File dir = new File(XmlImport.getCurrentDirectory(cont)+"/export");
+        dir.mkdir();
 
         //creiamo un nuovo file nella attuale cartella da dove si prendono gli XML
-        File newxmlfile = new File(XmlImport.getCurrentDirectory(cont) + DATABASE);
+        File newxmlfile = new File(XmlImport.getCurrentDirectory(cont) +"/export/"+ DATABASE);
 
         try {
             newxmlfile.createNewFile();
@@ -168,10 +171,20 @@ public class DatabaseConverter {
                 else
                     serializer.attribute(null, TAPEWIDTH, cont.getString(R.string.sconosciuto));
 
+                if (songs.getString(14) != null)
+                    serializer.attribute(null, DESCRIPTION, songs.getString(14));
+                else
+                    serializer.attribute(null, DESCRIPTION, cont.getString(R.string.description_not_available));
+
                 if (songs.getString(15) != null)
                     serializer.attribute(null, XMLID, "" + songs.getInt(15));
                 else
                     serializer.attribute(null, XMLID, cont.getString(R.string.sconosciuto));
+
+                if (songs.getString(16) != null)
+                    serializer.attribute(null, PDF, songs.getString(16));
+                else
+                    serializer.attribute(null, PDF, cont.getString(R.string.description_not_available));
 
                 //prendo l'id della canzone
                 int songId = songs.getInt(0);
@@ -228,13 +241,6 @@ public class DatabaseConverter {
 
                     serializer.endTag(null, PHOTOS);
                 }
-
-                serializer.startTag(null, DESCRIPTION);
-                if (songs.getString(14) != null)
-                    serializer.text(songs.getString(14));
-                else
-                    serializer.text(cont.getString(R.string.description_not_available));
-                serializer.endTag(null, DESCRIPTION);
 
                 //chiudiamo il tag song
                 serializer.endTag(null, SONG);

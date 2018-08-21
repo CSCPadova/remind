@@ -358,9 +358,8 @@ public class SongListActivity extends AppCompatActivity implements
         SearchView searchView = (SearchView) searchItem.getActionView();
         //informo il sistema che la classe SearchActivity si preoccupa della gestione della ricerca
         searchView.setSearchableInfo(searchManager.getSearchableInfo(
-        //        new ComponentName("it.unipd.dei.esp1314.magnetophone", SearchActivity.class.getName())));
                 new ComponentName("unipd.dei.magnetophone", SearchActivity.class.getName())));
-        searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
+        searchView.setIconifiedByDefault(true); // Do not iconify the widget; expand it by default
         searchView.setSubmitButtonEnabled(true);
 
         return super.onCreateOptionsMenu(menu);

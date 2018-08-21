@@ -103,10 +103,11 @@ public class DatabaseManager {
             songFromCursor.setTapeWidth(cursor.getString(13));
             songFromCursor.setDescription(cursor.getString(14));
             songFromCursor.setXMLRef(cursor.getInt(15));
+            songFromCursor.setPDF(cursor.getString(16));
 
             //inserisco track finché ve ne sono
             do {
-                songFromCursor.setTrack(cursor.getString(18), cursor.getInt(19));
+                songFromCursor.setTrack(cursor.getString(19), cursor.getInt(20));
             }
             while (cursor.moveToNext());
 
@@ -117,8 +118,6 @@ public class DatabaseManager {
             getPhotosFromDatabase(songFromCursor, cont);
             getVideoFromDatabase(songFromCursor, cont);
         }
-
-
         return songFromCursor;
     }
 
@@ -164,6 +163,7 @@ public class DatabaseManager {
         cursor.close();
         db.close();
     }
+
 
     /**
      * salva tutte le canzoni contenute nella list passata come parametro nel database
@@ -331,6 +331,7 @@ public class DatabaseManager {
         values.put(MagnetophoneOpenHelper.NUMBEROFTRACKS, songToAdd.getNumberOfTracks());
         values.put(MagnetophoneOpenHelper.TAPEWIDTH, songToAdd.getTapeWidth());
         values.put(MagnetophoneOpenHelper.DESCRIPTION, songToAdd.getDescription());
+        values.put(MagnetophoneOpenHelper.PDF, songToAdd.getPdf().getPath());
 
         //gestione del fatto che la canzone sia importata o definita in un XML
         if (xmlId != -1)
@@ -402,7 +403,8 @@ public class DatabaseManager {
                 MagnetophoneOpenHelper.SAMPLERATE + "=" + s.getSampleRate() + ", " +
                 MagnetophoneOpenHelper.NUMBEROFTRACKS + "=" + s.getNumberOfTracks() + ", " +
                 MagnetophoneOpenHelper.TAPEWIDTH + "=\"" + s.getTapeWidth() + "\", " +
-                MagnetophoneOpenHelper.DESCRIPTION + "=\"" + s.getDescription() + "\" ";
+                MagnetophoneOpenHelper.DESCRIPTION + "=\"" + s.getDescription() + "\" "+
+                MagnetophoneOpenHelper.PDF + "=\"" + s.getPdf() + "\" ";
 
         sql = sql + " WHERE " + MagnetophoneOpenHelper.SONGID + "=" + s.getId() + ";";
         db.execSQL(sql);
@@ -607,5 +609,4 @@ public class DatabaseManager {
         editor.putInt("PhotosId", ++photos_id);
         editor.commit();
     }
-
 }

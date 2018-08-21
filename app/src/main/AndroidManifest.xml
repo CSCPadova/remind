@@ -67,6 +67,11 @@
             android:label="@string/title_activity_audio_file_picker"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme" />
+        <activity
+            android:name=".PDFFilePickerActivity"
+            android:label="@string/title_activity_pdf_file_picker"
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme" />
 
         <!--
         I didn't find it

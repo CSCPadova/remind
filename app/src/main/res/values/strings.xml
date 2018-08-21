@@ -26,16 +26,18 @@
     <string name="info_on_tracks">INFORMAZIONI SULLE TRACCE da modificare in ORIGINAL DOCUMENT DESCRIPTION</string>
     <string name="video">Video</string>
     <string name="bitdepth">Bitdepth</string>
-    <string name="video_not_available">Video not available</string>
-    <string name="description_button">Description</string>
-    <string name="description_not_available">Description not available</string>
-    <string name="go_back_from_description">Return to details</string>
-    <string name="info_photos">Photos</string>
-    <string name="photos_not_available">Photos not available</string>
+    <string name="video_not_available">Video non disponibile</string>
+    <string name="description_button">Descrizione</string>
+    <string name="description_not_available">Descrizione non disponibile</string>
+    <string name="pdf_button">File PDF</string>
+    <string name="pdf_not_available">PDF non disponibile</string>
+    <string name="go_back_from_description">Ritorna ai dettagli</string>
+    <string name="info_photos">Foto</string>
+    <string name="photos_not_available">Foto non disponibili</string>
 
     <!-- stringhe per i dialog delle opzioni -->
-    <string name="sure_to_delete_song">Delete tape</string>
-    <string name="delete_is_irreversible">The tape will be delete definitively</string>
+    <string name="sure_to_delete_song">Cancella nastro</string>
+    <string name="delete_is_irreversible">Il nastro verrà eliminato definitivamente</string>
     <string name="edit">EDIT</string>
     <string name="pass_to_edit_activity">Conferma per passare al men\ù per modificare i dati dell\'opera selezionata</string>
     <string name="import_setting">IMPORT</string>
@@ -154,6 +156,7 @@
     <string name="title_velocita_importazione">Velocità di riproduzione</string>
     <string name="title_nastro_importazione">Nastro</string>
     <string name="title_canale1_importazione">Filename</string>
+    <string name="title_pdf_importazione">Filename</string>
     <string name="canale1_importazione">Nome del file audio legato al canale sinistro</string>
     <string name="canale2_importazione">Nome del file audio legato al canale destro</string>
     <string name="trackpath_1">Nome del primo file</string>
@@ -209,6 +212,7 @@
     <string name="song_presentation">Canzone attualmente in riproduzione: </string>
     <string name="running_song">Nessuna canzone attualmente in riproduzione </string>
     <string name="title_activity_audio_file_picker">Scelta file audio</string>
+    <string name="title_activity_pdf_file_picker">Scelta file pdf</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="title_activity_image_picker">Scelta foto</string>
@@ -236,6 +240,8 @@
     <string name="photos_path_summary">path: </string>
     <string name="video_path_title">Path cartella video</string>
     <string name="video_path_summary">path: </string>
+    <string name="pdf_path_title">Path cartella pdf</string>
+    <string name="pdf_path_summary">path: </string>
 
     <!-- stringhe menu edit singolo brano -->
     <string name="other_settings">Altre impostazioni</string>
@@ -311,4 +317,6 @@
     <string name="CHANNEL_ID">Magnetofono</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="action_bar_preview">Apri file</string>
 </resources>

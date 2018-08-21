@@ -129,7 +129,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/lvDividerHeight"
                     android:background="@color/lvDividerColor" />
-				
+
                 <!-- Venue of digitization -->
 
                 <TextView
@@ -158,7 +158,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/lvDividerHeight"
                     android:background="@color/lvDividerColor" />
-                
+
                 <!-- Previous Signature(s) -->
 
                 <TextView
@@ -187,8 +187,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/lvDividerHeight"
                     android:background="@color/lvDividerColor" />
-                
-                
+
+
                 <!-- AUDIO INFO -->
 
                 <TextView
@@ -209,9 +209,9 @@
                     android:layout_marginTop="@dimen/lvSectionDividerMarginTop"
                     android:background="@color/lvHeaderDividerColor" />
 
-               
+
                 <!-- prima traccia -->
-  <!--  
+  <!--
           		 <TextView
                     android:id="@+id/info_firstTrack_subtex"
                     style="@style/listViewSecondaryDetail"
@@ -232,7 +232,7 @@
                     android:singleLine="false"
                     android:text=""
                     android:textIsSelectable="false" />
- 
+
                 <View
                     android:id="@+id/item_separator_track1"
                     android:layout_width="match_parent"
@@ -290,7 +290,7 @@
                     android:singleLine="false"
                     android:text=""
                     android:textIsSelectable="false" />
- 
+
                 <View
                     android:id="@+id/item_separator_track3"
                     android:layout_width="match_parent"
@@ -319,13 +319,13 @@
                     android:singleLine="false"
                     android:text=""
                     android:textIsSelectable="false" />
- 
+
                 <View
                     android:id="@+id/item_separator_track4"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/lvDividerHeight"
-                    android:background="@color/lvDividerColor" /> 
-     <!--                
+                    android:background="@color/lvDividerColor" />
+     <!--
                 <TextView
                     android:id="@+id/info_sampleRate_subtex"
                     style="@style/listViewSecondaryDetail"
@@ -335,7 +335,7 @@
                     android:singleLine="true"
                     android:text="@string/sample_rate_title"
                     android:textIsSelectable="false" />
-           -->      
+           -->
              <!-- Previous Signature(s) -->
 
                 <TextView
@@ -363,8 +363,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/lvDividerHeight"
                     android:background="@color/lvDividerColor" />
-                
-                 <!-- Previous Signature(s) 
+
+                 <!-- Previous Signature(s)
                  
                  
                  
@@ -398,7 +398,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/lvDividerHeight"
                     android:background="@color/lvDividerColor" />
-                
+
                  <!-- Previous Signature(s) -->
 
                 <TextView
@@ -427,7 +427,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/lvDividerHeight"
                     android:background="@color/lvDividerColor" />
-                
+
                  <!-- Tape width -->
 
                 <TextView
@@ -453,7 +453,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/lvDividerHeight"
                     android:background="@color/lvDividerColor" />
-                
+
                  <!-- Equalization -->
 
                 <TextView
@@ -479,7 +479,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/lvDividerHeight"
                     android:background="@color/lvDividerColor" />
-                
+
             </LinearLayout>
 
             <!-- colonna di destra -->
@@ -490,7 +490,7 @@
                 android:layout_weight="1"
                 android:orientation="vertical"
                 android:padding="10dp" >
-<!--  
+<!--
                 <TextView
                     android:id="@+id/general_info"
                     style="@style/listViewHeaderItem"
@@ -527,7 +527,7 @@
                     android:ellipsize="marquee"
                     android:singleLine="false"
                     android:textIsSelectable="false" />
-<!-- 
+<!--
                 <View
                     android:id="@+id/item_separator11"
                     android:layout_width="match_parent"
@@ -553,7 +553,7 @@
                     android:ellipsize="marquee"
                     android:singleLine="false"
                     android:textIsSelectable="false" />
-<!-- 
+<!--
                 <View
                     android:id="@+id/item_separator9"
                     android:layout_width="match_parent"
@@ -579,7 +579,7 @@
                     android:ellipsize="marquee"
                     android:singleLine="false"
                     android:textIsSelectable="false" />
-<!-- 
+<!--
                 <View
                     android:id="@+id/item_separator12"
                     android:layout_width="match_parent"
@@ -605,7 +605,7 @@
                     android:ellipsize="marquee"
                     android:singleLine="false"
                     android:textIsSelectable="false" />
- <!--  
+ <!--
                 <View
                     android:id="@+id/item_separator13"
                     android:layout_width="match_parent"
@@ -628,7 +628,7 @@
                     android:layout_height="@dimen/lvDividerHeight"
                     android:layout_marginTop="@dimen/lvSectionDividerMarginTop"
                     android:background="@color/lvHeaderDividerColor" />
-  
+
                  <!-- EQUALIZZAZIONE -->
 
                 <TextView
@@ -688,7 +688,7 @@
                     android:background="@color/lvDividerColor" />
 
                 <!-- NUMERO DELLE TRACCE -->
-<!-- 
+<!--
                 <TextView
                     android:id="@+id/number_oftracks_header"
                     style="@style/listViewHeaderItem"
@@ -736,7 +736,7 @@
                     android:layout_height="@dimen/lvDividerHeight"
                     android:background="@color/lvDividerColor" />
 				<!-- signal type -->
-				
+
 				<TextView
                     android:id="@+id/signal_type_subtex"
                     style="@style/listViewSecondaryDetail"
@@ -746,7 +746,7 @@
                     android:singleLine="false"
                     android:text="@string/signal_type_title"
                     android:textIsSelectable="false" />
-				
+
 				 <TextView
                     android:id="@+id/signal_type_value"
                     style="@style/listViewPrimaryDetail"
@@ -757,15 +757,15 @@
                     android:singleLine="false"
                     android:text="@string/signal_type"
                     android:textIsSelectable="false" />
-				
+
 				<View
                     android:id="@+id/item_separator_trackA"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/lvDividerHeight"
                     android:background="@color/lvDividerColor" />
-				
+
 				<!-- Side -->
-				
+
 				<TextView
                     android:id="@+id/side_subtex"
                     style="@style/listViewSecondaryDetail"
@@ -775,7 +775,7 @@
                     android:singleLine="false"
                     android:text="@string/side_title"
                     android:textIsSelectable="false" />
-				
+
 				 <TextView
                     android:id="@+id/side_value"
                     style="@style/listViewPrimaryDetail"
@@ -786,14 +786,14 @@
                     android:singleLine="false"
                     android:text="@string/side"
                     android:textIsSelectable="false" />
-				
+
 				<View
                     android:id="@+id/item_separator_trackB"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/lvDividerHeight"
                     android:background="@color/lvDividerColor" />
-				
-                
+
+
                 <TextView
                     android:id="@+id/info_sampleRate_subtex"
                     style="@style/listViewSecondaryDetail"
@@ -813,7 +813,7 @@
                     android:ellipsize="marquee"
                     android:singleLine="false"
                     android:textIsSelectable="false" />
-                
+
                 <View
                     android:id="@+id/item_separator15"
                     android:layout_width="match_parent"
@@ -871,7 +871,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/lvDividerHeight"
                     android:background="@color/lvDividerColor" />
-<!-- 
+<!--
                 <TextView
                     android:id="@+id/info_video_subtex"
                     style="@style/listViewSecondaryDetail"
@@ -891,7 +891,7 @@
                     android:ellipsize="marquee"
                     android:singleLine="false"
                     android:textIsSelectable="false" />
-<!-- 
+<!--
                 <View
                     android:id="@+id/item_separator18"
                     android:layout_width="match_parent"
@@ -949,6 +949,43 @@
             android:layout_marginTop="@dimen/lvSectionDividerMarginTop"
             android:background="@color/lvHeaderDividerColor" />
 
+        <!-- qui il file pdf -->
+
+        <TextView
+            android:id="@+id/info_pdf_file"
+            style="@style/listViewHeaderItem"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:gravity="bottom|left"
+            android:paddingTop="20dp"
+            android:text="@string/pdf_button"
+            android:textColor="@color/lvHeaderTextColor"
+            android:textIsSelectable="false" />
+
+        <View
+            android:id="@+id/item_separator21"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/lvDividerHeight"
+            android:layout_marginTop="@dimen/lvSectionDividerMarginTop"
+            android:background="@color/lvHeaderDividerColor" />
+
+        <ImageView
+            android:id="@+id/pdf_preview"
+            style="@style/listViewPrimaryDetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:ellipsize="marquee"
+            android:text="@string/pdf_not_available"
+            android:textIsSelectable="false" />
+
+        <View
+            android:id="@+id/item_separator22"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/lvDividerHeight"
+            android:layout_marginTop="@dimen/lvSectionDividerMarginTop"
+            android:background="@color/lvHeaderDividerColor" />
+
         <!-- qui la slide show -->
 
         <TextView
@@ -963,7 +1000,7 @@
             android:textIsSelectable="false" />
         
         <View
-            android:id="@+id/item_separator21"
+            android:id="@+id/item_separator23"
             android:layout_width="match_parent"
             android:layout_height="@dimen/lvDividerHeight"
             android:layout_marginTop="@dimen/lvSectionDividerMarginTop"
@@ -996,7 +1033,7 @@
             android:textIsSelectable="false" />
         
         <View
-            android:id="@+id/item_separator22"
+            android:id="@+id/item_separator24"
             android:layout_width="match_parent"
             android:layout_height="@dimen/lvDividerHeight"
             android:layout_marginTop="@dimen/lvSectionDividerMarginTop"

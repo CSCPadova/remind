@@ -103,6 +103,11 @@
             android:key="Video"
             android:summary="@string/video_path_summary"
             android:title="@string/video_path_title" />
+
+        <Preference
+            android:key="Pdf"
+            android:summary="@string/pdf_path_summary"
+            android:title="@string/pdf_path_title" />
     </PreferenceCategory>
 
     <Preference

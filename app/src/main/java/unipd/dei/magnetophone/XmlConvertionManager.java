@@ -43,6 +43,7 @@ public class XmlConvertionManager {
     private static final String SAMPLERATE = "sample rate";
     private static final String TAPEWIDTH = "tape width";
     private static final String DESCRIPTION = "description";
+    private static final String PDF = "pdf";
 
     private static Context context;
 
@@ -67,6 +68,7 @@ public class XmlConvertionManager {
     /**
      * esegue un parsing del documento passato come parametro ottenuto da un file
      * XML e ne restituisce una lista con le canzoni correttamente definite all'interno
+     *
      * @param doc: documento ottenuto dal file XML che contiene le informazioni sul brano
      * @return lista di canzoni correttamente definite nell'XML
      */
@@ -133,6 +135,8 @@ public class XmlConvertionManager {
                     song.setTapeWidth(text);
                 else if (name.equals(DESCRIPTION))
                     song.setDescription(text);
+                else if (name.equals(PDF))
+                    song.setPDF(text);
             }
 
             //##########adesso bisogna passare ai figli interni del nodo ##########
@@ -198,34 +202,42 @@ public class XmlConvertionManager {
             }
 
             //gestiamo ora le canzoni
-            if (tracksCount == 1)//la canzone è mono, per tradizione il canale è posto come sinistro
+            if (tracksCount == 1)//la canzone è mono
             {
                 Node child = nodeChildList.item(nodePosition[0]);//prendo l'unica track presente
                 NamedNodeMap childAttributes = child.getAttributes();
-                Node track = childAttributes.item(0);//prendo il primo elemento, conterrà path = "<path>"
 
-                if (track.getNodeName().equals("path")) {
-                    String track_path = track.getTextContent();//prendo il path vero e proprio
-                    song.setTrack(adaptPath(track_path), 1);
+                Node track=null;
+                for (int j = 0; j < childAttributes.getLength(); j++) {
+                    track = childAttributes.item(j);//cerco l'attributo path = "<path>"
+                    if (track.getNodeName().equals("path")) {
+                        String track_path = track.getTextContent();//prendo il path vero e proprio
+                        song.setTrack(adaptPath(track_path), 1);
 
-                    validNumberOfTracks = true;
+                        validNumberOfTracks = true;
+                    }
                 }
             } else if (tracksCount == 2) {
                 Node child1 = nodeChildList.item(nodePosition[0]);//prendo la prima track
                 NamedNodeMap childAttributes1 = child1.getAttributes();//prendo i suoi attributi
-                Node track = childAttributes1.item(0);//prendo il path della track
 
                 Node child2 = nodeChildList.item(nodePosition[1]);//prendo la seconda track
                 NamedNodeMap childAttributes2 = child2.getAttributes();//prendo i suoi attributi
-                Node track2 = childAttributes2.item(0);//prendo il nome della prima track
 
-                if (track.getNodeName().equals("path") && track2.getNodeName().equals("path")) {
-                    String track_path1 = track.getTextContent();//prendo il path del primo file audio
-                    String track_path2 = track2.getTextContent();//prendo il path del secondo file audio
+                Node track=null;
+                //si da per scontato che gli attributri abbiano la stessa posizione ==> trovato uno trovati tutti
+                for (int j = 0; j < childAttributes1.getLength(); j++) {
+                    track = childAttributes1.item(j);//cerco l'attributo path = "<path>"
+                    if (track.getNodeName().equals("path")) {
+                        Node track2 = childAttributes2.item(j);//cerco l'attributo path = "<path>"
 
-                    song.setTrack(adaptPath(track_path1), 1);
-                    song.setTrack(adaptPath(track_path2), 2);
-                    validNumberOfTracks = true;
+                        String track_path1 = track.getTextContent();//prendo il path del primo file audio
+                        String track_path2 = track2.getTextContent();//prendo il path del secondo file audio
+
+                        song.setTrack(adaptPath(track_path1), 1);
+                        song.setTrack(adaptPath(track_path2), 2);
+                        validNumberOfTracks = true;
+                    }
                 }
 
             }//fine else se abbiamo 2 tracce
@@ -233,32 +245,38 @@ public class XmlConvertionManager {
             {
                 Node child1 = nodeChildList.item(nodePosition[0]);//prendo la prima track
                 NamedNodeMap childAttributes1 = child1.getAttributes();//prendo i suoi attributi
-                Node track = childAttributes1.item(0);//prendo il path della track
-
 
                 Node child2 = nodeChildList.item(nodePosition[1]);//prendo la seconda track
                 NamedNodeMap childAttributes2 = child2.getAttributes();//prendo i suoi attributi
-                Node track2 = childAttributes2.item(0);//prendo il nome della prima track
 
                 Node child3 = nodeChildList.item(nodePosition[2]);//prendo la terza track
                 NamedNodeMap childAttributes3 = child3.getAttributes();//prendo i suoi attributi
-                Node track3 = childAttributes3.item(0);//prendo il path della track
 
                 Node child4 = nodeChildList.item(nodePosition[3]);//prendo la quarta track
                 NamedNodeMap childAttributes4 = child4.getAttributes();//prendo i suoi attributi
-                Node track4 = childAttributes4.item(0);//prendo il nome della prima track
 
-                if (track.getNodeName().equals("path") && track2.getNodeName().equals("path") && track3.getNodeName().equals("path") && track4.getNodeName().equals("path")) {
-                    String track_path1 = track.getTextContent();//prendo il nome del file
-                    String track_path2 = track2.getTextContent();//prendo il nome del file
-                    String track_path3 = track3.getTextContent();//prendo il nome del file
-                    String track_path4 = track4.getTextContent();//prendo il nome del file
+                Node track=null;
+                //si da per scontato che gli attributri abbiano la stessa posizione ==> trovato uno trovati tutti
+                for (int j = 0; j < childAttributes1.getLength(); j++) {
+                    track = childAttributes1.item(j);//cerco il path della track
+                    if (track.getNodeName().equals("path"))
+                    {
+                        Node track2 = childAttributes2.item(j);
+                        Node track3 = childAttributes3.item(j);
+                        Node track4 = childAttributes4.item(j);
 
-                    validNumberOfTracks = true;
-                    song.setTrack(adaptPath(track_path1), 1);
-                    song.setTrack(adaptPath(track_path2), 2);
-                    song.setTrack(adaptPath(track_path3), 3);
-                    song.setTrack(adaptPath(track_path4), 4);
+                        String track_path1 = track.getTextContent();//prendo il nome del file
+                        String track_path2 = track2.getTextContent();//prendo il nome del file
+                        String track_path3 = track3.getTextContent();//prendo il nome del file
+                        String track_path4 = track4.getTextContent();//prendo il nome del file
+
+                        song.setTrack(adaptPath(track_path1), 1);
+                        song.setTrack(adaptPath(track_path2), 2);
+                        song.setTrack(adaptPath(track_path3), 3);
+                        song.setTrack(adaptPath(track_path4), 4);
+
+                        validNumberOfTracks = true;
+                    }
                 }
             } else if (tracksCount > 4 || tracksCount == 3)//abbiamo più di 2 tracce
             {

@@ -39,8 +39,14 @@ public class PDFActivity extends AppCompatActivity implements OnPageChangeListen
         Bundle p = getIntent().getExtras();
         String path =p.getString("path");
         String file =p.getString("file");
+        File outFile=null;
+
         pdfFileName=file;
-        File outFile = new File(path,file);
+        if(pdfFileName.compareTo("")==0)
+            outFile = new File(path);
+        else
+            outFile = new File(path,file);
+
         if(outFile.exists()) {
 
 

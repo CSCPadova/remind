@@ -5,7 +5,7 @@
           android:icon="@drawable/ic_action_stop"
           android:title="@string/action_bar_stop"
           magnetophone:showAsAction="ifRoom"/>
-    
+
     <item android:id="@+id/ic_action_choose_audio"
           android:icon="@drawable/ic_action_accept"
           android:title="@string/action_bar_accept"

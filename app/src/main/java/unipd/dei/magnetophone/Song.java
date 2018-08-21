@@ -42,6 +42,7 @@ public class Song {
     private int songId; // id di riferimento della song nel database
     private LinkedList<Track> trackList;
     private Video video;// video associato alla song
+    private FilePDF filePDF;// video associato alla song
     private Photos photos;// cartella delle fotografie associata alla song
 
     /**
@@ -503,6 +504,14 @@ public class Song {
         video = (path == null) ? null : new Video(path);
     }
 
+    public FilePDF getPdf() {
+        return filePDF;
+    }
+
+    public void setPDF(String path) {
+        filePDF = (path == null) ? null : new FilePDF(path);
+    }
+
     public Photos getPhotos() {
         return photos;
     }
@@ -589,6 +598,19 @@ public class Song {
             return false;
 
         return this.getVideo().isValid();
+
+    }
+
+    /**
+     * dice se il file pdf e' valido o meno
+     *
+     * @return
+     */
+    public boolean isPdfValid() {
+        if (filePDF == null)
+            return false;
+
+        return this.getPdf().isValid();
 
     }
 
@@ -891,4 +913,61 @@ public class Song {
             return valid;
         }
     }// fine Photos
+
+    /**
+     * classe FilePDF, rappresenza un pdf legato ad una song
+     */
+    public static class FilePDF {
+        private String path;
+        private String name;
+        private boolean valid;
+
+        /**
+         * costruttore, setta il path del pdf ed il suo nome in base al nome
+         * del file
+         *
+         * @param p : il path del file pdf
+         */
+        public FilePDF(String p) {
+            try {
+                Uri.parse(p);
+            } catch (NullPointerException e) {
+                Log.e("Song", "PDF: file non trovato");
+                path = INVALID;
+                name = INVALID;
+                valid = false;
+            }
+
+            // controllo l'esistenza del pdf
+            File pdf = new File(p);
+            if (pdf.exists()) {
+                valid = true;
+                String name = pdf.getName();
+                setName(name);
+                path = pdf.getAbsolutePath();
+            } else
+                valid = false;
+        }
+
+        public String getPath() {
+            return path;
+        }
+
+        public void setPath(String p) {
+            this.path = p;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String n) {
+            name = n;
+        }
+
+        public boolean isValid() {
+            return valid;
+        }
+    }
+
 }

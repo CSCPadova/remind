@@ -1,10 +1,14 @@
 package unipd.dei.magnetophone;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.pdf.PdfRenderer;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.ParcelFileDescriptor;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -18,6 +22,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 /**
  * A fragment representing a single Song detail screen. This fragment is either
@@ -180,11 +186,62 @@ public class SongDetailFragment extends Fragment {
                 descriptionText.setText(s.getDescription());
             }
 
-            mViewPager = (ViewPager) v.findViewById(R.id.myPager);
-            invalid = (TextView) v.findViewById(R.id.info_photos_not_available);
+            ImageView pdfPreview = v.findViewById(R.id.pdf_preview);
+            if (s.getPdf().isValid()) {
+                final Song.FilePDF pdfFile=s.getPdf();
+                pdfPreview.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent i = new Intent(getContext(), PDFActivity.class);
+                        i.putExtra("path", pdfFile.getPath());
+                        i.putExtra("file", "");
+                        getContext().startActivity(i);
+                    }
+                });
+
+                if (Build.VERSION.SDK_INT >= 21) {
+                    // create a new renderer
+                    File file = new File(s.getPdf().getPath());
+                    PdfRenderer renderer;
+                    try {
+                        ParcelFileDescriptor mFileDescriptor = ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_ONLY);
+
+                        renderer = new PdfRenderer(mFileDescriptor);
+
+                        int index = 0;
+
+                        if (renderer.getPageCount() <= index) {
+                            return;
+                        }
+
+                        // Use `openPage` to open a specific page in PDF.
+                        PdfRenderer.Page mCurrentPage = renderer.openPage(index);
+                        // Important: the destination bitmap must be ARGB (not RGB).
+                        Bitmap bitmap = Bitmap.createBitmap(mCurrentPage.getWidth(), mCurrentPage.getHeight(),
+                                Bitmap.Config.ARGB_8888);
+                        // Here, we render the page onto the Bitmap.
+                        // To render a portion of the page, use the second and third parameter. Pass nulls to get
+                        // the default result.
+                        // Pass either RENDER_MODE_FOR_DISPLAY or RENDER_MODE_FOR_PRINT for the last parameter.
+                        mCurrentPage.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY);
+                        // We are ready to show the Bitmap to user.
+                        pdfPreview.setImageBitmap(bitmap);
+
+                        mCurrentPage.close();
+                        renderer.close();
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            mViewPager = v.findViewById(R.id.myPager);
+            invalid = v.findViewById(R.id.info_photos_not_available);
 
             if (s.isPhotosValid()) {
-                //penso ad istanziale la ViewPager
+                //penso ad istanziare la ViewPager
                 mDemoCollectionPagerAdapter = new DemoCollectionPagerAdapter(getActivity().getSupportFragmentManager());
 
                 mViewPager.setAdapter(mDemoCollectionPagerAdapter);

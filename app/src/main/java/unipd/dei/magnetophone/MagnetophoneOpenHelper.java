@@ -34,6 +34,7 @@ public class MagnetophoneOpenHelper extends SQLiteOpenHelper {
     public static final String TAPEWIDTH = "Tape_Width";
     public static final String DESCRIPTION = "Description";
     public static final String XMLIDS = "respective_xml";
+    public static final String PDF = "Pdf";
     // ########## ATTRIBUTI DELLA TABELLA XML ###############
     public static final String XMLID = "xmlid";//id del relativo XML
     public static final String NOMEFILE = "nome_file";//nome del file xml
@@ -46,10 +47,10 @@ public class MagnetophoneOpenHelper extends SQLiteOpenHelper {
     public static final String INDEX = "Track_Index";
     public static final String MONO = "Track_Mono";
     public static final String TRACKSONG = "Respective_Track_Song";
-    public static final String VIDEOID = "Video_Id";
-    public static final String VIDEONAME = "Video_Name";
 
     // ########### ATTRIBUTI DELLA TABELLA VIDEO ###############
+    public static final String VIDEOID = "Video_Id";
+    public static final String VIDEONAME = "Video_Name";
     public static final String VIDEOPATH = "Video_Path";
     public static final String VIDEOSONG = "Respective_Video_Song";
     // ########## ATTRIBUTI DELLA TABELLA PHOTOS ###############
@@ -57,6 +58,11 @@ public class MagnetophoneOpenHelper extends SQLiteOpenHelper {
     public static final String PHOTOSNAME = "Photos_Name";
     public static final String PHOTOSPATH = "Photos_Path";
     public static final String PHOTOSSONG = "Respective_Photos_Song";
+    // ########## ATTRIBUTI DELLA TABELLA PDF ###############
+    public static final String PDFID = "Pdf_Id";
+    public static final String PDFNAME = "Pdf_Name";
+    public static final String PDFPATH = "Pdf_Path";
+    public static final String PDFSONG = "Respective_Pdf_Song";
 
     public static final String DATABASE_NAME = "magnetophonedb.db";
     public static final int DATABASE_VERSION = 1;
@@ -86,6 +92,7 @@ public class MagnetophoneOpenHelper extends SQLiteOpenHelper {
                 TAPEWIDTH + " text," +
                 DESCRIPTION + " text, " +
                 XMLIDS + " integer," +
+                PDF + " text, " +
                 "FOREIGN KEY( " + XMLIDS + " ) REFERENCES " +
                 XML + "(" + XMLID + ") ON DELETE CASCADE ON UPDATE CASCADE);";
         db.execSQL(sql);
