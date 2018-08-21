@@ -3,7 +3,7 @@
     android:id="@+id/magnetophone_activity_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="unipd.dei.magnetophone.MagnetophoneActivity" >
+    tools:context="unipd.dei.magnetophone.activity.MagnetophoneActivity" >
 
     <ImageView
         android:id="@+id/imageView1"

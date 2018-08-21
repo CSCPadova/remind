@@ -9,9 +9,12 @@ import android.os.IBinder;
 import android.util.Log;
 
 import unipd.dei.magnetophone.MusicService.MusicServiceBinder;
-import unipd.dei.magnetophone.Song.SongSpeed;
+import unipd.dei.magnetophone.database.DatabaseManager;
 import unipd.dei.magnetophone.graphics.AnimationController;
 import unipd.dei.magnetophone.graphics.VideoController;
+import unipd.dei.magnetophone.utility.PlayerEqualization;
+import unipd.dei.magnetophone.utility.Song;
+import unipd.dei.magnetophone.utility.Song.SongSpeed;
 
 /**
  * La classe che si preoccupa di gestire la riproduzione dell'audio e

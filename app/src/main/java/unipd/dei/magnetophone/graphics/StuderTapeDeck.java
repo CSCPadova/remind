@@ -8,17 +8,15 @@ import android.os.Environment;
 import android.util.Log;
 import android.widget.Toast;
 
-import java.io.File;
-
-import unipd.dei.magnetophone.MonitorSetupActivity;
-import unipd.dei.magnetophone.PDFActivity;
-import unipd.dei.magnetophone.PlayerEqualization;
 import unipd.dei.magnetophone.R;
-import unipd.dei.magnetophone.SettingsActivity;
-import unipd.dei.magnetophone.Song;
-import unipd.dei.magnetophone.Song.SongSpeed;
-import unipd.dei.magnetophone.SongListActivity;
+import unipd.dei.magnetophone.activity.MonitorSetupActivity;
+import unipd.dei.magnetophone.activity.SettingsActivity;
+import unipd.dei.magnetophone.activity.SongListActivity;
+import unipd.dei.magnetophone.activity.pdf.PDFActivity;
 import unipd.dei.magnetophone.graphics.UIConnector.Side;
+import unipd.dei.magnetophone.utility.PlayerEqualization;
+import unipd.dei.magnetophone.utility.Song;
+import unipd.dei.magnetophone.utility.Song.SongSpeed;
 
 import static java.lang.Thread.sleep;
 

@@ -25,6 +25,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import unipd.dei.magnetophone.activity.SongDetailActivity;
+import unipd.dei.magnetophone.activity.SongListActivity;
+import unipd.dei.magnetophone.activity.pdf.PDFActivity;
+import unipd.dei.magnetophone.database.DatabaseManager;
+import unipd.dei.magnetophone.utility.Song;
+
 /**
  * A fragment representing a single Song detail screen. This fragment is either
  * contained in a {@link SongListActivity} in two-pane mode (on tablets) or a
@@ -188,6 +194,10 @@ public class SongDetailFragment extends Fragment {
 
             ImageView pdfPreview = v.findViewById(R.id.pdf_preview);
             if (s.getPdf().isValid()) {
+                v.findViewById(R.id.info_pdf_file).setVisibility(View.VISIBLE);
+                v.findViewById(R.id.item_separator21).setVisibility(View.VISIBLE);
+                v.findViewById(R.id.pdf_preview).setVisibility(View.VISIBLE);
+
                 final Song.FilePDF pdfFile=s.getPdf();
                 pdfPreview.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -235,6 +245,12 @@ public class SongDetailFragment extends Fragment {
                         e.printStackTrace();
                     }
                 }
+            }
+            else
+            {
+                v.findViewById(R.id.info_pdf_file).setVisibility(View.GONE);
+                v.findViewById(R.id.item_separator21).setVisibility(View.GONE);
+                v.findViewById(R.id.pdf_preview).setVisibility(View.GONE);
             }
 
             mViewPager = v.findViewById(R.id.myPager);

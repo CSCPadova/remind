@@ -1,21 +1,21 @@
 package unipd.dei.magnetophone;
 
 import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
-import android.os.Build;
 import android.os.Environment;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
 
-import unipd.dei.magnetophone.Song.SongSpeed;
-import unipd.dei.magnetophone.Song.SongType;
+import unipd.dei.magnetophone.activity.MagnetophoneActivity;
+import unipd.dei.magnetophone.utility.PlayerEqualization;
+import unipd.dei.magnetophone.utility.Song;
+import unipd.dei.magnetophone.utility.Song.SongSpeed;
+import unipd.dei.magnetophone.utility.Song.SongType;
 
 public class MusicService extends Service {
     public static final int ONGOING_NOTIFICATION_ID = 222;

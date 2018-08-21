@@ -16,7 +16,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
-import unipd.dei.magnetophone.Song;
+import unipd.dei.magnetophone.utility.Song;
 
 public class VideoView extends SurfaceView implements SurfaceHolder.Callback, Runnable, VideoController {
     //private static final String SAMPLE = Environment.getExternalStorageDirectory() + "/Magnetophone/video.mp4";

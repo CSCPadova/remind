@@ -2,7 +2,7 @@ package unipd.dei.magnetophone.graphics;
 
 import android.graphics.Rect;
 
-import unipd.dei.magnetophone.Song;
+import unipd.dei.magnetophone.utility.Song;
 
 public interface VideoController {
 

@@ -1,7 +1,7 @@
 package unipd.dei.magnetophone.graphics;
 
-import unipd.dei.magnetophone.Song;
-import unipd.dei.magnetophone.Song.SongSpeed;
+import unipd.dei.magnetophone.utility.Song;
+import unipd.dei.magnetophone.utility.Song.SongSpeed;
 
 /**
  * Interfaccia che rappresenta un controller per l'animazione del magnetofono,

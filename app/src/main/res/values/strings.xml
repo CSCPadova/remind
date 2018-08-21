@@ -144,6 +144,7 @@
     <string name="toast4_activity_audio_import">Errore: selezionare un file per procedere</string>
     <string name="coerence_problem">Errore: si sono selezionati file audio con almeno una tra le seguenti diverse: sample rate, natura stereo, lunghezza, bit depth</string>
     <string name="unknown_error">Errore di natura sconosciuta</string>
+    <string name="duplicate_error">Errore durante l\'inserimento, forse esiste un duplicato?</string>
     <string name="toast_activity_second_page_import">Importazione avvenuta correttamente</string>
     <string name="import_first_step">Campi obbligatori</string>
     <string name="import_second_step">Impostazioni di riproduzione</string>
