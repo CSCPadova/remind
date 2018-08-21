@@ -90,13 +90,15 @@ public class DatabaseManager {
             //prendo i metadati per la song
             cursor.moveToPosition(0);
 
+            //utile per debug
+            //String[] columnNames = cursor.getColumnNames();
+
             songFromCursor.setId(cursor.getInt(0));
             songFromCursor.setTitle(cursor.getString(1));
             songFromCursor.setAuthor(cursor.getString(2));
             songFromCursor.setYear(cursor.getString(3));
             songFromCursor.setSpeed(cursor.getFloat(4));
             songFromCursor.setEqualization(cursor.getString(5));
-
             songFromCursor.setSignature(cursor.getString(6));
             songFromCursor.setProvenance(cursor.getString(7));
             songFromCursor.setDuration(cursor.getFloat(8));

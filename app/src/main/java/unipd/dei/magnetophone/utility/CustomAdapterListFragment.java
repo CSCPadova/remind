@@ -13,7 +13,7 @@ import unipd.dei.magnetophone.R;
 
 /**
  * Implementazione di un semplice ArrayAdapter di Song per la lista delle opere
- * in memoria che appare all'utente utilizzato da SongListFragment
+ * in memoria che appare all'utente utilizzato da LibraryFragment
  */
 public class CustomAdapterListFragment extends ArrayAdapter<Song> {
     // private Context m_cContext;

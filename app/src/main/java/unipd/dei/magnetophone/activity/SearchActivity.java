@@ -49,7 +49,7 @@ public class SearchActivity extends ListActivity {
 
     /**
      * metodo chiamato quando un oggetto della lista viene selezionato, si preoccupa di
-     * rimandarci alla SongListActivity con l'oggetto selezionato che apparirà nel dettail.
+     * rimandarci alla LibraryActivity con l'oggetto selezionato che apparirà nel dettail.
      * paramteri:
      * listView: la list view dove è successo
      * view: la view nella lista cliccata
@@ -70,7 +70,7 @@ public class SearchActivity extends ListActivity {
         editor.putInt("song_id", songId);
         editor.commit();
 
-        Intent toList = new Intent(this, SongListActivity.class);
+        Intent toList = new Intent(this, LibraryActivity.class);
         toList.putExtra("modify", 1);
         toList.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);    //evito che premendo BACK dalla lista dei brani si ritorni all'importazione
         startActivity(toList);
@@ -100,7 +100,7 @@ public class SearchActivity extends ListActivity {
         int id = item.getItemId();
         if (id == android.R.id.home) {
             //http://developer.android.com/design/patterns/navigation.html#up-vs-back
-            NavUtils.navigateUpTo(this, new Intent(this, SongListActivity.class));
+            NavUtils.navigateUpTo(this, new Intent(this, LibraryActivity.class));
             return true;
         }
         return super.onOptionsItemSelected(item);

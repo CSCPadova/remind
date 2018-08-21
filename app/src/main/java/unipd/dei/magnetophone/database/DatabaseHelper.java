@@ -58,11 +58,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String PHOTOSNAME = "Photos_Name";
     public static final String PHOTOSPATH = "Photos_Path";
     public static final String PHOTOSSONG = "Respective_Photos_Song";
-    // ########## ATTRIBUTI DELLA TABELLA PDF ###############
-    public static final String PDFID = "Pdf_Id";
-    public static final String PDFNAME = "Pdf_Name";
-    public static final String PDFPATH = "Pdf_Path";
-    public static final String PDFSONG = "Respective_Pdf_Song";
 
     public static final String DATABASE_NAME = "magnetophonedb.db";
     public static final int DATABASE_VERSION = 1;

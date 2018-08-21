@@ -2,27 +2,27 @@
 <resources>
 
     <string name="app_name">Remind</string>
-    <string name="action_settings">General setting</string>
+    <string name="action_settings">Impostazioni generali</string>
     <string name="sconosciuto">[UNKNOWN]</string>
-    <string name="notification_return_to">Return to Tape Recorder </string>
-    <string name="invalid_song_service">Error: audio file not found</string>
-    <string name="playing_song_alert">Error: impossible to change/delete a tape when is playing</string>
-    <string name="charging_song_alert">Impossible to load the selected tape: one or more files are not found</string>
-    <string name="search_hint">Search by signature</string>
-    <string name="monitor_setup_unavailable">Load a tape before to access to Monitor Setup</string>
+    <string name="notification_return_to">Ritorda al magnetofono </string>
+    <string name="invalid_song_service">Errore: file audio non trovato</string>
+    <string name="playing_song_alert">Errore: impossibile cambiar eo eliminare il brano mentre è in esecuzione</string>
+    <string name="charging_song_alert">Impossibile caricare il nastro selezionato: uno o più file sono mancanti</string>
+    <string name="search_hint">Cerca per firma</string>
+    <string name="monitor_setup_unavailable">Carica un nastro prima di accedere al setup dell\'ascolto</string>
     <string name="refresh_alert">Nel processo di refresh è stata eliminata/modificata la canzone che era in riproduzione, ciò ha causato la rimozione
          dell\'opera dal magnetofono, prego ricaricare se ancora presente</string>
 
     <!-- stringhe per il detail della canzone -->
-    <string name="cd">Content Description</string>
-    <string name="choose_a_song">Select a tape</string>
-    <string name="info_base">GENERAL INFORMATION</string>
-    <string name="general_info">GENERAL INFORMATION</string>
+    <string name="cd">Descrizione del contentuo</string>
+    <string name="choose_a_song">Seleziona un nastro</string>
+    <string name="info_base">INFORMAZIONI GENERALI</string>
+    <string name="general_info">INFORMAZIONI GENERALI</string>
     <string name="reproduction_settings">IMPOSTAZIONI DI RIPRODUZIONE DA MODIFICARE in AUDIO CONTENT</string>
-    <string name="audio_info">AUDIO INFORMATION</string>
-    <string name="equalization_title">Equalization</string>
-    <string name="speed_title">Replay Tape Speed</string>
-    <string name="number_of_tracks_title2">Number of Tracks (Signal Type)</string>
+    <string name="audio_info">INFORMAZIONI AUDIO</string>
+    <string name="equalization_title">Equalizzazione</string>
+    <string name="speed_title">velocità di riproduzione del nastro</string>
+    <string name="number_of_tracks_title2">Numero di tracce (tipo di segnale)</string>
     <string name="info_on_tracks">INFORMAZIONI SULLE TRACCE da modificare in ORIGINAL DOCUMENT DESCRIPTION</string>
     <string name="video">Video</string>
     <string name="bitdepth">Bitdepth</string>
@@ -38,51 +38,51 @@
     <!-- stringhe per i dialog delle opzioni -->
     <string name="sure_to_delete_song">Cancella nastro</string>
     <string name="delete_is_irreversible">Il nastro verrà eliminato definitivamente</string>
-    <string name="edit">EDIT</string>
+    <string name="edit">MODIFICA</string>
     <string name="pass_to_edit_activity">Conferma per passare al men\ù per modificare i dati dell\'opera selezionata</string>
-    <string name="import_setting">IMPORT</string>
+    <string name="import_setting">IMPORTA</string>
     <string name="pass_to_import_activity">Vuoi passare al menù di importazione?</string>
-    <string name="refresh_setting">REFRESH</string>
+    <string name="refresh_setting">AGGIORNA</string>
     <string name="pass_to_refresh_activity">Vuoi aggiornare il database controllando i file xml?</string>
-    <string name="unable_to_delete">Impossible to delete the tape</string>
-    <string name="unable_to_edit">Impossible to modify the tape</string>
+    <string name="unable_to_delete">Impossibile eliminare il brano</string>
+    <string name="unable_to_edit">Impossibile modificare il brano</string>
     <string name="empty_folder1">Il percorso </string>
     <string name="empty_folder2"> non contiene cartelle valide</string>
     <string name="exit_without_saving">Uscire senza salvare?</string>
 
     <!-- stringhe per il monitor setup -->
     <string name="monitor_setup_option">Ricarica lista</string>
-    <string name="monitor_setup_label">Monitor Setup</string>
-    <string name="left_channel">LEFT CHANNEL</string>
-    <string name="right_channel">RIGHT CHANNEL</string>
-    <string name="tracks_tipology">Tape type:</string>
-    <string name="tracks_number">Number of tracks:</string>
-    <string name="inversion">Invert channels</string>
+    <string name="monitor_setup_label">Setup dell\'ascolto</string>
+    <string name="left_channel">CANALE SINISTRO</string>
+    <string name="right_channel">CANALE DESTRO</string>
+    <string name="tracks_tipology">Tipo di nastro:</string>
+    <string name="tracks_number">Numero di tracce:</string>
+    <string name="inversion">Inverti i canali</string>
     <string name="xml_correctly_written">Scrittura avvenuta correttamente</string>
 
     <!-- Stringhe per il menu di impostazioni generali -->
-    <string name="title_activity_settings">Settings</string>
+    <string name="title_activity_settings">Impostazioni</string>
     <!-- PRIMO HEADER: OPZIONI VISUALIZZAZIONE -->
-    <string name="first_header_activity_settings">Visualization settings</string>
+    <string name="first_header_activity_settings">Impostazioni di visualizzazioni</string>
     <string name="checkbox1_title_activity_settings">TextView</string>
     <string name="checkbox1_subtitle_activity_settings">Mostra o nascondi la textview</string>
     <string name="checkbox2_title_activity_settings">Barra di stato</string>
     <!-- SECONDO HEADER: OPZIONI AVANZATE -->
     <string name="advanced_options_activity_settings">Attiva o disattiva le opzioni avanzate</string>
-    <string name="second_header_activity_settings">Advanced Setting</string>
+    <string name="second_header_activity_settings">Impostazioni avanzate</string>
     <string name="checkbox2_subtitle_activity_settings">Mostra o nascondi la barra di stato di un brano</string>
-    <string name="checkbox3_title_activity_settings">Import tape</string>
+    <string name="checkbox3_title_activity_settings">Importa nastri</string>
     <string name="checkbox3_subtitle_activity_settings">Permette di importare brani</string>
-    <string name="checkbox4_title_activity_settings">Delete tape</string>
+    <string name="checkbox4_title_activity_settings">Elimina nastri</string>
     <string name="checkbox4_subtitle_activity_settings">Permette di eliminare brani</string>
-    <string name="checkbox5_title_activity_settings">Edit tape</string>
+    <string name="checkbox5_title_activity_settings">Modifica nastri</string>
     <string name="checkbox5_subtitle_activity_settings">Permette di modificare i dati di una singola canzone</string>
-    <string name="text1_title_activity_settings">Path</string>
-    <string name="text1_subtitle_activity_settings">Path dove sono salvati gli Xml</string>
+    <string name="text1_title_activity_settings">Percorso</string>
+    <string name="text1_subtitle_activity_settings">Percorso dove sono salvati gli Xml</string>
     <string name="path_ok_activity_settings">OK</string>
-    <string name="export_in_xml">Export database in XML</string>
-    <string name="where_we_export0">Where</string>
-    <string name="where_we_export">Path dove verrà esportato il database</string>
+    <string name="export_in_xml">Esporta il database in XML</string>
+    <string name="where_we_export0">Dove</string>
+    <string name="where_we_export">Percorso dove verrà esportato il database</string>
     <!-- OPZIONI LINGUA -->
     <string name="language_header_settings">SCELTA DELLA LINGUA</string>
     <string name="choose_a_language">LINGUA</string>
@@ -98,7 +98,7 @@
     <string name="external_permission_error">Errore. Controllare i permessi e la cartella scelta</string>
     <string name="directory_changed">Cartella cambiata con successo</string>
     <string name="change_password_title">Modifica password</string>
-    <string name="lets_change_the_path">Cambia path</string>
+    <string name="lets_change_the_path">Cambia percorso</string>
     <string name="lets_begin_the_import">Procedere all\'esportazione</string>
     <string name="revert_from_exporting">Annulla</string>
     <string name="ok">OK</string>
@@ -149,15 +149,15 @@
     <string name="import_first_step">Campi obbligatori</string>
     <string name="import_second_step">Impostazioni di riproduzione</string>
     <string name="import_third_step">Informazioni generali</string>
-    <string name="track_choice">Scelta delle track</string>
+    <string name="track_choice">Scelta delle tracce</string>
     <string name="import_optional_step">Informazioni sulle tracce</string>
     <string name="import_description_step">Descrizione dell\'opera</string>
     <string name="import_photo_and_video_step">Scelta delle cartelle foto e video</string>
     <string name="title_equalizzazione_importazione">Equalizzazione</string>
     <string name="title_velocita_importazione">Velocità di riproduzione</string>
     <string name="title_nastro_importazione">Nastro</string>
-    <string name="title_canale1_importazione">Filename</string>
-    <string name="title_pdf_importazione">Filename</string>
+    <string name="title_canale1_importazione">Nome del file</string>
+    <string name="title_pdf_importazione">Nome del file</string>
     <string name="canale1_importazione">Nome del file audio legato al canale sinistro</string>
     <string name="canale2_importazione">Nome del file audio legato al canale destro</string>
     <string name="trackpath_1">Nome del primo file</string>
@@ -185,8 +185,8 @@
 
     <string name="action_bar_accept">Conferma il brano selezionato</string>
     <string name="action_bar_stop">Stoppa la riproduzione</string>
-    <string name="title_activity_library">Tape Library</string>
-    <string name="title_activity_songoptions">Tape settings</string>
+    <string name="title_activity_library">Libraria dei nastri</string>
+    <string name="title_activity_songoptions">Impostazioni dei nastri</string>
     <string name="name_list">Lista dei brani</string>
     <string name="optionDelete">Elimina</string>
     <string name="optionFormulation">Impostazioni</string>
@@ -203,7 +203,7 @@
     <string name="search_option">Cerca brani</string>
     <string name="edit_option">Modifica info brano</string>
     <string name="discard_option">Elimina brano</string>
-    <string name="refresh_option">Refresh dati</string>
+    <string name="refresh_option">Aggiorna i dati</string>
 
     <!-- stringa per il menu di importazione -->
     <string name="import_option">Importa nuovi brani</string>
@@ -222,27 +222,27 @@
     <string name="sample_rate_summary">Scelta del Sample Rate</string>
     <string name="number_of_tracks_title">Numero di tracce</string>
     <string name="number_of_tracks_summary">Scelta del numero di tracce componenti il brano</string>
-    <string name="signature_title">Signature</string>
+    <string name="signature_title">Firma</string>
     <string name="signature_summary">Modifica la Signature del brano</string>
-    <string name="provenance_title">Provenance</string>
+    <string name="provenance_title">Provenienza</string>
     <string name="provenance_summary">Modifica la provenienza del brano</string>
     <string name="tape_width_title">Tape width</string>
     <string name="tape_width_summary">Modifica il valore della larghezza del nastro</string>
-    <string name="extension_title">Format</string>
+    <string name="extension_title">Formato</string>
     <string name="extension_summary">Change audio file format</string>
     <string name="bitdepth_title">Bit Depth</string>
-    <string name="bitdepth_summary">Change bit depth</string>
-    <string name="description_title">Description</string>
+    <string name="bitdepth_summary">Cambia bit depth</string>
+    <string name="description_title">Descrizione</string>
     <string name="description_summary">Aggiungi delle note a corredo del brano</string>
     <string name="settings_description_summary">Aggiungi/modifica delle note a corredo del brano</string>
     <string name="photos_title">Cartella foto</string>
     <string name="photos_summary">Visualizza e modifica il path alla cartella contenente le foto del brano</string>
-    <string name="photos_path_title">Path cartella foto</string>
-    <string name="photos_path_summary">path: </string>
-    <string name="video_path_title">Path cartella video</string>
-    <string name="video_path_summary">path: </string>
-    <string name="pdf_path_title">Path cartella pdf</string>
-    <string name="pdf_path_summary">path: </string>
+    <string name="photos_path_title">Percorso cartella foto</string>
+    <string name="photos_path_summary">Percorso: </string>
+    <string name="video_path_title">Percorso cartella video</string>
+    <string name="video_path_summary">Percorso: </string>
+    <string name="pdf_path_title">Percorso cartella pdf</string>
+    <string name="pdf_path_summary">Percorso: </string>
 
     <!-- stringhe menu edit singolo brano -->
     <string name="other_settings">Altre impostazioni</string>
@@ -252,8 +252,8 @@
     <string name="detail_button">Carica nastro</string>
     <string name="detail_equalization">Equalizzazione: -</string>
     <string name="detail_speed">Velocità: -</string>
-    <string name="detail_signature">Signature: -</string>
-    <string name="detail_provenance">Provenance: -</string>
+    <string name="detail_signature">Firma: -</string>
+    <string name="detail_provenance">Provenienzae: -</string>
     <string name="detail_duration">Lunghezza: -</string>
     <string name="detail_extension">Estensione: -</string>
     <string name="detail_bitdepth">Bit Depth: -</string>
@@ -263,30 +263,30 @@
     <string name="detail_tracktype">Tipo di tracce: -</string>
 
     <!-- stringhe per i bottoni della barra -->
-    <string name="charge_tape">Load tape</string>
+    <string name="charge_tape">carica nastro</string>
     <string name="more_info">More info</string>
 
     <!-- stringa per gestione eccezioni nel database -->
-    <string name="invalid">Invalid path</string>
+    <string name="invalid">Percorso invalido</string>
 
     <string name="toggle_button_on">ON</string>
     <string name="toggle_button_off">OFF</string>
 
     <!-- stringhe varie -->
-    <string name="venue_title">Venue of digitization</string>
+    <string name="venue_title">Sede della digitalizzazione</string>
     <string name="venue_value">CSC - Centro di Sonologia Computazionale</string>
-    <string name="prev_signature_title">Previous Signature(s)</string>
+    <string name="prev_signature_title">Firma precedente</string>
     <string name="prev_signature">CSC49</string>
-    <string name="original_document">ORIGINAL DOCUMENT DESCRIPTION</string>
-    <string name="signal_type_title">Signal Type</string>
-    <string name="signal_type">Quadraphonic</string>
-    <string name="side_title">Side</string>
+    <string name="original_document">DESCRIZIONE ORIGINALE DEL DOCUMENTO</string>
+    <string name="signal_type_title">Tipo di segnale</string>
+    <string name="signal_type">Quadrifonico</string>
+    <string name="side_title">Lato</string>
     <string name="side">1</string>
-    <string name="tape_width">1/4 inch</string>
-    <string name="original_equalization_title">Equalization</string>
-    <string name="original_equalization">Unknown</string>
+    <string name="tape_width">1/4 pollici</string>
+    <string name="original_equalization_title">Equalizzazione</string>
+    <string name="original_equalization">Sconosciuta</string>
     <!-- stringhe per Whats'new -->
-    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_main">attività principale</string>
     <string name="title_activity_filemanager">Scegli un file video</string>
     <string name="title_activity_videoprocessing">Elaborazione e analisi del video</string>
     <string name="text_confirm_elaboration">Una volta iniziata l\'elaborazione si potrà uscire tranquillamente dall\'applicazione premendo il tasto Home. Se però, si terminerà l\'applicazione, si andrà a bloccare in maniera errata l\'elaborazione.</string>

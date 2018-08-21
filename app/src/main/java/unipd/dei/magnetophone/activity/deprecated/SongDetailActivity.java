@@ -1,4 +1,4 @@
-package unipd.dei.magnetophone.activity;
+package unipd.dei.magnetophone.activity.deprecated;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +12,8 @@ import android.view.View;
 import unipd.dei.magnetophone.MusicPlayer;
 import unipd.dei.magnetophone.R;
 import unipd.dei.magnetophone.SongDetailFragment;
+import unipd.dei.magnetophone.activity.LibraryActivity;
+import unipd.dei.magnetophone.activity.MagnetophoneActivity;
 import unipd.dei.magnetophone.database.DatabaseManager;
 import unipd.dei.magnetophone.utility.Song;
 
@@ -20,7 +22,7 @@ import static unipd.dei.magnetophone.utility.Utility.showSupportActionBar;
 /**
  * An activity representing a single Song detail screen. This activity is only
  * used on handset devices. On tablet-size devices, item details are presented
- * side-by-side with a list of items in a {@link SongListActivity}.
+ * side-by-side with a list of items in a {@link LibraryActivity}.
  * <p>
  * This activity is mostly just a 'shell' activity containing nothing more than
  * a {@link SongDetailFragment}.
@@ -74,7 +76,7 @@ public class SongDetailActivity extends AppCompatActivity {
         int id = item.getItemId();
         if (id == android.R.id.home) {
             //http://developer.android.com/design/patterns/navigation.html#up-vs-back
-            NavUtils.navigateUpTo(this, new Intent(this, SongListActivity.class));
+            NavUtils.navigateUpTo(this, new Intent(this, LibraryActivity.class));
             return true;
         }
         return super.onOptionsItemSelected(item);

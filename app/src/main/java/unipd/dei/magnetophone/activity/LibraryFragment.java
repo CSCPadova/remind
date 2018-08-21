@@ -30,7 +30,7 @@ import unipd.dei.magnetophone.xml.XmlImport;
  * Activities containing this fragment MUST implement the {@link Callbacks}
  * interface.
  */
-public class SongListFragment extends ListFragment {
+public class LibraryFragment extends ListFragment {
 
     /**
      * Una stringa che gunge da chiave per conoscere la posizione dell'oggetto selezionato nell'ultima volta
@@ -64,7 +64,7 @@ public class SongListFragment extends ListFragment {
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public SongListFragment() {
+    public LibraryFragment() {
     }
 
     //metodo di onCreate del fragment, si preoccupa di settare l'adapetr
@@ -77,7 +77,6 @@ public class SongListFragment extends ListFragment {
         adapter = new CustomAdapterListFragment(getActivity(), R.layout.element_of_the_fragment_list_layout, finalList);
 
         setListAdapter(adapter);
-
     }
 
     /**

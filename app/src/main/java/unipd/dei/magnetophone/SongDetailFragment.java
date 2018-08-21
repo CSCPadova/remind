@@ -17,7 +17,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -25,15 +24,15 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import unipd.dei.magnetophone.activity.SongDetailActivity;
-import unipd.dei.magnetophone.activity.SongListActivity;
+import unipd.dei.magnetophone.activity.LibraryActivity;
+import unipd.dei.magnetophone.activity.deprecated.SongDetailActivity;
 import unipd.dei.magnetophone.activity.pdf.PDFActivity;
 import unipd.dei.magnetophone.database.DatabaseManager;
 import unipd.dei.magnetophone.utility.Song;
 
 /**
  * A fragment representing a single Song detail screen. This fragment is either
- * contained in a {@link SongListActivity} in two-pane mode (on tablets) or a
+ * contained in a {@link LibraryActivity} in two-pane mode (on tablets) or a
  * {@link SongDetailActivity} on handsets.
  */
 public class SongDetailFragment extends Fragment {
@@ -183,13 +182,17 @@ public class SongDetailFragment extends Fragment {
             ((TextView) v.findViewById(R.id.info_bitDepth)).setText("" + s.getBitDepth());
             ((TextView) v.findViewById(R.id.info_video)).setText((s.isVideoValid()) ? s.getVideo().getName() : getString(R.string.video_not_available));
             ((TextView) v.findViewById(R.id.info_video)).setVisibility(View.GONE);
-            //faccio scomparire il bottone, in futuro rimuoverlo proprio dal layout
-            ((Button) v.findViewById(R.id.description_button)).setVisibility(View.GONE);
 
             TextView descriptionText = (TextView) v.findViewById(R.id.effective_description);
 
-            if (s.getDescription() != null) {
+            if (s.getDescription() != null && s.getDescription().compareTo(Song.INVALID)!=0) {
                 descriptionText.setText(s.getDescription());
+            }
+            else
+            {
+                v.findViewById(R.id.info_description).setVisibility(View.GONE);
+                v.findViewById(R.id.item_separator19).setVisibility(View.GONE);
+                v.findViewById(R.id.effective_description).setVisibility(View.GONE);
             }
 
             ImageView pdfPreview = v.findViewById(R.id.pdf_preview);
@@ -198,7 +201,7 @@ public class SongDetailFragment extends Fragment {
                 v.findViewById(R.id.item_separator21).setVisibility(View.VISIBLE);
                 v.findViewById(R.id.pdf_preview).setVisibility(View.VISIBLE);
 
-                final Song.FilePDF pdfFile=s.getPdf();
+                final Song.FilePDF pdfFile = s.getPdf();
                 pdfPreview.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -245,16 +248,13 @@ public class SongDetailFragment extends Fragment {
                         e.printStackTrace();
                     }
                 }
-            }
-            else
-            {
+            } else {
                 v.findViewById(R.id.info_pdf_file).setVisibility(View.GONE);
                 v.findViewById(R.id.item_separator21).setVisibility(View.GONE);
                 v.findViewById(R.id.pdf_preview).setVisibility(View.GONE);
             }
 
             mViewPager = v.findViewById(R.id.myPager);
-            invalid = v.findViewById(R.id.info_photos_not_available);
 
             if (s.isPhotosValid()) {
                 //penso ad istanziare la ViewPager
@@ -265,8 +265,11 @@ public class SongDetailFragment extends Fragment {
 
                 invalid.setVisibility(View.GONE);
             } else {
-                mViewPager.setVisibility(View.GONE);
-                invalid.setVisibility(View.VISIBLE);
+                v.findViewById(R.id.item_separator22).setVisibility(View.GONE);
+                v.findViewById(R.id.info_photos).setVisibility(View.GONE);
+                v.findViewById(R.id.item_separator23).setVisibility(View.GONE);
+                v.findViewById(R.id.myPager).setVisibility(View.GONE);
+                v.findViewById(R.id.pager_title_strip).setVisibility(View.GONE);
             }
         }
 

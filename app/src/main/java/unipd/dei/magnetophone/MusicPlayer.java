@@ -42,6 +42,7 @@ public class MusicPlayer {
         public void onServiceConnected(ComponentName name, IBinder binder) {
             musicServiceBinder = (MusicServiceBinder) binder;
             musicServiceBinder.stopForeground();
+
             /*
              * carico la canzone se è il caso
              */

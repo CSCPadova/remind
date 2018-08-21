@@ -82,7 +82,7 @@ public class SlideShowActivity extends AppCompatActivity {
         int id = item.getItemId();
         if (id == android.R.id.home) {
             //http://developer.android.com/design/patterns/navigation.html#up-vs-back
-            NavUtils.navigateUpTo(this, new Intent(this, SongListActivity.class));
+            NavUtils.navigateUpTo(this, new Intent(this, LibraryActivity.class));
             return true;
         }
         return super.onOptionsItemSelected(item);

@@ -9,9 +9,9 @@ import android.util.Log;
 import android.widget.Toast;
 
 import unipd.dei.magnetophone.R;
+import unipd.dei.magnetophone.activity.LibraryActivity;
 import unipd.dei.magnetophone.activity.MonitorSetupActivity;
 import unipd.dei.magnetophone.activity.SettingsActivity;
-import unipd.dei.magnetophone.activity.SongListActivity;
 import unipd.dei.magnetophone.activity.pdf.PDFActivity;
 import unipd.dei.magnetophone.graphics.UIConnector.Side;
 import unipd.dei.magnetophone.utility.PlayerEqualization;
@@ -196,7 +196,7 @@ public class StuderTapeDeck extends TapeDeck {
             @Override
             public void stateChanged(UIComponent obj) {
                 //player.stop();
-                context.startActivity(new Intent(context, SongListActivity.class));
+                context.startActivity(new Intent(context, LibraryActivity.class));
             }
         });
 

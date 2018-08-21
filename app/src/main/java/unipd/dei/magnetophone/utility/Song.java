@@ -18,7 +18,7 @@ import java.util.LinkedList;
  */
 
 public class Song {
-    private static final String INVALID = "[INVALID]";
+    public static final String INVALID = "[INVALID]";
     //valori =INVALID per mia scelta arbitraria
     private String author=INVALID; // nome dell'autore della canzone
     private String title=INVALID; // nome della canzone

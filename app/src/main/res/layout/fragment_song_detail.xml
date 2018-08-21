@@ -130,7 +130,7 @@
                     android:layout_height="@dimen/lvDividerHeight"
                     android:background="@color/lvDividerColor" />
 
-                <!-- Venue of digitization -->
+                <!-- Venue of digitization
 
                 <TextView
                     android:id="@+id/info_venue_subtex"
@@ -151,7 +151,7 @@
                     android:ellipsize="marquee"
                     android:singleLine="false"
                     android:text="@string/venue_value"
-                    android:textIsSelectable="false" />
+                    android:textIsSelectable="false" />-->
 
                 <View
                     android:id="@+id/item_separator3a"
@@ -159,7 +159,7 @@
                     android:layout_height="@dimen/lvDividerHeight"
                     android:background="@color/lvDividerColor" />
 
-                <!-- Previous Signature(s) -->
+                <!-- Previous Signature(s)
 
                 <TextView
                     android:id="@+id/prev_signature_subtex"
@@ -180,7 +180,7 @@
                     android:ellipsize="marquee"
                     android:singleLine="false"
                     android:text="@string/prev_signature"
-                    android:textIsSelectable="false" />
+                    android:textIsSelectable="false" />-->
 
                 <View
                     android:id="@+id/item_separator3b"
@@ -211,17 +211,7 @@
 
 
                 <!-- prima traccia -->
-  <!--
-          		 <TextView
-                    android:id="@+id/info_firstTrack_subtex"
-                    style="@style/listViewSecondaryDetail"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="marquee"
-                    android:singleLine="false"
-                    android:text="@string/trackpath_1"
-                    android:textIsSelectable="false" />
- -->
+
                 <TextView
                     android:id="@+id/info_firstTrack"
                     style="@style/listViewPrimaryDetail"
@@ -325,19 +315,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/lvDividerHeight"
                     android:background="@color/lvDividerColor" />
-     <!--
-                <TextView
-                    android:id="@+id/info_sampleRate_subtex"
-                    style="@style/listViewSecondaryDetail"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="marquee"
-                    android:singleLine="true"
-                    android:text="@string/sample_rate_title"
-                    android:textIsSelectable="false" />
-           -->
-             <!-- Previous Signature(s) -->
 
+                <!--
                 <TextView
                     android:id="@+id/prev_signature_subtex"
                     style="@style/listViewSecondaryDetail"
@@ -357,7 +336,7 @@
                     android:ellipsize="marquee"
                     android:singleLine="false"
                     android:text="@string/prev_signature"
-                    android:textIsSelectable="false" />
+                    android:textIsSelectable="false" />-->
 
                 <View
                     android:layout_width="match_parent"
@@ -365,13 +344,12 @@
                     android:background="@color/lvDividerColor" />
 
                  <!-- Previous Signature(s)
-                 
-                 
-                 
+
                  DA QUA
                  
                  -->
 
+                <!--
                 <TextView
                     android:id="@+id/prev_signature_subtex"
                     style="@style/listViewSecondaryDetail"
@@ -398,8 +376,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/lvDividerHeight"
                     android:background="@color/lvDividerColor" />
-
-                 <!-- Previous Signature(s) -->
+-->
+                 <!-- Previous Signature(s)
 
                 <TextView
                     android:id="@+id/prev_signature_subtex"
@@ -427,7 +405,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/lvDividerHeight"
                     android:background="@color/lvDividerColor" />
-
+-->
                  <!-- Tape width -->
 
                 <TextView
@@ -464,7 +442,7 @@
                     android:singleLine="false"
                     android:text="@string/original_equalization_title"
                     android:textIsSelectable="false" />
-
+<!--
                 <TextView
                     style="@style/listViewPrimaryDetail"
                     android:layout_width="wrap_content"
@@ -473,6 +451,17 @@
                     android:ellipsize="marquee"
                     android:singleLine="false"
                     android:text="@string/original_equalization"
+                    android:textIsSelectable="false" />-->
+
+                <TextView
+                    android:id="@+id/info_equalization"
+                    style="@style/listViewPrimaryDetail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:ellipsize="marquee"
+                    android:singleLine="false"
+                    android:text=""
                     android:textIsSelectable="false" />
 
                 <View
@@ -490,34 +479,7 @@
                 android:layout_weight="1"
                 android:orientation="vertical"
                 android:padding="10dp" >
-<!--
-                <TextView
-                    android:id="@+id/general_info"
-                    style="@style/listViewHeaderItem"
-                    android:layout_width="wrap_content"
-                    android:layout_height="fill_parent"
-                    android:gravity="bottom|left"
-                    android:text="@string/general_info"
-                    android:textColor="@color/lvHeaderTextColor"
-                    android:textIsSelectable="false" />
 
-                <View
-                    android:id="@+id/item_separator10"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/lvDividerHeight"
-                    android:layout_marginTop="@dimen/lvSectionDividerMarginTop"
-                    android:background="@color/lvHeaderDividerColor" />
-
-                <TextView
-                    android:id="@+id/info_title_subtex"
-                    style="@style/listViewSecondaryDetail"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="marquee"
-                    android:singleLine="false"
-                    android:text="@string/song_name_title_activity_single_song_settings"
-                    android:textIsSelectable="false" />
- -->
                 <TextView
                     android:id="@+id/info_title"
                     style="@style/listViewPrimaryDetail"
@@ -527,23 +489,7 @@
                     android:ellipsize="marquee"
                     android:singleLine="false"
                     android:textIsSelectable="false" />
-<!--
-                <View
-                    android:id="@+id/item_separator11"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/lvDividerHeight"
-                    android:background="@color/lvDividerColor" />
 
-                <TextView
-                    android:id="@+id/info_author_subtex"
-                    style="@style/listViewSecondaryDetail"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="marquee"
-                    android:singleLine="false"
-                    android:text="@string/song_author_title_activity_single_song_settings"
-                    android:textIsSelectable="false" />
- -->
                 <TextView
                     android:id="@+id/info_author"
                     style="@style/listViewPrimaryDetail"
@@ -553,23 +499,7 @@
                     android:ellipsize="marquee"
                     android:singleLine="false"
                     android:textIsSelectable="false" />
-<!--
-                <View
-                    android:id="@+id/item_separator9"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/lvDividerHeight"
-                    android:background="@color/lvDividerColor" />
 
-                <TextView
-                    android:id="@+id/info_year_subtex"
-                    style="@style/listViewSecondaryDetail"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="marquee"
-                    android:singleLine="false"
-                    android:text="@string/song_year_title_activity_single_song_settings"
-                    android:textIsSelectable="false" />
- -->
                 <TextView
                     android:id="@+id/info_year"
                     style="@style/listViewPrimaryDetail"
@@ -579,23 +509,7 @@
                     android:ellipsize="marquee"
                     android:singleLine="false"
                     android:textIsSelectable="false" />
-<!--
-                <View
-                    android:id="@+id/item_separator12"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/lvDividerHeight"
-                    android:background="@color/lvDividerColor" />
- 
-                <TextView
-                    android:id="@+id/info_tapeWidth_subtex"
-                    style="@style/listViewSecondaryDetail"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="marquee"
-                    android:singleLine="true"
-                    android:text="@string/tape_width_title"
-                    android:textIsSelectable="false" />
- -->
+
                 <TextView
                     android:id="@+id/info_tapeWidth"
                     style="@style/listViewPrimaryDetail"
@@ -605,13 +519,7 @@
                     android:ellipsize="marquee"
                     android:singleLine="false"
                     android:textIsSelectable="false" />
- <!--
-                <View
-                    android:id="@+id/item_separator13"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/lvDividerHeight"
-                    android:background="@color/lvDividerColor" />
--->
+
                 <TextView
                     android:id="@+id/info_on_tracks"
                     style="@style/listViewHeaderItem"
@@ -631,6 +539,7 @@
 
                  <!-- EQUALIZZAZIONE -->
 
+                <!--
                 <TextView
                     android:id="@+id/info_equalization_subtex"
                     style="@style/listViewSecondaryDetail"
@@ -641,22 +550,11 @@
                     android:text="@string/equalization_title"
                     android:textIsSelectable="false" />
 
-                <TextView
-                    android:id="@+id/info_equalization"
-                    style="@style/listViewPrimaryDetail"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:ellipsize="marquee"
-                    android:singleLine="false"
-                    android:text=""
-                    android:textIsSelectable="false" />
-
                 <View
                     android:id="@+id/item_separator5"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/lvDividerHeight"
-                    android:background="@color/lvDividerColor" />
+                    android:background="@color/lvDividerColor" />-->
 
                 <!-- speed -->
 
@@ -687,28 +585,6 @@
                     android:layout_height="@dimen/lvDividerHeight"
                     android:background="@color/lvDividerColor" />
 
-                <!-- NUMERO DELLE TRACCE -->
-<!--
-                <TextView
-                    android:id="@+id/number_oftracks_header"
-                    style="@style/listViewHeaderItem"
-                    android:layout_width="wrap_content"
-                    android:layout_height="fill_parent"
-                    android:gravity="bottom|left"
-                    android:paddingTop="20dp"
-                    android:text="@string/number_of_tracks_title2"
-                    android:textColor="@color/lvHeaderTextColor"
-                    android:textIsSelectable="false" />
-
-                <View
-                    android:id="@+id/item_separator7"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/lvDividerHeight"
-                    android:layout_marginTop="@dimen/lvSectionDividerMarginTop"
-                    android:background="@color/lvHeaderDividerColor" />
- -->
-                <!-- numero delle tracce -->
-
                 <TextView
                     android:id="@+id/info_numberOfTracks_subtex"
                     style="@style/listViewSecondaryDetail"
@@ -737,6 +613,7 @@
                     android:background="@color/lvDividerColor" />
 				<!-- signal type -->
 
+                <!--
 				<TextView
                     android:id="@+id/signal_type_subtex"
                     style="@style/listViewSecondaryDetail"
@@ -763,7 +640,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/lvDividerHeight"
                     android:background="@color/lvDividerColor" />
-
+-->
 				<!-- Side -->
 
 				<TextView
@@ -871,17 +748,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/lvDividerHeight"
                     android:background="@color/lvDividerColor" />
-<!--
-                <TextView
-                    android:id="@+id/info_video_subtex"
-                    style="@style/listViewSecondaryDetail"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="marquee"
-                    android:singleLine="false"
-                    android:text="@string/video"
-                    android:textIsSelectable="false" />
- -->
+
                 <TextView
                     android:id="@+id/info_video"
                     style="@style/listViewPrimaryDetail"
@@ -891,20 +758,7 @@
                     android:ellipsize="marquee"
                     android:singleLine="false"
                     android:textIsSelectable="false" />
-<!--
-                <View
-                    android:id="@+id/item_separator18"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/lvDividerHeight"
-                    android:background="@color/lvDividerColor" />
- -->
-                <Button
-                    android:id="@+id/description_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:onClick="onDescriptionButtonPressed"
-                    android:text="@string/description_button" />
+
             </LinearLayout>
 
             <!-- fine colonna di destra -->
@@ -1022,16 +876,6 @@
                 android:textColor="#fff" />
         </android.support.v4.view.ViewPager>
 
-        
-        <TextView
-            android:id="@+id/info_photos_not_available"
-            style="@style/listViewPrimaryDetail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ellipsize="marquee"
-            android:text="@string/photos_not_available"
-            android:textIsSelectable="false" />
-        
         <View
             android:id="@+id/item_separator24"
             android:layout_width="match_parent"
