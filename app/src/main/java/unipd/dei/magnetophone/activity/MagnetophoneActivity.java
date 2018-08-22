@@ -86,8 +86,7 @@ public class MagnetophoneActivity extends AppCompatActivity {
     private int checkTheFirstTime() {
         SharedPreferences pref = this.getSharedPreferences("first_time", Context.MODE_PRIVATE);
         int toReturn = pref.getInt("FirstTime", 0);
-        if(toReturn==0)
-        {
+        if (toReturn == 0) {
             this.deleteDatabase(DATABASE_NAME);
         }
         SharedPreferences.Editor editor = pref.edit();
@@ -107,8 +106,6 @@ public class MagnetophoneActivity extends AppCompatActivity {
 
         //player.setVideoController(null);
 
-        //Salvo i dati della riproduzione
-        player.saveState();
         player.onPause();
         super.onPause();
     }
@@ -117,12 +114,6 @@ public class MagnetophoneActivity extends AppCompatActivity {
         player.onBackPressed();
         super.onBackPressed();
     }
-	/*@Override
-	public void onStop() {
-		MusicPlayer.getInstance().stop();
-		
-		super.onStop();
-	}*/
 
     /**
      * Chiamato quando il magnetofono viene richiamato dalla pausa, devo ricaricare i dati

@@ -236,8 +236,10 @@ public class MusicPlayer {
             musicServiceBinder.removeOnTimeUpdateListener();
             if (musicServiceBinder.getPlaybackState() == MusicService.PLAYBACK_STATE_PLAYING)
                 musicServiceBinder.startForeground();
-            context.unbindService(musicServiceConnection);
-            musicServiceBinder = null;
+            else {
+                context.unbindService(musicServiceConnection);
+                musicServiceBinder = null;
+            }
         }
     }
 
@@ -269,8 +271,8 @@ public class MusicPlayer {
     public Song getSong() {
         if (musicServiceBinder != null)
             return musicServiceBinder.getSong();
-
         return null;
+        //return songToPlay;
     }
 
     /**
@@ -301,9 +303,6 @@ public class MusicPlayer {
     public void play() {
         if (musicServiceBinder == null)
             return;
-
-        // synchronizeVideoWithSong();
-
         musicServiceBinder.play();
     }
 
@@ -313,10 +312,8 @@ public class MusicPlayer {
      * @return
      */
     public boolean isPlaying() {
-
         if (isBind())
             return musicServiceBinder.getPlaybackState() == MusicService.PLAYBACK_STATE_PLAYING;
-
         return false;
     }
 
@@ -325,16 +322,6 @@ public class MusicPlayer {
      */
     public void stop() {
         musicServiceBinder.stop();
-
-        /*
-         * // salvo la lunghezza della canzone per utilizzi successivi (posso
-         * farlo // subito // prima dello stop perché così posso invocare
-         * getCurrentSongLength() // ottenendo // un valore valido)
-         * SharedPreferences songPref = context.getSharedPreferences("service",
-         * Context.MODE_PRIVATE); SharedPreferences.Editor editor =
-         * songPref.edit(); float maxLength = getCurrentSongLength();
-         * editor.putFloat("song_recovery_length", maxLength); editor.commit();
-         */
     }
 
     /**
@@ -388,22 +375,7 @@ public class MusicPlayer {
      */
     public PlayerEqualization getCurrentEqualization() {
         synchronized (serviceAccessLock) {
-            // if(pdService != null)
-            // return pdService.getCurrentEqualization();
             return lastEqUsed;
-        }
-    }
-
-    /**
-     * Ritorna la posizione in sample della riproduzione della canzone corrente
-     *
-     * @return
-     */
-    public float getCurrentSongSample() {
-        synchronized (serviceAccessLock) {
-            // if(pdService != null)
-            // return pdService.getCurrentSongSample();
-            return -1;
         }
     }
 
@@ -427,16 +399,6 @@ public class MusicPlayer {
             if (musicServiceBinder != null)
                 musicServiceBinder.setEqualization(eq);
         }
-    }
-
-    /**
-     * Salva lo stato della riproduzione
-     */
-    public void saveState() {
-        /*
-         * synchronized (serviceAccessLock) { // if(pdService != null) //
-         * pdService.saveState(); }
-         */
     }
 
     public float getCurrentSongProgress(double seconds) {

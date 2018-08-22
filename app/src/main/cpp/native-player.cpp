@@ -342,11 +342,14 @@ void NativePlayer::playbackCallback() {
 
     if (leftStat == audio::Status::OK && rightStat == audio::Status::OK) {
         for (int i = 0; i < audio::AudioBufferSize; i++) {
+            //32767 converte da -1.0f < x < 1.0f a -32767 < x < 32767
             intermediateAudioBuffer.push_back(leftBuffer[i] * 32767);
             intermediateAudioBuffer.push_back(rightBuffer[i] * 32767);
         }
     }
-    currentTime += 102400.0 / (double) mixer->getSamplingFrequency() / rateConverter->getRatio();
+    currentTime +=
+            (double) (audio::AudioBufferSize * 100) / (double) mixer->getSamplingFrequency() /
+            rateConverter->getRatio();
     timeUpdate();
 }
 

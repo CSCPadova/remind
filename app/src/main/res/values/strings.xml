@@ -6,7 +6,7 @@
     <string name="sconosciuto">[UNKNOWN]</string>
     <string name="notification_return_to">Ritorda al magnetofono </string>
     <string name="invalid_song_service">Errore: file audio non trovato</string>
-    <string name="playing_song_alert">Errore: impossibile cambiar eo eliminare il brano mentre è in esecuzione</string>
+    <string name="playing_song_alert">Errore: impossibile cambiare o eliminare il brano mentre è in esecuzione</string>
     <string name="charging_song_alert">Impossibile caricare il nastro selezionato: uno o più file sono mancanti</string>
     <string name="search_hint">Cerca per firma</string>
     <string name="monitor_setup_unavailable">Carica un nastro prima di accedere al setup dell\'ascolto</string>
