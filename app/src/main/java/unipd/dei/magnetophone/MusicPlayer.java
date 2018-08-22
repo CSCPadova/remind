@@ -233,10 +233,10 @@ public class MusicPlayer {
     public void onPause() {
         Log.d("MusicPlayer", "onpause player");
         if (musicServiceBinder != null) {
-            musicServiceBinder.removeOnTimeUpdateListener();
             if (musicServiceBinder.getPlaybackState() == MusicService.PLAYBACK_STATE_PLAYING)
                 musicServiceBinder.startForeground();
             else {
+                musicServiceBinder.removeOnTimeUpdateListener();
                 context.unbindService(musicServiceConnection);
                 musicServiceBinder = null;
             }

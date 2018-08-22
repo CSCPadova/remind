@@ -152,7 +152,7 @@
     <string name="track_choice">Scelta delle tracce</string>
     <string name="import_optional_step">Informazioni sulle tracce</string>
     <string name="import_description_step">Descrizione dell\'opera</string>
-    <string name="import_photo_and_video_step">Scelta delle cartelle foto e video</string>
+    <string name="import_photo_and_video_step">Scelta delle cartelle foto, video e del pdf</string>
     <string name="title_equalizzazione_importazione">Equalizzazione</string>
     <string name="title_velocita_importazione">Velocità di riproduzione</string>
     <string name="title_nastro_importazione">Nastro</string>
@@ -243,6 +243,7 @@
     <string name="video_path_summary">Percorso: </string>
     <string name="pdf_path_title">Percorso cartella pdf</string>
     <string name="pdf_path_summary">Percorso: </string>
+    <string name="reset_paths">Resetta i percorsi</string>
 
     <!-- stringhe menu edit singolo brano -->
     <string name="other_settings">Altre impostazioni</string>

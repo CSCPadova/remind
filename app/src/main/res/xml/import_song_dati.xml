@@ -108,6 +108,11 @@
             android:key="Pdf"
             android:summary="@string/pdf_path_summary"
             android:title="@string/pdf_path_title" />
+
+        <Preference
+            android:key="clear_paths"
+            android:title="@string/reset_paths"></Preference>
+
     </PreferenceCategory>
 
     <Preference

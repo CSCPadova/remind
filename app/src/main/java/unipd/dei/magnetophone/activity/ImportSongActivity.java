@@ -230,6 +230,7 @@ public class ImportSongActivity extends AppCompatActivity {
         private static Preference prefPhotos;
         private static Preference prefVideo;
         private static Preference prefPDFFile;
+        private static Preference prefClearPaths;
         private static XmlImport imp;
         private EditTextPreference prefSignature;
         private EditTextPreference prefProvenance;
@@ -301,6 +302,7 @@ public class ImportSongActivity extends AppCompatActivity {
             prefPhotos = findPreference("Photos");
             prefVideo = findPreference("Video");
             prefPDFFile = findPreference("Pdf");
+            prefClearPaths = findPreference("clear_paths");
 
 
             //################# la song da importare dovrà in ogni caso avere dei valori di default già pronti a parte per quelli obbligatori########
@@ -597,6 +599,24 @@ public class ImportSongActivity extends AppCompatActivity {
                 }
             });
 
+            prefClearPaths.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+
+                    prefPhotos.setSummary(getString(R.string.photos_path_summary));
+                    ((ImportSongActivity) getActivity()).songToAdd.setPhotos(null); //salvo nella song il path della cartella delle foto
+
+                    prefVideo.setSummary(getString(R.string.video_path_summary));
+                    ((ImportSongActivity) getActivity()).songToAdd.setVideo(null);
+
+                    prefPDFFile.setSummary(getString(R.string.pdf_path_summary));
+                    ((ImportSongActivity) getActivity()).songToAdd.setPDF(null); //salvo nel
+
+                    return false;
+                }
+            });
+
+
 
             //Setto l'evento alle preference a cui è collegato
             prefSignature.setOnPreferenceChangeListener(eventChange);
@@ -768,7 +788,7 @@ public class ImportSongActivity extends AppCompatActivity {
                 if (requestCode == RESULT_LOAD_PDF_FILE && resultCode == RESULT_OK && data != null){
                     String filePath = data.getStringExtra("filePDFAbsPath");    //prendo la path assoluta
 
-                    prefPDFFile.setSummary(getString(R.string.pdf_path_summary) + " : " + filePath);
+                    prefPDFFile.setSummary(getString(R.string.pdf_path_summary)+ filePath);
                     ((ImportSongActivity) getActivity()).songToAdd.setPDF(filePath); //salvo nella song il path della cartella delle foto
                 }
             }
@@ -959,7 +979,7 @@ public class ImportSongActivity extends AppCompatActivity {
                         File fileChoice = new File(choice);
                         File[] videos = fileChoice.listFiles();//in teoria dovrebbe esserci solo 1 video
 
-                        prefVideo.setSummary(getString(R.string.video_path_summary) + " : " + choice);
+                        prefVideo.setSummary(getString(R.string.video_path_summary)  + choice);
                         ((ImportSongActivity) getActivity()).songToAdd.setVideo(videos[0].getAbsolutePath()); //salvo nella song il path della cartella delle foto
 
                     }
