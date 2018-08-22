@@ -413,8 +413,7 @@ public class DatabaseManager {
                 DatabaseHelper.SAMPLERATE + "=" + s.getSampleRate() + ", " +
                 DatabaseHelper.NUMBEROFTRACKS + "=" + s.getNumberOfTracks() + ", " +
                 DatabaseHelper.TAPEWIDTH + "=\"" + s.getTapeWidth() + "\", " +
-                DatabaseHelper.DESCRIPTION + "=\"" + s.getDescription() + "\" "+
-                DatabaseHelper.PDF + "=\"" + s.getPdf() + "\" ";
+                DatabaseHelper.DESCRIPTION + "=\"" + s.getDescription() + "\" ";
 
         sql = sql + " WHERE " + DatabaseHelper.SONGID + "=" + s.getId() + ";";
         db.execSQL(sql);

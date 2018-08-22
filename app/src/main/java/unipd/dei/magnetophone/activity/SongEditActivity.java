@@ -1,4 +1,4 @@
-package unipd.dei.magnetophone.activity.deprecated;
+package unipd.dei.magnetophone.activity;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -22,7 +22,6 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import unipd.dei.magnetophone.R;
-import unipd.dei.magnetophone.activity.LibraryActivity;
 import unipd.dei.magnetophone.database.DatabaseManager;
 import unipd.dei.magnetophone.utility.Song;
 

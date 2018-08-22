@@ -7,7 +7,7 @@
 
     <style name="AppTheme" parent="Base.Theme.AppCompat.Light.DarkActionBar">
         Base.Theme.AppCompat.Light.DarkActionBar
-        <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
     </style>
 
     <style name="listViewHeaderItem">

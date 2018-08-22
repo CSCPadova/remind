@@ -38,7 +38,6 @@ import unipd.dei.magnetophone.MusicPlayer;
 import unipd.dei.magnetophone.R;
 import unipd.dei.magnetophone.SongDetailFragment;
 import unipd.dei.magnetophone.activity.deprecated.SongDetailActivity;
-import unipd.dei.magnetophone.activity.deprecated.SongEditActivity;
 import unipd.dei.magnetophone.database.DatabaseHelper;
 import unipd.dei.magnetophone.database.DatabaseManager;
 import unipd.dei.magnetophone.utility.CustomAdapterListFragment;
