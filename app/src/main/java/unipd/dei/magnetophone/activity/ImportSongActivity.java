@@ -355,7 +355,7 @@ public class ImportSongActivity extends AppCompatActivity {
 
             //Setto la possibilità di inserire solo numeri in questa preference
             // MAYBE_TODO risolvere questa mancanza
-            // questa mancanza sembra essere un bug della libraria
+            // questa mancanza sembra essere un bug della libreria
             //prefYear.getEditText().setInputType(InputType.TYPE_CLASS_NUMBER);
 
 

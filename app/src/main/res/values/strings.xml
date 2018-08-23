@@ -185,7 +185,7 @@
 
     <string name="action_bar_accept">Conferma il brano selezionato</string>
     <string name="action_bar_stop">Stoppa la riproduzione</string>
-    <string name="title_activity_library">Libraria dei nastri</string>
+    <string name="title_activity_library">Libreria dei nastri</string>
     <string name="title_activity_songoptions">Impostazioni dei nastri</string>
     <string name="name_list">Lista dei brani</string>
     <string name="optionDelete">Elimina</string>
