@@ -198,7 +198,7 @@ public class SongDetailFragment extends Fragment {
             ImageView pdfPreview = v.findViewById(R.id.pdf_preview);
             if (s.getPdf().isValid()) {
                 v.findViewById(R.id.info_pdf_file).setVisibility(View.VISIBLE);
-                v.findViewById(R.id.item_separator21).setVisibility(View.VISIBLE);
+                v.findViewById(R.id.item_separator20).setVisibility(View.VISIBLE);
                 v.findViewById(R.id.pdf_preview).setVisibility(View.VISIBLE);
 
                 final Song.FilePDF pdfFile = s.getPdf();
@@ -250,7 +250,7 @@ public class SongDetailFragment extends Fragment {
                 }
             } else {
                 v.findViewById(R.id.info_pdf_file).setVisibility(View.GONE);
-                v.findViewById(R.id.item_separator21).setVisibility(View.GONE);
+                v.findViewById(R.id.item_separator20).setVisibility(View.GONE);
                 v.findViewById(R.id.pdf_preview).setVisibility(View.GONE);
             }
 
@@ -265,9 +265,8 @@ public class SongDetailFragment extends Fragment {
 
                 invalid.setVisibility(View.GONE);
             } else {
-                v.findViewById(R.id.item_separator22).setVisibility(View.GONE);
+                v.findViewById(R.id.item_separator21).setVisibility(View.GONE);
                 v.findViewById(R.id.info_photos).setVisibility(View.GONE);
-                v.findViewById(R.id.item_separator23).setVisibility(View.GONE);
                 v.findViewById(R.id.myPager).setVisibility(View.GONE);
                 v.findViewById(R.id.pager_title_strip).setVisibility(View.GONE);
             }

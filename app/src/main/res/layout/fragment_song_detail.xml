@@ -796,13 +796,6 @@
             android:text="@string/description_not_available"
             android:textIsSelectable="false" />
 
-        <View
-            android:id="@+id/item_separator20"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/lvDividerHeight"
-            android:layout_marginTop="@dimen/lvSectionDividerMarginTop"
-            android:background="@color/lvHeaderDividerColor" />
-
         <!-- qui il file pdf -->
 
         <TextView
@@ -817,7 +810,7 @@
             android:textIsSelectable="false" />
 
         <View
-            android:id="@+id/item_separator21"
+            android:id="@+id/item_separator20"
             android:layout_width="match_parent"
             android:layout_height="@dimen/lvDividerHeight"
             android:layout_marginTop="@dimen/lvSectionDividerMarginTop"
@@ -833,13 +826,6 @@
             android:text="@string/pdf_not_available"
             android:textIsSelectable="false" />
 
-        <View
-            android:id="@+id/item_separator22"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/lvDividerHeight"
-            android:layout_marginTop="@dimen/lvSectionDividerMarginTop"
-            android:background="@color/lvHeaderDividerColor" />
-
         <!-- qui la slide show -->
 
         <TextView
@@ -854,7 +840,7 @@
             android:textIsSelectable="false" />
         
         <View
-            android:id="@+id/item_separator23"
+            android:id="@+id/item_separator21"
             android:layout_width="match_parent"
             android:layout_height="@dimen/lvDividerHeight"
             android:layout_marginTop="@dimen/lvSectionDividerMarginTop"
@@ -876,12 +862,6 @@
                 android:textColor="#fff" />
         </android.support.v4.view.ViewPager>
 
-        <View
-            android:id="@+id/item_separator24"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/lvDividerHeight"
-            android:layout_marginTop="@dimen/lvSectionDividerMarginTop"
-            android:background="@color/lvHeaderDividerColor" />
     </LinearLayout>
 
 </ScrollView>
