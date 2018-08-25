@@ -1,46 +1,55 @@
-La procedura si riferisce a Windows 10.
-Per Linux e' praticamente identica dopo aver installato Android Studio e Git.
-Per Mac boh, spero sia simile.
 
-#### SETUP
+# REMIND
 
-Installare Android Studio: <https://developer.android.com/studio/>
+## Description
 
-Installare Git: <https://git-scm.com/download/win>
+This repository contains an Android application that simulates a megnetophone, specifically the Studer A810
+## Installation
 
-Avviare Android Studio, compare una finestra con un piccolo menu al centro.
-Cliccare sulla freccia a destra di "Check out project from Version Control" e premere su "Git"
+**Windows** (tested) **Mac** (not tested) & **Linux** (tested)
 
-URL: <https://gitlab.dei.unipd.it/AccessKit/remind-app-2018.git>
+Install Android Studio: <https://developer.android.com/studio/>
 
-Scegliere il percorso che si vuole e poi "Clone"
+Install Git: <https://git-scm.com/download/win>
 
-Inserire le credenziali di accesso
+Run Android Studio and import the project using Git. To do that go to `Check out project from Version Control` and select `Git`.
 
-Confermare l'apertura del progetto premendo su "Yes" oppure aprire il progetto.
+The URL is `https://gitlab.dei.unipd.it/AccessKit/remind-app-2018.git`, select the desired path, insert the required GitLab credentials and then click `Clone`.
 
-Aspettare che Android Studio si configuri (in basso al centro mostra cio' che sta facendo, potrebbero volerci una decina di minuti).
+Open the project and let Android Studio configure the environment.
 
-Da qui in poi Android Studio dovrebbe guidare nella configurazione dell'ambiente di sviluppo dando errori e proponendo la soluzione adeguata basandosi sui file all'interno del progetto.
+## Usage
 
-L'API di riferimento (ad agosto 2018) e' la 28
+You will need:
 
-Ad esempio, nel mio caso:
+*   SDK Platforms with the API 28
 
--) Da errore "Failed to find Build Tools revision 28.0.1" e suggerisce di cliccare su "Install Build Tools 28.0.1 and sync project!", questo porta ad una finestra in cui e' sufficiente accettare la licenza e premere su "Next" (e aspettare).
+*   Android SDK Build-Tools
 
--) Allo stesso modo, suggerisce di installare il pacchetto NDK, accosentire e installarlo (e aspettare...ancora...)
+*   LLDB    (optional)
 
-In "Tools"->"SDK Manager" si possono gestire le componenti dell'SDK di Android (le API installate, gli strumenti di sviluppo e le sorgenti degli aggiornamenti)
-Installare anche LLDB se si uole fare del debugging nel codice nativo C/C++.
+*   Android Emulator (optional)
 
-Se si vuole usare l'emulatore va creata un Virtual Device:
-Tools->AVD Manager->Create Virtual Device...
-Scegliere le caratteristiche che si desiderano e selezionare la System Image 28 dalla lista delle Raccomended e scaricarla premendo sulla scritta Download (per piu' scelte si possono consultare gli altri tab come ad esempio quello delle immagini x86)
+*   Android SDK Platforms-Tools 28
 
-Per copiare file nell'emulatore, si puo' usare il comando "adb push" oppure il pannello "Device File Explorer" in Android Studio (piu' comodo).
-La cartella in cui copiare i file dovrebbe essere /storage/self/primary
+*   Android SDK Tools 26.1.1
 
-Alcune note riguardo l'emulatore:
+*   NDK
 
--) se i file non vengono rilevati dall'applicazione ma sono presenti nell'emulatore sembra sia necessario effettuare un cold boot (da AVD Manager andare nelle setting dell'emulatore in uso, fermarlo e fare un "Cold Boot Now")
+The installation and configuration of all these components can be done through Android Studio in `Tools->SDK Manager` or with the packet manager of your distribution (like `apt`, `pacman` and `aurman` if you are using Linux)
+
+`Tools->AVD Manager->Create Virtual Device...` is usefull for the Android Emulator 
+
+## Credits
+
+This project is based on various works from different researchers and students of the Department of Information Engineering at Padova University’s Engineering Faculty.
+
+## References
+
+A lot actually, to many to put them here
+
+## Notes
+
+To copy files in the Android Emulator or in the real devices you can use the `adb` tool (with `adb push` and `adb pull` commands) or the Device File Explorer in Android Studio.
+
+The folder that will contain the file that the app can use is `/storage/self/primary`
