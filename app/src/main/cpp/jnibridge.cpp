@@ -9,7 +9,7 @@ extern "C"
 void
 Java_unipd_dei_megnetophone_NativePlayer_convertJavaEqualization(JNIEnv *env, jstring javaEqu) {
     if (engine == nullptr) {
-        LOGE("Engine is null, you must call createEngine before calling this method");
+        LOGE("Engine is null, you must call MusicService_init before calling this method");
         return;
     }
 
@@ -37,7 +37,7 @@ JNIEXPORT void JNICALL Java_unipd_dei_magnetophone_MusicService_init(JNIEnv *env
 JNIEXPORT void JNICALL
 Java_unipd_dei_magnetophone_MusicService_terminate(JNIEnv *env, jclass clazz) {
     if (engine == nullptr) {
-        LOGE("Engine is null, you must call createEngine before calling this method");
+        LOGE("Engine is null, you must call MusicService_init before calling this method");
         return;
     }
     if (engine->getPlaybackState() != PLAYBACK_STATE_INITIALIZED)
@@ -52,7 +52,7 @@ Java_unipd_dei_magnetophone_MusicService_terminate(JNIEnv *env, jclass clazz) {
 JNIEXPORT jint JNICALL
 Java_unipd_dei_magnetophone_MusicService_getPlaybackState(JNIEnv *env, jclass clazz) {
     if (engine == nullptr) {
-        LOGE("Engine is null, you must call createEngine before calling this method");
+        LOGE("Engine is null, you must call MusicService_init before calling this method");
         return -1;
     }
     return engine->getPlaybackState();
@@ -60,7 +60,7 @@ Java_unipd_dei_magnetophone_MusicService_getPlaybackState(JNIEnv *env, jclass cl
 
 JNIEXPORT jint JNICALL Java_unipd_dei_magnetophone_MusicService_getTime(JNIEnv *env, jclass clazz) {
     if (engine == nullptr) {
-        LOGE("Engine is null, you must call createEngine before calling this method");
+        LOGE("Engine is null, you must call MusicService_init before calling this method");
         return -1;
     }
     return engine->getCurrentTime();
@@ -68,7 +68,7 @@ JNIEXPORT jint JNICALL Java_unipd_dei_magnetophone_MusicService_getTime(JNIEnv *
 
 JNIEXPORT void JNICALL Java_unipd_dei_magnetophone_MusicService_play(JNIEnv *env, jclass clazz) {
     if (engine == nullptr) {
-        LOGE("Engine is null, you must call createEngine before calling this method");
+        LOGE("Engine is null, you must call MusicService_init before calling this method");
         return;
     }
     engine->play();
@@ -76,7 +76,7 @@ JNIEXPORT void JNICALL Java_unipd_dei_magnetophone_MusicService_play(JNIEnv *env
 
 JNIEXPORT void JNICALL Java_unipd_dei_magnetophone_MusicService_stop(JNIEnv *env, jclass clazz) {
     if (engine == nullptr) {
-        LOGE("Engine is null, you must call createEngine before calling this method");
+        LOGE("Engine is null, you must call MusicService_init before calling this method");
         return;
     }
     engine->stop();
@@ -85,7 +85,7 @@ JNIEXPORT void JNICALL Java_unipd_dei_magnetophone_MusicService_stop(JNIEnv *env
 JNIEXPORT void JNICALL
 Java_unipd_dei_magnetophone_MusicService_unloadSong(JNIEnv *env, jclass clazz) {
     if (engine == nullptr) {
-        LOGE("Engine is null, you must call createEngine before calling this method");
+        LOGE("Engine is null, you must call MusicService_init before calling this method");
         return;
     }
     engine->unloadSong();
@@ -95,20 +95,19 @@ JNIEXPORT void JNICALL Java_unipd_dei_magnetophone_MusicService_loadSong(JNIEnv 
                                                                          jobjectArray pathsArray,
                                                                          jint songTypeNum,
                                                                          jint songSpeedNum,
-                                                                         jstring songEquStr,
-                                                                         jstring equPath) {
+                                                                         jstring songEquStr) {
     if (engine == nullptr) {
-        LOGE("Engine is null, you must call createEngine before calling this method");
+        LOGE("Engine is null, you must call MusicService_init before calling this method");
         return;
     }
 
-    engine->loadSong(env, clazz, pathsArray, songTypeNum, songSpeedNum, songEquStr, equPath);
+    engine->loadSong(env, clazz, pathsArray, songTypeNum, songSpeedNum, songEquStr);
 }
 
 JNIEXPORT void JNICALL
 Java_unipd_dei_magnetophone_MusicService_setSpeed(JNIEnv *env, jclass clazz, jint speed) {
     if (engine == nullptr) {
-        LOGE("Engine is null, you must call createEngine before calling this method");
+        LOGE("Engine is null, you must call MusicService_init before calling this method");
         return;
     }
     return engine->setSpeed(speed);
@@ -119,7 +118,7 @@ Java_unipd_dei_magnetophone_MusicService_setSpeed(JNIEnv *env, jclass clazz, jin
 JNIEXPORT void JNICALL
 Java_unipd_dei_magnetophone_MusicService_setEqualization(JNIEnv *env, jclass clazz, jstring equal) {
     if (engine == nullptr) {
-        LOGE("Engine is null, you must call createEngine before calling this method");
+        LOGE("Engine is null, you must call MusicService_init before calling this method");
         return;
     }
 
@@ -130,7 +129,7 @@ Java_unipd_dei_magnetophone_MusicService_setEqualization(JNIEnv *env, jclass cla
 JNIEXPORT void JNICALL
 Java_unipd_dei_magnetophone_MusicService_fastForward(JNIEnv *env, jclass clazz) {
     if (engine == nullptr) {
-        LOGE("Engine is null, you must call createEngine before calling this method");
+        LOGE("Engine is null, you must call MusicService_init before calling this method");
         return;
     }
     engine->fastForward();
@@ -139,7 +138,7 @@ Java_unipd_dei_magnetophone_MusicService_fastForward(JNIEnv *env, jclass clazz) 
 JNIEXPORT void JNICALL
 Java_unipd_dei_magnetophone_MusicService_fastReverse(JNIEnv *env, jclass clazz) {
     if (engine == nullptr) {
-        LOGE("Engine is null, you must call createEngine before calling this method");
+        LOGE("Engine is null, you must call MusicService_init before calling this method");
         return;
     }
     engine->fastReverse();
@@ -148,7 +147,7 @@ Java_unipd_dei_magnetophone_MusicService_fastReverse(JNIEnv *env, jclass clazz) 
 JNIEXPORT jfloat JNICALL
 Java_unipd_dei_magnetophone_MusicService_getRatio(JNIEnv *env, jclass clazz) {
     if (engine == nullptr) {
-        LOGE("Engine is null, you must call createEngine before calling this method");
+        LOGE("Engine is null, you must call MusicService_init before calling this method");
         return -1.0;
     }
     return engine->getRatio();
@@ -158,7 +157,7 @@ JNIEXPORT void JNICALL
 Java_unipd_dei_magnetophone_MusicService_setTrackVolume(JNIEnv *env, jclass clazz, jint track,
                                                         jfloat volumeL, jfloat volumeR) {
     if (engine == nullptr)
-        LOGE("Engine is null, you must call createEngine before calling this method");
+        LOGE("Engine is null, you must call MusicService_init before calling this method");
 
     return engine->mixerSetTrackVolume(track, volumeL, volumeR);
 }
@@ -166,7 +165,7 @@ Java_unipd_dei_magnetophone_MusicService_setTrackVolume(JNIEnv *env, jclass claz
 JNIEXPORT jfloat JNICALL
 Java_unipd_dei_magnetophone_MusicService_getTrackVolumeL(JNIEnv *env, jclass clazz, jint track) {
     if (engine == nullptr) {
-        LOGE("Engine is null, you must call createEngine before calling this method");
+        LOGE("Engine is null, you must call MusicService_init before calling this method");
         return -1.0;
     }
     return engine->mixerGetTrackVolumeL(track);
@@ -175,7 +174,7 @@ Java_unipd_dei_magnetophone_MusicService_getTrackVolumeL(JNIEnv *env, jclass cla
 JNIEXPORT jfloat JNICALL
 Java_unipd_dei_magnetophone_MusicService_getTrackVolumeR(JNIEnv *env, jclass clazz, jint track) {
     if (engine == nullptr) {
-        LOGE("Engine is null, you must call createEngine before calling this method");
+        LOGE("Engine is null, you must call MusicService_init before calling this method");
         return -1.0;
     }
     return engine->mixerGetTrackVolumeR(track);

@@ -31,7 +31,6 @@ import unipd.dei.magnetophone.R;
 import unipd.dei.magnetophone.graphics.MagnetoCanvasView;
 import unipd.dei.magnetophone.graphics.VideoView;
 
-import static unipd.dei.magnetophone.MusicService.EXT_STORAGE_EQU_FOLDER;
 import static unipd.dei.magnetophone.database.DatabaseHelper.DATABASE_NAME;
 
 /**
@@ -80,7 +79,6 @@ public class MagnetophoneActivity extends AppCompatActivity {
         //editor.commit();
 
         checkTheFirstTime();
-        copyAssets();
     }
 
     private int checkTheFirstTime() {
@@ -183,62 +181,12 @@ public class MagnetophoneActivity extends AppCompatActivity {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // permission was granted, yay!
-                    copyAssets();
                 } else {
                     // permission denied, boo!
                     Toast.makeText(getApplicationContext(), this.getString(R.string.permission_denied), Toast.LENGTH_SHORT).show();
                 }
                 return;
             }
-        }
-    }
-
-    //copia i file wav di equalizzazione nell'external storage per facilitare la vita nel codice nativo
-    private void copyAssets() {
-        AssetManager assetManager = getAssets();
-        String[] files = null;
-        try {
-            files = assetManager.list("equ");
-        } catch (IOException e) {
-            Log.e("tag", "Failed to get asset file list.", e);
-        }
-        for (String filename : files) {
-            InputStream in = null;
-            OutputStream out = null;
-            try {
-                in = assetManager.open("equ/" + filename);
-
-                String outDir = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + EXT_STORAGE_EQU_FOLDER;
-
-                File dir = new File(outDir);
-                if (dir.mkdir()) {
-                    System.out.println("Folder created");
-                } else {
-                    System.out.println("Folder is not created");
-                }
-
-                File outFile = new File(outDir, filename);
-
-                if (!outFile.exists()) {
-                    out = new FileOutputStream(outFile);
-                    copyFile(in, out);
-                    in.close();
-                    in = null;
-                    out.flush();
-                    out.close();
-                    out = null;
-                }
-            } catch (IOException e) {
-                Log.e("tag", "Failed to copy asset file: " + filename, e);
-            }
-        }
-    }
-
-    private void copyFile(InputStream in, OutputStream out) throws IOException {
-        byte[] buffer = new byte[1024];
-        int read;
-        while ((read = in.read(buffer)) != -1) {
-            out.write(buffer, 0, read);
         }
     }
 

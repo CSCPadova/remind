@@ -21,6 +21,7 @@ LOCAL_SRC_FILES += WaveReader.cpp
 LOCAL_SRC_FILES += fftconvolver.cpp
 LOCAL_SRC_FILES += audiocommon.cpp
 LOCAL_SRC_FILES += jnibridge.cpp
+LOCAL_SRC_FILES += filters.cpp
 
 #Classi tolte definitivamente dalla compilazione ma i file sono ancora presenti nel progetto
 #LOCAL_SRC_FILES += Reverber.cpp

@@ -42,7 +42,7 @@ class NativePlayer : oboe::AudioStreamCallback {
     SongSpeed songSpeed;
     SongSpeed songSpeedOriginal;
     SongEqualization EQOriginal, EQCurrent;
-    FFTConvolver fftconvolver[4];
+    FFTConvolver fftconvolver[8];
 
     WaveReader *waveReader = nullptr;
 
@@ -91,11 +91,6 @@ class NativePlayer : oboe::AudioStreamCallback {
     int32_t framesPerBurst_;
 
 private:
-
-    char eqPath[2000];
-
-    std::vector<std::tuple<std::string, std::vector<float>>> loadedEQs;
-
     int32_t playStreamUnderrunCount_;
     std::vector<float> intermediateAudioBuffer;
     //quanto riempire il buffer?
@@ -141,7 +136,7 @@ public:
     void unloadSong();
 
     void loadSong(JNIEnv *env, jclass clazz, jobjectArray pathsArray, jint songTypeNum,
-                  jint songSpeedNum, jstring songEquStr, jstring equPath);
+                  jint songSpeedNum, jstring songEquStr);
 
     void mixerSetTrackVolume(int trackNumber, float volumeL, float volumeR);
 

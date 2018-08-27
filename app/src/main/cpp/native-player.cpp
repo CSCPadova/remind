@@ -1,8 +1,10 @@
 #include "native-player.h"
 #include "fftconvolver.h"
 #include "audiocommon.h"
+#include "filters.h"
 #include <math.h>
 #include <liboboe/Oboe.h>
+#include <ckfft.h>
 
 NativePlayer::NativePlayer() {
     time = 0;
@@ -34,261 +36,169 @@ void NativePlayer::closeOutputStream() {
     }
 }
 
-void
-NativePlayer::setFFTFilters(SongEqualization newEqu) {
+void NativePlayer::setFFTFilters(SongEqualization newEqu) {
     //filtro base neutro
     constexpr int size = audio::AudioBufferSize;
-    std::vector<float> filter(size, 1.0f);
-    for (int i = 0; i < size; i++) {
-        filter[i] = 1.0f;
-    }
     EQCurrent = newEqu;
 
-    char eqName[2000];
-    strcpy(eqName, "");
-    //strcpy(eqName, eqPath);
+    std::vector<float> filter1(size, 1.0f);
+    std::vector<float> filter2(size, 1.0f);
 
-    //cerca le risposte impulsive per le varie combinazioni
-    //se non trova il file viene dato per scontato che la risposta impulsiva sia neutra.
-    //prima genera il nome del file che serve
-    switch (songSpeedOriginal) {
-        case SONG_SPEED_3_75:
-            strcat(eqName, "3.75_");
-            break;
-        case SONG_SPEED_7_5:
-            strcat(eqName, "7.5_");
-            break;
-        case SONG_SPEED_15:
-            strcat(eqName, "15_");
-            break;
-        case SONG_SPEED_30:
-            strcat(eqName, "30_");
-            break;
-        default:
-            //non dovrebbe mai andare qui
-            return;
+    int startFreq = 20;
+    int endFreq = 20000;
+
+    //only in 20-20000 we need the response (over 20.000Hz don't touch)
+    int points = (int)ceil(((double) (endFreq) - (double) (startFreq)) /
+                      (((double) (songSampleRate/2) - (double) (startFreq)) / (double) (size)));
+
+    CkFftComplex firstFilter[size];
+    CkFftComplex secondFilter[size];
+
+    for (int i = 0; i < size; i++) {
+        firstFilter[i].real = 1.0f;
+    }
+    for (int i = 0; i < size; i++) {
+        secondFilter[i].real = 1.0f;
     }
 
-    switch (EQOriginal) {
-        case SongEqualization::CCIR:
-            strcat(eqName, "CCIR_");
+    switch (songSpeedOriginal) {
+        case SONG_SPEED_3_75:
+            switch (EQOriginal) {
+                case SongEqualization::CCIR:
+                    //invert CCIR
+                    CCIR_3_75_INV_FILTER(firstFilter, startFreq, endFreq, points);
+                    break;
+                case SongEqualization::NAB:
+                    //invert NAB
+                    NAB_3_75_INV_FILTER(firstFilter, startFreq, endFreq, points);
+                    break;
+                default:
+                    break;
+            }
             break;
-        case SongEqualization::NAB:
-            strcat(eqName, "NAB_");
+        case SONG_SPEED_7_5:
+            switch (EQOriginal) {
+                case SongEqualization::CCIR:
+                    //invert CCIR
+                    CCIR_7_5_INV_FILTER(firstFilter, startFreq, endFreq, points);
+                    break;
+                case SongEqualization::NAB:
+                    NAB_7_5_INV_FILTER(firstFilter, startFreq, endFreq, points);
+                    break;
+                default:
+                    break;
+            }
             break;
-        case SongEqualization::FLAT:
-            strcat(eqName, "FLAT_");
+        case SONG_SPEED_15:
+            switch (EQOriginal) {
+                case SongEqualization::CCIR:
+                    //invert CCIR
+                    CCIR_15_INV_FILTER(firstFilter, startFreq, endFreq, points);
+                    break;
+                case SongEqualization::NAB:
+                    NAB_15_INV_FILTER(firstFilter, startFreq, endFreq, points);
+                    break;
+                default:
+                    break;
+            }
+            break;
+        case SONG_SPEED_30:
+            switch (EQOriginal) {
+                case SongEqualization::CCIR:
+                    //invert CCIR
+                    CCIR_30_INV_FILTER(firstFilter, startFreq, endFreq, points);
+                    break;
+                case SongEqualization::NAB:
+                    NAB_30_INV_FILTER(firstFilter, startFreq, endFreq, points);
+                    break;
+                default:
+                    break;
+            }
+            break;
+        default:
             break;
     }
 
     switch (songSpeed) {
         case SONG_SPEED_3_75:
-            strcat(eqName, "3.75_");
+            switch (EQCurrent) {
+                case SongEqualization::CCIR:
+                    //apply CCIR
+                    CCIR_3_75_FILTER(secondFilter, startFreq, endFreq, points);
+                    break;
+                case SongEqualization::NAB:
+                    //apply NAB
+                    NAB_3_75_FILTER(secondFilter, startFreq, endFreq, points);
+                    break;
+                default:
+                    break;
+            }
             break;
         case SONG_SPEED_7_5:
-            strcat(eqName, "7.5_");
+            switch (EQCurrent) {
+                case SongEqualization::CCIR:
+                    //apply CCIR
+                    CCIR_7_5_FILTER(secondFilter, startFreq, endFreq, points);
+                    break;
+                case SongEqualization::NAB:
+                    //apply NAB
+                    NAB_7_5_FILTER(secondFilter, startFreq, endFreq, points);
+                    break;
+                default:
+                    break;
+            }
             break;
         case SONG_SPEED_15:
-            strcat(eqName, "15_");
+            switch (EQCurrent) {
+                case SongEqualization::CCIR:
+                    //apply CCIR
+                    CCIR_15_FILTER(secondFilter, startFreq, endFreq, points);
+                    break;
+                case SongEqualization::NAB:
+                    //apply NAB
+                    NAB_15_FILTER(secondFilter, startFreq, endFreq, points);
+                    break;
+                default:
+                    break;
+            }
             break;
         case SONG_SPEED_30:
-            strcat(eqName, "30_");
+            switch (EQCurrent) {
+                case SongEqualization::CCIR:
+                    //apply CCIR
+                    CCIR_30_FILTER(secondFilter, startFreq, endFreq, points);
+                    break;
+                case SongEqualization::NAB:
+                    //apply NAB
+                    NAB_30_FILTER(secondFilter, startFreq, endFreq, points);
+                    break;
+                default:
+                    break;
+            }
             break;
         default:
-            //non dovrebbe mai andare qui
-            return;
-    }
-
-    switch (EQCurrent) {
-        case SongEqualization::CCIR:
-            strcat(eqName, "CCIR");
-            break;
-        case SongEqualization::NAB:
-            strcat(eqName, "NAB");
-            break;
-        case SongEqualization::FLAT:
-            strcat(eqName, "FLAT");
             break;
     }
 
-    char pathEQToLoad[2000];
-    strcpy(pathEQToLoad, eqPath);
-    strcat(pathEQToLoad, "/");
-    strcat(pathEQToLoad, eqName);
-    strcat(pathEQToLoad, ".wav");
-    std::string strPathEQ(eqName);
-    //controlla se e' gia' stata usata
-    for (int k = 0; k < loadedEQs.size(); k++) {
-        auto tupla = loadedEQs.at(k);
-        if (strPathEQ.compare(std::get<0>(tupla)) == 0) {
-            filter.clear();
-            filter = std::get<1>(tupla);
-            LOGD("NativePlayer_setFFTFilters: caricamento filtro dalla cache");
-            fftconvolver[0].setFilter(filter.data(), size);
-            fftconvolver[1].setFilter(filter.data(), size);
-            fftconvolver[2].setFilter(filter.data(), size);
-            fftconvolver[3].setFilter(filter.data(), size);
-            return;
-        }
+    for (int i = 0; i < points; i++) {
+        filter1[i] = firstFilter[i].real;
     }
 
-    WaveReader *wavImpRes = nullptr;
-
-    int fd = open(pathEQToLoad, O_RDONLY);
-    //se trova il file allora legge e carica la risposta
-    if (fd != -1) {
-        close(fd);
-
-        LOGD("NativePlayer_setFFTFilters: file %s trovato: caricamento filtro in corso",
-             pathEQToLoad);
-
-        //legge il file .wav contenente la risposta impulsiva
-        char const *paths[1] = {nullptr};
-        paths[0] = pathEQToLoad;
-        wavImpRes = new WaveReader(paths, 1);
-
-        audio::InputStream streamImpResp;
-
-        audio::connect(wavImpRes->outStreams[0], streamImpResp);
-
-        audio::AudioBuffer filterBuffer;
-
-        filter.clear();
-        if (wavImpRes != NULL) {
-            LOGD("NativePlayer_setFFTFilters: partita lettura wave reader impulse response");
-            wavImpRes->run();
-        }
-
-        while (!streamImpResp.hasData()) {
-            LOGD("NativePlayer_setFFTFilters Waiting for data");
-            //streamImpResp.waitIfEmpty();
-        }
-        audio::Status impResStatus;
-        while (!wavImpRes->isEof()) {
-
-            streamImpResp.waitIfEmpty();
-
-            impResStatus = streamImpResp.pullData(filterBuffer);
-
-            if (impResStatus == audio::Status::OK) {
-                for (int i = 0; i < audio::AudioBufferSize; i++) {
-                    filter.push_back(filterBuffer[i]);
-                }
-            } else {
-                LOGE("NativePlayer_setFFTFilters: wave reader status NOT OK");
-            }
-        }
-        if (wavImpRes != NULL) {
-            wavImpRes->scheduleStop();
-            wavImpRes->join();
-        }
-
-        if (filter.size() != 0 && impResStatus == audio::Status::OK) {
-
-            //filter contiene ora tutti i campioni
-
-            //controlla che i sampling rate combacino
-            if (wavImpRes->getSamplerate() != songSampleRate) {
-
-                LOGD("NativePlayer_setFFTFilters: need resampling");
-                //fase di setup
-                double ratio = (double) (songSampleRate) / (double) (wavImpRes->getSamplerate());
-
-                float *arrayFilterIn;
-                arrayFilterIn = new float[filter.size()];
-
-                for (int i = 0; i < filter.size(); i++) {
-                    arrayFilterIn[i] = filter.at(i);
-                }
-
-                float *arrayFilterOut;
-                arrayFilterOut = new float[(int(filter.size() * ratio) + 1)];
-
-                //inizializzazione della conversione
-                SRC_DATA samplerate;
-
-                /* samplerate params config */
-                samplerate.data_in = arrayFilterIn;
-                samplerate.input_frames = (long) filter.size();
-                samplerate.data_out = arrayFilterOut;
-                samplerate.end_of_input = 0;
-                samplerate.src_ratio = ratio;
-                samplerate.output_frames = (long) ((size_t) (ratio + 1)) * filter.size();
-
-                size_t nread = 0;
-
-                int error;
-                SRC_STATE *state;
-                if ((state = src_new(SRC_SINC_BEST_QUALITY, 1, &error)) == NULL) {
-                    LOGE("NativePlayer_setFFTFilters resample failed");
-                    exit(EXIT_FAILURE);
-                }
-
-                //conversione
-                if ((error = src_process(state, &samplerate)))
-                    LOGE("NativePlayer_setFFTFilters: src_process failed : %s",
-                         src_strerror(error));
-
-                //pulisce e riempie il filtro con la risposta impulsiva ricampionata
-                filter.clear();
-                for (int i = 0; i < samplerate.output_frames; i++) {
-                    filter[i] = arrayFilterOut[i];
-                }
-                LOGD("NativePlayer_setFFTFilters: resample avvenuto");
-
-                src_delete(state);
-                delete arrayFilterIn;
-                delete arrayFilterOut;
-            }
-            LOGD("NativePlayer_setFFTFilters: caricamento filtro");
-
-            fftconvolver[0].setFilter(filter.data(), size);
-            fftconvolver[1].setFilter(filter.data(), size);
-            fftconvolver[2].setFilter(filter.data(), size);
-            fftconvolver[3].setFilter(filter.data(), size);
-
-            //se arriva a questo punto allora il filtro non era gia' in memoria e non ci sono stati
-            // problemi, quindi lo tiene da parte
-            std::vector<float> savedFilter = filter;
-            auto second = std::make_tuple(strPathEQ, savedFilter);
-            loadedEQs.push_back(second);
-
-            delete wavImpRes;
-            return;
-        }
-        LOGE("NativePlayer_setFFTFilters: errore, il filtro e' vuoto o audio::Status::NOT_OK");
-    } else {
-        LOGD("NativePlayer_setFFTFilters: file %s non trovato", pathEQToLoad);
-        LOGD("NativePlayer_setFFTFilters: caricamento filtro di default");
-        fftconvolver[0].setFilter(filter.data(), size);
-        fftconvolver[1].setFilter(filter.data(), size);
-        fftconvolver[2].setFilter(filter.data(), size);
-        fftconvolver[3].setFilter(filter.data(), size);
-
-        //se arriva a questo punto allora il filtro non era gia' in memoria
-        //quindi lo tiene da parte
-        std::vector<float> savedFilter = filter;
-        auto second = std::make_tuple(strPathEQ, savedFilter);
-        loadedEQs.push_back(second);
-
-        if (wavImpRes != nullptr)
-            delete wavImpRes;
-        return;
+    for (int i = 0; i < points; i++) {
+        filter2[i] = secondFilter[i].real;
     }
 
-    //se arriva qua e' avvenuto un errore, per cui ricarica il filtro di default e NON lo salva
-    for (int i = 0; i < size; i++) {
-        filter[i] = 1.0f;
-    }
+    fftconvolver[0].setFilter(filter1.data(), size);
+    fftconvolver[1].setFilter(filter1.data(), size);
+    fftconvolver[2].setFilter(filter1.data(), size);
+    fftconvolver[3].setFilter(filter1.data(), size);
 
-    LOGD("NativePlayer_setFFTFilters: caricamento filtro di default");
-    fftconvolver[0].setFilter(filter.data(), size);
-    fftconvolver[1].setFilter(filter.data(), size);
-    fftconvolver[2].setFilter(filter.data(), size);
-    fftconvolver[3].setFilter(filter.data(), size);
+    fftconvolver[4].setFilter(filter2.data(), size);
+    fftconvolver[5].setFilter(filter2.data(), size);
+    fftconvolver[6].setFilter(filter2.data(), size);
+    fftconvolver[7].setFilter(filter2.data(), size);
 
-    if (wavImpRes != nullptr)
-        delete wavImpRes;
+    LOGD("NativePlayer_setFFTFilters: filtri caricati");
 
     return;
 }
@@ -461,6 +371,11 @@ void NativePlayer::seek(double timeCentisec) {
         fftconvolver[2].scheduleStop();
         fftconvolver[3].scheduleStop();
 
+        fftconvolver[4].scheduleStop();
+        fftconvolver[5].scheduleStop();
+        fftconvolver[6].scheduleStop();
+        fftconvolver[7].scheduleStop();
+
         // -- Join --
         LOGD("join");
         if (mixer != NULL)
@@ -476,6 +391,11 @@ void NativePlayer::seek(double timeCentisec) {
         fftconvolver[1].join();
         fftconvolver[2].join();
         fftconvolver[3].join();
+
+        fftconvolver[4].join();
+        fftconvolver[5].join();
+        fftconvolver[6].join();
+        fftconvolver[7].join();
 
         // -- Flush --
         LOGD("flush");
@@ -495,6 +415,11 @@ void NativePlayer::seek(double timeCentisec) {
         fftconvolver[2].reset();
         fftconvolver[3].reset();
 
+        fftconvolver[4].reset();
+        fftconvolver[5].reset();
+        fftconvolver[6].reset();
+        fftconvolver[7].reset();
+
         // -- Run --
         if (mixer != NULL)
             mixer->run();
@@ -511,6 +436,11 @@ void NativePlayer::seek(double timeCentisec) {
         fftconvolver[1].run();
         fftconvolver[2].run();
         fftconvolver[3].run();
+
+        fftconvolver[4].run();
+        fftconvolver[5].run();
+        fftconvolver[6].run();
+        fftconvolver[7].run();
 
         LOGD("tutti filtri ok");
     });
@@ -550,19 +480,6 @@ void NativePlayer::fastFunction() {
     threadGo = false;
     seek(currentTime);
 }
-
-//void NativePlayer::threadReadData() {
-//    int prevLen = -1;
-//    while (playbackState == PLAYBACK_STATE_PLAYING) {
-//        prevLen = -1;
-//        threadReadLock.lock();
-//        while (intermediateAudioBuffer.size() < intermAudioBufferFillValue &&
-//               prevLen != intermediateAudioBuffer.size() && playbackState == PLAYBACK_STATE_PLAYING) {
-//            playbackCallback();
-//            prevLen = intermediateAudioBuffer.size();
-//        }
-//    }
-//}
 
 oboe::DataCallbackResult NativePlayer::onAudioReady(
         oboe::AudioStream *oboeStream,
@@ -713,6 +630,11 @@ void NativePlayer::unloadSong() {
     fftconvolver[2].scheduleStop();
     fftconvolver[3].scheduleStop();
 
+    fftconvolver[4].scheduleStop();
+    fftconvolver[5].scheduleStop();
+    fftconvolver[6].scheduleStop();
+    fftconvolver[7].scheduleStop();
+
     LOGD("scheduleStop tutto");
     if (mixer != NULL)
         mixer->join();
@@ -724,6 +646,11 @@ void NativePlayer::unloadSong() {
     fftconvolver[1].join();
     fftconvolver[2].join();
     fftconvolver[3].join();
+
+    fftconvolver[4].join();
+    fftconvolver[5].join();
+    fftconvolver[6].join();
+    fftconvolver[7].join();
 
     LOGD("join tutto");
 
@@ -745,8 +672,7 @@ void NativePlayer::unloadSong() {
 //TODO verificare che songSpeedNum sia il valore originale della canzone e non quello selezionato dlla manopola
 void
 NativePlayer::loadSong(JNIEnv *env, jclass clazz, jobjectArray pathsArray,
-                       jint songTypeNum, jint songSpeedNum, jstring songEquStr,
-                       jstring equPathJStr) {
+                       jint songTypeNum, jint songSpeedNum, jstring songEquStr) {
     if (playbackState != PLAYBACK_STATE_INITIALIZED)
         return;
 
@@ -819,28 +745,26 @@ NativePlayer::loadSong(JNIEnv *env, jclass clazz, jobjectArray pathsArray,
     EQCurrent = EQOriginal;
 
     //loadEquImpResp(env, songSampleRate, songSpeed, songEqu, equPath);
-    char const *pathsEQ[1] = {nullptr};
-    paths[0] = env->GetStringUTFChars(equPathJStr, nullptr);
-    memset(eqPath, 0, sizeof eqPath);
-    strcat(eqPath, paths[0]);
     setFFTFilters(EQCurrent);
-    env->ReleaseStringUTFChars(equPathJStr, paths[0]);
 
     // --- Connessione dei filtri ---
     audio::connect(waveReader->outStreams[0], fftconvolver[0].input);
     audio::connect(fftconvolver[0].output, rateConverter->inStreams[0]);
-    audio::connect(rateConverter->outStreams[0], mixer->inputs[0]);
+    audio::connect(rateConverter->outStreams[0], fftconvolver[4].input);
+    audio::connect(fftconvolver[4].output, mixer->inputs[0]);
 
     if (songType == SONG_TYPE_1S) {
         audio::connect(waveReader->outStreams[1], fftconvolver[1].input);
         audio::connect(fftconvolver[1].output, rateConverter->inStreams[1]);
-        audio::connect(rateConverter->outStreams[1], mixer->inputs[1]);
+        audio::connect(rateConverter->outStreams[1], fftconvolver[5].input);
+        audio::connect(fftconvolver[5].output, mixer->inputs[1]);
     }
 
     for (int i = 1; i < ntracce; i++) {
         audio::connect(waveReader->outStreams[i], fftconvolver[i].input);
         audio::connect(fftconvolver[i].output, rateConverter->inStreams[i]);
-        audio::connect(rateConverter->outStreams[i], mixer->inputs[i]);
+        audio::connect(rateConverter->outStreams[i], fftconvolver[i + 4].input);
+        audio::connect(fftconvolver[i + 4].output, mixer->inputs[i]);
     }
 
     audio::connect(mixer->outputLeft, inLeft);

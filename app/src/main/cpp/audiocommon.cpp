@@ -1,7 +1,3 @@
-//
-// Created by riccardo on 21/07/18.
-//
-
 #include <string>
 #include "audiocommon.h"
 #include "log.h"

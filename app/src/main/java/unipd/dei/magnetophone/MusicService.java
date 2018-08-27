@@ -24,8 +24,6 @@ public class MusicService extends Service {
     public static int PLAYBACK_STATE_PAUSED = 1;
     public static int PLAYBACK_STATE_PLAYING = 2;
 
-    public static final String EXT_STORAGE_EQU_FOLDER = "MagnetophoneEqu";
-
     private NotificationCompat.Builder mBuilder;
 
     static {
@@ -43,7 +41,7 @@ public class MusicService extends Service {
 
     public native void init();
 
-    public native void loadSong(String paths[], int songType, int songSpeed, String equalization, String equPath);
+    public native void loadSong(String paths[], int songType, int songSpeed, String equalization);
 
     public native void unloadSong();
 
@@ -233,8 +231,7 @@ public class MusicService extends Service {
             currentSpeed = Song.getEnumSpeed(currentSong.getSpeed());
             Log.d("MusicService", "speed " + currentSpeed.getValue());
 
-            String outDir = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + EXT_STORAGE_EQU_FOLDER;
-            MusicService.this.loadSong(pathsArray, songType.getValue(), currentSpeed.getValue(), playerEqualization.name(), outDir);
+            MusicService.this.loadSong(pathsArray, songType.getValue(), currentSpeed.getValue(), playerEqualization.name());
         }
 
         public void addOnTimeUpdateListener(OnTimeUpdateListener l) {

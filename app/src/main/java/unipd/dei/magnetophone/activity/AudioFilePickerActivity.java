@@ -27,7 +27,6 @@ import java.util.List;
 import unipd.dei.magnetophone.MusicPlayer;
 import unipd.dei.magnetophone.R;
 
-import static unipd.dei.magnetophone.MusicService.EXT_STORAGE_EQU_FOLDER;
 import static unipd.dei.magnetophone.utility.Utility.showSupportActionBar;
 
 /**
@@ -108,7 +107,7 @@ public class AudioFilePickerActivity extends AppCompatActivity {
             cursor.moveToPosition(i);
             filePath = cursor.getString(columnIndex);
             //esclude i file .wav delle risposte impulsive che l'app copia nell'external storage
-            if (filePath.endsWith(filter)&&!filePath.contains("/"+EXT_STORAGE_EQU_FOLDER+"/"))
+            if (filePath.endsWith(filter))
                 fileList.add(new File(filePath));
         }
 

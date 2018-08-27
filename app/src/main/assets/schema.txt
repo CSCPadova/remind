@@ -1,3 +1,0 @@
-Le risposte impulsive si trovano dentro la cartella "equ".
-L'app se le porta in android slavate dentro l'apk e a runtime le copia nell'external storage.
-Lo schema dei nomi e':[vel originale]_[eq originale]_[vel nuova]_[eq nuova].wav
