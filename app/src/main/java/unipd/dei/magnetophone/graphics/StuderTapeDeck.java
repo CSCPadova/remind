@@ -27,8 +27,8 @@ public class StuderTapeDeck extends TapeDeck {
     private final float VIDEO_OFFSET_STEP = 0.001f;
     private final PlayerEqualization[] eq_values = {
             PlayerEqualization.CCIR,
-            PlayerEqualization.NAB,
-            PlayerEqualization.FLAT
+            PlayerEqualization.NAB
+            //,PlayerEqualization.FLAT non piu' usata
     };
     private final SongSpeed speed_values[] = {
             SongSpeed.SONG_SPEED_30,
@@ -67,6 +67,9 @@ public class StuderTapeDeck extends TapeDeck {
         addComponent(new UIStatic(75, 45, 0, 1542, 0, r.getDrawable(R.raw.background)));
         addComponent(new UIStatic(1757, 420, 0, 661, 453, r.getDrawable(R.raw.video_frame)));
         addComponent(new UIStatic(1881, 1056, 1, 612, 485, r.getDrawable(R.raw.project_logo)));
+
+        addComponent(new UIStatic(419, 419, 3, 400, r.getDrawable(R.raw.reel_center)));
+        addComponent(new UIStatic(1277, 419, 3, 400, r.getDrawable(R.raw.reel_center)));
 
         // OGGETTI ROTANTI
 
@@ -302,7 +305,7 @@ public class StuderTapeDeck extends TapeDeck {
         eqKnob = (UIKnob) addComponent(new UIKnob(1331, 1464, 5, 40, r.getDrawable(R.raw.knob)));
 
         speedKnob.setSteps(4, 135, 225);
-        eqKnob.setSteps(3, 140, 220);
+        eqKnob.setSteps(2, 140, 220);
 
         // SPEED KNOB: Callback della manopola
         speedKnob.setCallback(new ComponentCallback() {
