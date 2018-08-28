@@ -7,7 +7,7 @@
     android:divider="?android:attr/dividerHorizontal"
     android:orientation="horizontal"
     android:showDividers="middle"
-    tools:context="it.unipd.dei.esp1314.SongListActivity" >
+    tools:context="unipd.dei.magnetophone.activity.LibraryActivity" >
 
     <!-- <android.support.v4.widget.SlidingPaneLayout
             android:id="@+id/sliding_pane"

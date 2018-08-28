@@ -116,6 +116,7 @@
     <string name="toast_activity_single_song_settings">Errore: Valore non corretto</string>
     <string name="toast2_activity_single_song_settings">Dati salvati correttamente</string>
     <!-- PRIMO HEADER: IMPOSTAZIONI GENERALI -->
+    <string name="master_volume">Volume globale</string>
     <string name="first_header_activity_single_song_settings">Impostazioni generali</string>
     <string name="song_name_activity_single_song_settings">Modifica il nome del brano</string>
     <string name="song_name_title_activity_single_song_settings">Nome Brano</string>

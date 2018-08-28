@@ -138,6 +138,11 @@ public:
     void loadSong(JNIEnv *env, jclass clazz, jobjectArray pathsArray, jint songTypeNum,
                   jint songSpeedNum, jstring songEquStr);
 
+
+    void setMasterVolume(float volume);
+
+    float getMasterVolume();
+
     void mixerSetTrackVolume(int trackNumber, float volumeL, float volumeR);
 
     float mixerGetTrackVolumeL(int trackNumber);

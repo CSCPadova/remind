@@ -47,18 +47,24 @@ public class MonitorSetupActivity extends AppCompatActivity {
             TextView monitorNumber = (TextView) findViewById(R.id.monitor_tracks_number_field);
             monitorNumber.setText("" + monitorSong.getNumberOfTracks());
 
-            /*
-             * visualizzo la lista delle tracce
-             */
-            //LinearLayout trackNameListContainer = (LinearLayout) findViewById(R.id.monitor_tracks_list_container);
-            //trackNameListContainer.removeAllViews();
+            final SeekBar seekbarMasterVolume = (SeekBar) findViewById(R.id.monitor_master_volume);
 
-            //for (Song.Track track : monitorSong.getTrackList()) {
-            //    TextView trackNameTextView = new TextView(getApplicationContext());
-            //    trackNameTextView.setText(" - " + track.getName());
-            //    trackNameTextView.setTextAppearance(getApplicationContext(), R.style.MonitorSetupTrackListItem);
-            //    trackNameListContainer.addView(trackNameTextView);
-            //}
+            seekbarMasterVolume.setProgress((int) (getMasterVolume() * VOLUME_SEEKBAR_MAX_VALUE));
+
+            seekbarMasterVolume.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    setMasterVolume((float) (progress) / VOLUME_SEEKBAR_MAX_VALUE);
+                }
+
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {
+                }
+
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
+                }
+            });
 
             /*
              * Caricamento pannello di controllo
@@ -144,7 +150,7 @@ public class MonitorSetupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.monitor_setup_activity_layout);
-        showSupportActionBar(this, null,  getWindow().getDecorView());
+        showSupportActionBar(this, null, getWindow().getDecorView());
     }
 
     protected void onResume() {
@@ -173,7 +179,7 @@ public class MonitorSetupActivity extends AppCompatActivity {
     /*
      * inizializzazione pannello controlli per una song con una traccia mono
      */
-    private void initOneMonoControls(){
+    private void initOneMonoControls() {
         trackNamesTextViews[0] = (TextView) findViewById(R.id.monitor_channel1_track_name);
 
         /*
@@ -425,8 +431,17 @@ public class MonitorSetupActivity extends AppCompatActivity {
                 seekbarSatelliteChannel4L.setProgress(seekbarSatelliteChannel4R.getProgress());
             }
         });
+    }
 
+    private void setMasterVolume(float volume) {
+        if (musicServiceBinder != null)
+            musicServiceBinder.setMasterVolume(volume);
+    }
 
+    private float getMasterVolume() {
+        if (musicServiceBinder != null)
+            return musicServiceBinder.getMasterVolume();
+        return 0;
     }
 
     private void setTrackVolumeL(int track, float volumeL) {

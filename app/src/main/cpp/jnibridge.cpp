@@ -154,6 +154,23 @@ Java_unipd_dei_magnetophone_MusicService_getRatio(JNIEnv *env, jclass clazz) {
 }
 
 JNIEXPORT void JNICALL
+Java_unipd_dei_magnetophone_MusicService_setMasterVolume(JNIEnv *env, jclass clazz, jfloat volume) {
+    if (engine == nullptr)
+        LOGE("Engine is null, you must call MusicService_init before calling this method");
+
+    return engine->setMasterVolume(volume);
+}
+
+JNIEXPORT jfloat JNICALL
+Java_unipd_dei_magnetophone_MusicService_getMasterVolume(JNIEnv *env, jclass clazz) {
+    if (engine == nullptr) {
+        LOGE("Engine is null, you must call MusicService_init before calling this method");
+        return 0.0;
+    }
+    return engine->getMasterVolume();
+}
+
+JNIEXPORT void JNICALL
 Java_unipd_dei_magnetophone_MusicService_setTrackVolume(JNIEnv *env, jclass clazz, jint track,
                                                         jfloat volumeL, jfloat volumeR) {
     if (engine == nullptr)

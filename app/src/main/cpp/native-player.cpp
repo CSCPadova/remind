@@ -872,6 +872,14 @@ void NativePlayer::fastReverse() {
     fastThread = new std::thread(&NativePlayer::fastFunction, this);
 }
 
+void NativePlayer::setMasterVolume(float volume) {
+    MASTER_VOLUME = volume;
+}
+
+float NativePlayer::getMasterVolume() {
+    return MASTER_VOLUME;
+}
+
 float NativePlayer::getRatio() {
     if (rateConverter == NULL)
         return 1.0f;

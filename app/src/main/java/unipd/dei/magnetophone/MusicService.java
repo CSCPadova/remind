@@ -72,6 +72,10 @@ public class MusicService extends Service {
 
     public native float getRatio();
 
+    public native void setMasterVolume(float volume);
+
+    public native float getMasterVolume();
+
     public native void setTrackVolume(int track, float volumeL, float volumeR);
 
     public native float getTrackVolumeL(int track);
@@ -176,6 +180,14 @@ public class MusicService extends Service {
 
         public void play() {
             MusicService.this.play();
+        }
+
+        public void setMasterVolume(float volume) {
+            MusicService.this.setMasterVolume(volume);
+        }
+
+        public float getMasterVolume() {
+            return MusicService.this.getMasterVolume();
         }
 
         public void setTrackVolume(int track, float volumeL, float volumeR) {
