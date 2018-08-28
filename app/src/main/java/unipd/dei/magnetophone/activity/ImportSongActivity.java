@@ -309,7 +309,7 @@ public class ImportSongActivity extends AppCompatActivity {
             // ad esclusione certo delle track, di signature e di provenance
             ImportSongActivity isa = (ImportSongActivity) getActivity();
 
-            isa.songToAdd.setEqualization((String) prefEqualization.getEntryValues()[2]);
+            isa.songToAdd.setEqualization((String) prefEqualization.getEntryValues()[0]);
             isa.songToAdd.setSpeed(Float.parseFloat((String) prefSpeed.getEntryValues()[0]));
 
 //			isa.songToAdd.setNumberOfTracks(Integer.parseInt((String)prefNumberOfTracks.getEntryValues()[0]));
@@ -324,9 +324,8 @@ public class ImportSongActivity extends AppCompatActivity {
             prefProvenance.setText("");
 
             //setto le preference
-            prefEqualization.setValue((String) prefEqualization.getEntryValues()[2]);
+            prefEqualization.setValue((String) prefEqualization.getEntryValues()[0]);
             prefSpeed.setValue((String) prefSpeed.getEntryValues()[0]);
-
 
             prefNumberOfTracks.setValue((String) prefNumberOfTracks.getEntryValues()[0]);
 

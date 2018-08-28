@@ -192,7 +192,7 @@ void NativePlayer::setFFTFilters(SongEqualization newEqu) {
 }
 
 SongEqualization NativePlayer::convertJavaEqualization(JNIEnv *env, jstring javaEqu) {
-    SongEqualization outEqu = SongEqualization::FLAT;
+    SongEqualization outEqu = SongEqualization::CCIR;
 
     const char *equName = env->GetStringUTFChars(javaEqu, nullptr);
     LOGD("Equalizzazione %s", equName);
@@ -202,8 +202,8 @@ SongEqualization NativePlayer::convertJavaEqualization(JNIEnv *env, jstring java
         outEqu = SongEqualization::CCIR;
     else if (strcmp(equName, "NAB") == 0)
         outEqu = SongEqualization::NAB;
-    else if (strcmp(equName, "FLAT") == 0)
-        outEqu = SongEqualization::FLAT;
+        //else if (strcmp(equName, "FLAT") == 0)
+        //    outEqu = SongEqualization::FLAT;
     else {
         // wut?
         LOGE("setEqualization: passata equalizzazione non valida: %s", equName);
@@ -243,8 +243,24 @@ void NativePlayer::playbackCallback() {
             //32767 converte da -1.0f < x < 1.0f a -32767 < x < 32767
             intermediateAudioBuffer.push_back(leftBuffer[i] * 32767);
             intermediateAudioBuffer.push_back(rightBuffer[i] * 32767);
+
+            /*
+            if (leftBuffer[i] > 1 | rightBuffer[i] > 1) {
+                if (leftBuffer[i] > rightBuffer[i]) {
+                    if (1.0f / leftBuffer[i] < MASTER_VOLUME) {
+                        MASTER_VOLUME = 1.0f / leftBuffer[i];
+                        LOGD("Rilevato clipping, nuovo volume impostato a %f", MASTER_VOLUME);
+                    }
+                } else {
+                    if (1.0f / rightBuffer[i] < MASTER_VOLUME) {
+                        MASTER_VOLUME = 1.0f / rightBuffer[i];
+                        LOGD("Rilevato clipping, nuovo volume impostato a %f", MASTER_VOLUME);
+                    }
+                }
+            }*/
         }
     }
+
     currentTime +=
             (double) (audio::AudioBufferSize * 100) / (double) mixer->getSamplingFrequency() /
             rateConverter->getRatio();
@@ -537,7 +553,7 @@ oboe::DataCallbackResult NativePlayer::onAudioReady(
 
         int i;
         for (i = 0; i < numFrames * 2; i++) {
-            temp[i] = intermediateAudioBuffer.at(i) * FINAL_VOLUME;
+            temp[i] = intermediateAudioBuffer.at(i) * MASTER_VOLUME;
             //if (max < abs(temp[i]))
             //    max = temp[i];
         }

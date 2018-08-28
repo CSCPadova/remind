@@ -3,7 +3,7 @@
    <string-array name="listaEqualizzazioni">
      <item>CCIR</item>
      <item>NAB</item>
-     <item>FLAT</item>
+     <!--<item>FLAT</item>-->
      </string-array>
      
      <string-array name="listaVelocita">

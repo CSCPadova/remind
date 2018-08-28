@@ -5,6 +5,5 @@ package unipd.dei.magnetophone.utility;
  */
 public enum PlayerEqualization {
     CCIR,
-    NAB,
-    FLAT
+    NAB//,    FLAT
 }

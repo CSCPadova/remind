@@ -1,5 +1,13 @@
 #include "filters.h"
 
+/*
+ * Nei nastri veri in registrazione si applica il filtro e in riporduzione lo si toglie
+ * La formula toglie l'eq dal nastro e in questo codice il punto di vista e' quello di riproduzione.
+ * Per cui:
+ * INV_FILTER toglie l'eq del nastro (formula senza il meno 1)
+ * FILTER applica l'eq al nastro (formula con il meno 1)
+ */
+
 void FILTER(float *values, double t1, double t2, int startFreq, int endFreq, int points) {
     float step = (endFreq - startFreq) / points;
     float f = startFreq;
@@ -8,7 +16,7 @@ void FILTER(float *values, double t1, double t2, int startFreq, int endFreq, int
     while (f < endFreq) {
         w = 2 * M_PI * f;
         CkFftComplex value;
-        values[index] = w * t1 * sqrt((1 + pow(w * t2, 2)) / (1 + pow(w * t1, 2)));
+        values[index] = w * t1 * sqrt((1 + pow(w * t2, 2)) / (1 + pow(w * t1, 2)))*-1;
         f = f + step;
         index++;
     }
@@ -22,7 +30,7 @@ void INV_FILTER(float *values, double t1, double t2, int startFreq, int endFreq,
     while (f < endFreq) {
         w = 2 * M_PI * f;
         CkFftComplex value;
-        values[index] = w * t1 * sqrt((1 + pow(w * t2, 2)) / (1 + pow(w * t1, 2)))*-1;
+        values[index] = w * t1 * sqrt((1 + pow(w * t2, 2)) / (1 + pow(w * t1, 2)));
         f = f + step;
         index++;
     }

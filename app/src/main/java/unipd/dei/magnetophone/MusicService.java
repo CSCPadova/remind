@@ -5,7 +5,6 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
-import android.os.Environment;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
@@ -31,7 +30,7 @@ public class MusicService extends Service {
     }
 
     public SongSpeed currentSpeed = SongSpeed.SONG_SPEED_3_75;
-    public PlayerEqualization playerEqualization = PlayerEqualization.FLAT;
+    public PlayerEqualization playerEqualization = PlayerEqualization.CCIR;
     Notification not;
     private Song currentSong;
     private OnTimeUpdateListener listener = null;

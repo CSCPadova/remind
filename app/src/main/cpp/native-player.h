@@ -31,7 +31,7 @@ class NativePlayer : oboe::AudioStreamCallback {
     int songSampleRate;
     int loadState;
 
-    float FINAL_VOLUME = 1.0f;
+    float MASTER_VOLUME = 0.3f;
 
     bool songReady;
 

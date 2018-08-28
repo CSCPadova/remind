@@ -5,7 +5,7 @@
 #include <jni.h>
 
 enum class SongEqualization {
-	CCIR, NAB, FLAT
+	CCIR, NAB//, FLAT
 };
 
 class FilterBase
