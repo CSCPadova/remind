@@ -98,10 +98,10 @@ private:
 
     void closeOutputStream();
 
-    void setupAudioEngineAndPlay(int playbackDeviceId_,
-                                 oboe::AudioFormat sampleFormat_,
-                                 int sampleChannels_,
-                                 int sampleRate_);
+    void setupAudioEngine(int playbackDeviceId_,
+                          oboe::AudioFormat sampleFormat_,
+                          int sampleChannels_,
+                          int sampleRate_);
 
     //void threadReadData();
 

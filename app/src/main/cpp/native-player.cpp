@@ -572,10 +572,10 @@ oboe::DataCallbackResult NativePlayer::onAudioReady(
 /**
  * Creates an audio stream for playback. The audio device used will depend on playbackDeviceId_.
  */
-void NativePlayer::setupAudioEngineAndPlay(int playbackDeviceId_,
-                                           oboe::AudioFormat sampleFormat_,
-                                           int sampleChannels_,
-                                           int sampleRate_) {
+void NativePlayer::setupAudioEngine(int playbackDeviceId_,
+                                    oboe::AudioFormat sampleFormat_,
+                                    int sampleChannels_,
+                                    int sampleRate_) {
     oboe::AudioStreamBuilder builder;
 
     builder.setDeviceId(playbackDeviceId_);
@@ -782,8 +782,8 @@ NativePlayer::loadSong(JNIEnv *env, jclass clazz, jobjectArray pathsArray,
     currentSampleRate = songSampleRate;
 
 
-    setupAudioEngineAndPlay(currentPlaybackDeviceId, currentSampleFormat, currentSampleChannels,
-                            currentSampleRate);
+    setupAudioEngine(currentPlaybackDeviceId, currentSampleFormat, currentSampleChannels,
+                     currentSampleRate);
 
     playbackState = PLAYBACK_STATE_STOPPED;
     currentTime = 0;

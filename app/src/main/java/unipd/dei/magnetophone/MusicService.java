@@ -183,31 +183,43 @@ public class MusicService extends Service {
         }
 
         public void setMasterVolume(float volume) {
-            MusicService.this.setMasterVolume(volume);
+            MusicService.this.setMasterVolume(volumeLinToLog(volume));
         }
 
         public float getMasterVolume() {
-            return MusicService.this.getMasterVolume();
+            return volumeLogToLin(MusicService.this.getMasterVolume());
         }
 
         public void setTrackVolume(int track, float volumeL, float volumeR) {
-            MusicService.this.setTrackVolume(track, volumeL, volumeR);
+            MusicService.this.setTrackVolume(track, volumeLinToLog(volumeL), volumeLinToLog(volumeR));
         }
 
         public void setTrackVolumeL(int track, float volumeL) {
-            MusicService.this.setTrackVolume(track, volumeL, MusicService.this.getTrackVolumeR(track));
+            MusicService.this.setTrackVolume(track, volumeLinToLog(volumeL), MusicService.this.getTrackVolumeR(track));
         }
 
         public void setTrackVolumeR(int track, float volumeR) {
-            MusicService.this.setTrackVolume(track, MusicService.this.getTrackVolumeL(track), volumeR);
+            MusicService.this.setTrackVolume(track, MusicService.this.getTrackVolumeL(track), volumeLinToLog(volumeR));
         }
 
         public float getTrackVolumeL(int track) {
-            return MusicService.this.getTrackVolumeL(track);
+            return volumeLogToLin(MusicService.this.getTrackVolumeL(track));
         }
 
         public float getTrackVolumeR(int track) {
-            return MusicService.this.getTrackVolumeR(track);
+            return volumeLogToLin(MusicService.this.getTrackVolumeR(track));
+        }
+
+        private float volumeLinToLog(float volume)
+        {
+            //assuming values from 0 to 1
+            return (float)((Math.pow(10, volume)-1)/10);
+        }
+
+        private float volumeLogToLin(float volume)
+        {
+            //assuming values from 0 to 1
+            return (float)(Math.log10(10*volume+1));
         }
 
         public void stop() {
