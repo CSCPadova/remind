@@ -73,7 +73,7 @@ void Mixer::setTrackVolume(int trackNumber, float volumeL, float volumeR) {
             track4R = volumeR;
             break;
         default:
-            int nothing=0;
+            int nothing = 0;
     }
 }
 
@@ -118,6 +118,18 @@ int Mixer::getChannelEnabled(int channel) {
 bool Mixer::loop() {
     audio::AudioBuffer temp[4], outLeft, outRight;
 
+    auto stat = outputLeft.waitIfFull();
+    if (stat == audio::Status::ERROR)
+        return false;
+    if (stat == audio::Status::TIMEOUT)
+        return true;
+
+    stat = outputRight.waitIfFull();
+    if (stat == audio::Status::ERROR)
+        return false;
+    if (stat == audio::Status::TIMEOUT)
+        return true;
+
     // --- Legge il numero di input adeguato ---
     int chansToPull = 0;
     switch (this->songType) {
@@ -144,6 +156,8 @@ bool Mixer::loop() {
             LOGD("pull mixer errore");
             return false;        // ritorna false così si interrompe l'elaborazione
         }
+        if (pullStatus == audio::Status::TIMEOUT)
+            return true;
     }
 
     for (int i = 0; i < chansToPull; i++)
