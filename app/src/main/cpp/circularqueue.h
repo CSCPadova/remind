@@ -57,10 +57,8 @@ private:
     std::vector<T> queue;
     int readIndex = 0;
     std::mutex readMutex;
-    //std::condition_variable readWaitVar;
     int writeIndex = 0;
     std::mutex writeMutex;
-    //std::condition_variable writeWaitVar;
 
     int incrementWrap(int val);
 };

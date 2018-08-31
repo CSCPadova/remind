@@ -50,6 +50,14 @@ bool RateConverter::loop() {
             return true;
     }
 
+    for (i = 0; i < nStreams; i++) {
+        auto stat = inStreams[i].waitIfEmpty();
+        if (stat == audio::Status::ERROR)
+            return false;
+        if (stat == audio::Status::TIMEOUT)
+            return true;
+    }
+
     data.src_ratio = ratio;
 
     while (offP >= audio::AudioBufferSize) {

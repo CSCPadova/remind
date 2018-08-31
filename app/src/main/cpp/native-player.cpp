@@ -56,7 +56,7 @@ void NativePlayer::setFFTFilters(SongEqualization newEqu) {
     float secondFilter[size];
 
     for (int i = 0; i < size; i++) {
-        firstFilter[i] = 1.0f;
+            firstFilter[i] = 1.0f;
     }
     for (int i = 0; i < size; i++) {
         secondFilter[i] = 1.0f;
@@ -170,6 +170,8 @@ void NativePlayer::setFFTFilters(SongEqualization newEqu) {
 
     for (int i = 0; i < points; i++) {
         filter1[i] = firstFilter[i];
+
+        //LOGD("firstFilter[i] %f", firstFilter[i]);
     }
 
     for (int i = 0; i < points; i++) {
@@ -244,6 +246,14 @@ void NativePlayer::playbackCallback() {
             intermediateAudioBuffer.push_back(leftBuffer[i] * 32767);
             intermediateAudioBuffer.push_back(rightBuffer[i] * 32767);
 
+            if(leftBuffer[i]>1.0f)
+            {
+                LOGD("Rilevato clipping a %f", leftBuffer[i]);
+            }
+            if(rightBuffer[i]>1.0f)
+            {
+                LOGD("Rilevato clipping a %f", rightBuffer[i]);
+            }
             /*
             if (leftBuffer[i] > 1 | rightBuffer[i] > 1) {
                 if (leftBuffer[i] > rightBuffer[i]) {

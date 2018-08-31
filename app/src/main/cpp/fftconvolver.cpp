@@ -47,38 +47,15 @@ FFTConvolver::~FFTConvolver()
  */
 void FFTConvolver::setFilter(float *filterData, int filterLen)
 {
-	// Contesto FFT da usare per le operazioni principali
-	fftContext = CkFftInit(2*blockSize, kCkFftDirection_Both, NULL, NULL);
+    if(fftContext== nullptr)
+	    fftContext = CkFftInit(2*blockSize, kCkFftDirection_Both, NULL, NULL);
 
-	// --- Adattamento del filtro ---
-	std::vector<CkFftComplex> tempComplex(blockSize);	// Converte il filtro float in un array di complex
-	std::vector<float> tempExtended(2*blockSize);		// buffer temporaneo per estendere il filtro
+    for(int i=0;i<filterLen;i++)
+    {
+        filter[i].real = filterData[i];
+        filter[i].imag = 0.0f;
+    }
 
-	int i = 0;
-	for(; i < std::min(filterLen, blockSize); i++) {
-		tempComplex[i].real = filterData[i];
-		tempComplex[i].imag = 0.0f;
-	}
-	for(; i < blockSize; i++) {			// il resto metti 0
-		tempComplex[i].real = 0.0f;
-		tempComplex[i].imag = 0.0f;
-	}
-
-	//antitrasformo filtro
-	CkFftContext *cntx = CkFftInit(2*blockSize, kCkFftDirection_Both, NULL, NULL);
-	CkFftRealInverse(cntx, blockSize, tempComplex.data(), tempExtended.data(), fftTmp.data());
-	// estendo con zeri
-	std::fill(tempExtended.begin()+blockSize, tempExtended.end(), 0.0f);
-	// trasformo
-	CkFftRealForward(cntx, blockSize, tempExtended.data(), this->filter.data());
-
-	float scaleValue = 1.0f / (blockSize*2.0f);
-	for(auto &v : this->filter) {
-		v.real *= scaleValue;
-		v.imag *= scaleValue;
-	}
-
-	CkFftShutdown(cntx);
 	filterLoaded = true;
 }
 
@@ -103,6 +80,12 @@ bool FFTConvolver::loop()
 	if(stat == audio::Status::TIMEOUT)
 		return true;
 
+	stat = input.waitIfEmpty();
+	if(stat == audio::Status::ERROR)
+		return false;
+	if(stat == audio::Status::TIMEOUT)
+		return true;
+
 	audio::AudioBuffer resultBuffer;
 	int oldBuffer = currentBuffer;
 	int newBuffer = 1 - currentBuffer;
@@ -122,8 +105,6 @@ bool FFTConvolver::loop()
 
 	if(pushStatus == audio::Status::ERROR)
 		return false;
-	//else if(pushStatus == audio::Status::TIMEOUT)
-	//	LOGD("[FFTConvlv] Timeout PUSHdata");
 
 	currentBuffer = newBuffer;
 	return true;

@@ -107,7 +107,7 @@ Status InputStream::pullData(AudioBuffer &destBuffer) {
 
     const auto *srcBuffer = connectedOutput->bufferQueue.top();
 
-    if (!srcBuffer) {
+    if (srcBuffer== nullptr) {
         std::cout << "[InpStream] Timeout PULLdata" << std::endl;
         return Status::TIMEOUT;
     }

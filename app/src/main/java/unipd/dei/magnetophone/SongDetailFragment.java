@@ -263,7 +263,7 @@ public class SongDetailFragment extends Fragment {
                 mViewPager.setAdapter(mDemoCollectionPagerAdapter);
                 mViewPager.setVisibility(View.VISIBLE);
 
-                invalid.setVisibility(View.GONE);
+                //invalid.setVisibility(View.GONE);
             } else {
                 v.findViewById(R.id.item_separator21).setVisibility(View.GONE);
                 v.findViewById(R.id.info_photos).setVisibility(View.GONE);

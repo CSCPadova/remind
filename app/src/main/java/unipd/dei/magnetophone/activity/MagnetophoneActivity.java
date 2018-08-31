@@ -7,23 +7,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.content.res.AssetManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
-
-import com.facebook.stetho.Stetho;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 
 import unipd.dei.magnetophone.MusicPlayer;
 import unipd.dei.magnetophone.MusicService;
@@ -32,6 +22,8 @@ import unipd.dei.magnetophone.graphics.MagnetoCanvasView;
 import unipd.dei.magnetophone.graphics.VideoView;
 
 import static unipd.dei.magnetophone.database.DatabaseHelper.DATABASE_NAME;
+
+//import com.facebook.stetho.Stetho;
 
 /**
  * Activity principale dell'applicazione dove viene mostrato il magnetofono
@@ -61,7 +53,7 @@ public class MagnetophoneActivity extends AppCompatActivity {
 
         getSupportActionBar().hide();
 
-        Stetho.initializeWithDefaults(this);
+        //Stetho.initializeWithDefaults(this);
 
         canvasView = (MagnetoCanvasView) findViewById(R.id.canvas);
         videoView = (VideoView) findViewById(R.id.video);

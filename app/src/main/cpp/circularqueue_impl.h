@@ -5,7 +5,7 @@
 #include <unistd.h>
 #include "log.h"
 
-#define WAIT_TIMEOUT_USEC (100)
+#define WAIT_TIMEOUT_USEC (500)
 
 template<typename T>
 CircularQueue<T>::CircularQueue(int bufferLen)
@@ -32,30 +32,22 @@ bool CircularQueue<T>::isFull() {
 // Attende fintanto che la coda è piena, ritorna false in caso di timeout o true se nella coda c'i sono elementi c'è spazio
 template<typename T>
 bool CircularQueue<T>::waitIfFull() {
-    //std::unique_lock<std::mutex> ulock(readMutex);
     if (isFull()) {
         usleep(WAIT_TIMEOUT_USEC);
         return false;
     }
     return true;
-    //return readWaitVar.wait_for(ulock, std::chrono::milliseconds(WAIT_TIMEOUT_MILLISEC), [this]{
-    //	return !isFull();
-    //});
 }
 
 // Attende fintanto che la coda è quote; ritorna false in caso di timeout o true se nella coda ci sono elementi
 template<typename T>
 bool CircularQueue<T>::waitIfEmpty() {
     // Deve attendere che avvenga una scrittura in caso la coda sia vuota
-    //std::unique_lock<std::mutex> ulock(writeMutex);
     if (isEmpty()) {
         usleep(WAIT_TIMEOUT_USEC);
         return false;
     }
     return true;
-    //return writeWaitVar.wait_for(ulock, std::chrono::milliseconds(WAIT_TIMEOUT_MILLISEC), [this]{
-    //	return !isEmpty();
-    //});
 }
 
 // Incrementa il valore in modulo dimensione della coda
@@ -83,10 +75,9 @@ template<typename T>
 void CircularQueue<T>::pop() {
     if (!isEmpty()) {
         {
-            //std::lock_guard<std::mutex> lg(readMutex);
+            std::lock_guard<std::mutex> lg(readMutex);
             readIndex = incrementWrap(readIndex);
         }
-        //readWaitVar.notify_one();
     }
 }
 
@@ -103,10 +94,9 @@ template<typename T>
 void CircularQueue<T>::commit() {
     if (!isFull()) {
         {
-            //std::lock_guard<std::mutex> lg(writeMutex);
+            std::lock_guard<std::mutex> lg(writeMutex);
             writeIndex = incrementWrap(writeIndex);
         }
-        //writeWaitVar.notify_one();
     }
 }
 
