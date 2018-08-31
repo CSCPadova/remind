@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Rect;
-import android.os.Environment;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -12,7 +11,6 @@ import unipd.dei.magnetophone.R;
 import unipd.dei.magnetophone.activity.LibraryActivity;
 import unipd.dei.magnetophone.activity.MonitorSetupActivity;
 import unipd.dei.magnetophone.activity.SettingsActivity;
-import unipd.dei.magnetophone.activity.pdf.PDFActivity;
 import unipd.dei.magnetophone.graphics.UIConnector.Side;
 import unipd.dei.magnetophone.utility.PlayerEqualization;
 import unipd.dei.magnetophone.utility.Song;
@@ -181,8 +179,7 @@ public class StuderTapeDeck extends TapeDeck {
         uiButtons[0] = (UIButton) addComponent(new UIButton(1864 - 75, 18, 4, 172, 172, r.getDrawable(R.raw.btn_settings_up), r.getDrawable(R.raw.btn_settings_down))); // -29px per l'ombra
         uiButtons[1] = (UIButton) addComponent(new UIButton(2014 - 75, 18, 4, 172, 172, r.getDrawable(R.raw.btn_library_up), r.getDrawable(R.raw.btn_library_down)));
         uiButtons[2] = (UIButton) addComponent(new UIButton(2164 - 75, 18, 4, 172, 172, r.getDrawable(R.raw.btn_setup_mon_up), r.getDrawable(R.raw.btn_setup_mon_down)));
-        //uiButtons[3] = (UIButton) addComponent(new UIButton( 1714 2314, 18, 4, 172, 172, r.getDrawable(R.raw.btn_note_up), r.getDrawable(R.raw.btn_note_down)));
-        uiButtons[3] = (UIButton) addComponent(new UIButton(2314 - 75, 18, 4, 172, 172, r.getDrawable(R.raw.btn_help_up), r.getDrawable(R.raw.btn_help_down)));
+        //uiButtons[3] = (UIButton) addComponent(new UIButton(2314 - 75, 18, 4, 172, 172, r.getDrawable(R.raw.btn_help_up), r.getDrawable(R.raw.btn_help_down)));
         //uiButtons[4] = (UIButton) addComponent(new UIButton(2464-75, 18, 4, 172, 172, r.getDrawable(R.raw.btn_whatsnew_up), r.getDrawable(R.raw.btn_whatsnew_down)));
 
         // SETTINGS: Callback del pulsante
@@ -223,7 +220,7 @@ public class StuderTapeDeck extends TapeDeck {
 			}
 		});*/
 
-        uiButtons[3].setCallback(new ComponentCallback() {
+        /*uiButtons[3].setCallback(new ComponentCallback() {
             @Override
             public void stateChanged(UIComponent obj)
             {
@@ -235,7 +232,7 @@ public class StuderTapeDeck extends TapeDeck {
                 i.putExtra("file", file);
                 context.startActivity(i);
             }
-        });
+        });*/
 
         //video offset UI
 

@@ -38,14 +38,15 @@ Mixer::Mixer(SongType songType, int samplingFrequency) {
             processor = new MixerProcessor4M(this);
             break;
     }
-    track1L = 0.5;
-    track1R = 0.5;
-    track2L = 0.5;
-    track2R = 0.5;
-    track3L = 0.5;
-    track3R = 0.5;
-    track4L = 0.5;
-    track4R = 0.5;
+    track1LGUI = 0.5f;
+    track1RGUI = 0.5f;
+    track2LGUI = 0.5f;
+    track2RGUI = 0.5f;
+    track3LGUI = 0.5f;
+    track3RGUI = 0.5f;
+    track4LGUI = 0.5f;
+    track4RGUI = 0.5f;
+    setMixingVolumes();
 
     this->songType = songType;
 }
@@ -54,27 +55,42 @@ Mixer::~Mixer() {
     delete this->processor;
 }
 
+void Mixer::setMixingVolumes()
+{
+    float sum=track1LGUI + track1RGUI + track2LGUI + track2RGUI + track3LGUI + track3RGUI +
+              track4LGUI + track4RGUI;
+    track1LMIX = track1LGUI/sum;
+    track1RMIX = track1RGUI/sum;
+    track2LMIX = track2LGUI/sum;
+    track2RMIX = track2RGUI/sum;
+    track3LMIX = track3LGUI/sum;
+    track3RMIX = track3RGUI/sum;
+    track4LMIX = track4LGUI/sum;
+    track4RMIX = track4RGUI/sum;
+}
+
 void Mixer::setTrackVolume(int trackNumber, float volumeL, float volumeR) {
     switch (trackNumber) {
         case 1:
-            track1L = volumeL;
-            track1R = volumeR;
+            track1LGUI = volumeL;
+            track1RGUI = volumeR;
             break;
         case 2:
-            track2L = volumeL;
-            track2R = volumeR;
+            track2LGUI= volumeL;
+            track2RGUI= volumeR;
             break;
         case 3:
-            track3L = volumeL;
-            track3R = volumeR;
+            track3LGUI = volumeL;
+            track3RGUI = volumeR;
             break;
         case 4:
-            track4L = volumeL;
-            track4R = volumeR;
+            track4LGUI = volumeL;
+            track4RGUI = volumeR;
             break;
         default:
-            int nothing = 0;
+            break;
     }
+    setMixingVolumes();
 }
 
 void Mixer::setChannelEnabled(int trackNumber, bool enabled) {
@@ -84,13 +100,13 @@ void Mixer::setChannelEnabled(int trackNumber, bool enabled) {
 float Mixer::getTrackVolumeL(int trackNumber) {
     switch (trackNumber) {
         case 1:
-            return track1L;
+            return track1LGUI;
         case 2:
-            return track2L;
+            return track2LGUI;
         case 3:
-            return track3L;
+            return track3LGUI;
         case 4:
-            return track4L;
+            return track4LGUI;
         default:
             return -1;
     }
@@ -99,13 +115,13 @@ float Mixer::getTrackVolumeL(int trackNumber) {
 float Mixer::getTrackVolumeR(int trackNumber) {
     switch (trackNumber) {
         case 1:
-            return track1R;
+            return track1RGUI;
         case 2:
-            return track2R;
+            return track2RGUI;
         case 3:
-            return track3R;
+            return track3RGUI;
         case 4:
-            return track4R;
+            return track4RGUI;
         default:
             return -1;
     }
@@ -187,8 +203,8 @@ void MixerProcessor1M::process(audio::AudioBuffer (&buffers)[4], audio::AudioBuf
                                audio::AudioBuffer &outRight) {
     auto &inputBuffer = mixer->trackEnabled[0] ? buffers[0] : silence;
     for (unsigned int i = 0; i < audio::AudioBufferSize; i++) {
-        outLeft[i] = inputBuffer[i] * this->mixer->track1L;
-        outRight[i] = inputBuffer[i] * this->mixer->track1R;
+        outLeft[i] = inputBuffer[i] * this->mixer->track1LMIX;
+        outRight[i] = inputBuffer[i] * this->mixer->track1RMIX;
     }
 
 }
@@ -199,10 +215,10 @@ void MixerProcessor1S::process(audio::AudioBuffer (&buffers)[4], audio::AudioBuf
     auto &inputBuffer_2 = mixer->trackEnabled[1] ? buffers[1] : silence;
 
     for (unsigned int i = 0; i < audio::AudioBufferSize; i++) {
-        outLeft[i] = (inputBuffer_1[i] * this->mixer->track1L) +
-                     (inputBuffer_2[i] * this->mixer->track2L);
-        outRight[i] = (inputBuffer_1[i] * this->mixer->track1R) +
-                      (inputBuffer_2[i] * this->mixer->track2R);
+        outLeft[i] = (inputBuffer_1[i] * this->mixer->track1LMIX) +
+                     (inputBuffer_2[i] * this->mixer->track2LMIX);
+        outRight[i] = (inputBuffer_1[i] * this->mixer->track1RMIX) +
+                      (inputBuffer_2[i] * this->mixer->track2RMIX);
     }
 }
 
@@ -213,10 +229,10 @@ void MixerProcessor2M::process(audio::AudioBuffer (&buffers)[4], audio::AudioBuf
     auto &inputBuffer_2 = mixer->trackEnabled[1] ? buffers[1] : silence;
 
     for (unsigned int i = 0; i < audio::AudioBufferSize; i++) {
-        outLeft[i] = (inputBuffer_1[i] * this->mixer->track1L) +
-                     (inputBuffer_2[i] * this->mixer->track2L);
-        outRight[i] = (inputBuffer_1[i] * this->mixer->track1R) +
-                      (inputBuffer_2[i] * this->mixer->track2R);
+        outLeft[i] = (inputBuffer_1[i] * this->mixer->track1LMIX) +
+                     (inputBuffer_2[i] * this->mixer->track2LMIX);
+        outRight[i] = (inputBuffer_1[i] * this->mixer->track1RMIX) +
+                      (inputBuffer_2[i] * this->mixer->track2RMIX);
     }
 }
 
@@ -230,14 +246,14 @@ void MixerProcessor4M::process(audio::AudioBuffer (&buffers)[4], audio::AudioBuf
 
     for (unsigned int i = 0; i < audio::AudioBufferSize; i++) {
 
-        outLeft[i] = (inputBuffer_1[i] * this->mixer->track1L) +
-                     (inputBuffer_2[i] * this->mixer->track2L) +
-                     (inputBuffer_3[i] * this->mixer->track3L) +
-                     (inputBuffer_4[i] * this->mixer->track4L);
-        outRight[i] = (inputBuffer_1[i] * this->mixer->track1R) +
-                      (inputBuffer_2[i] * this->mixer->track2R) +
-                      (inputBuffer_3[i] * this->mixer->track3R) +
-                      (inputBuffer_4[i] * this->mixer->track4R);
+        outLeft[i] = (inputBuffer_1[i] * this->mixer->track1LMIX) +
+                     (inputBuffer_2[i] * this->mixer->track2LMIX) +
+                     (inputBuffer_3[i] * this->mixer->track3LMIX) +
+                     (inputBuffer_4[i] * this->mixer->track4LMIX);
+        outRight[i] = (inputBuffer_1[i] * this->mixer->track1RMIX) +
+                      (inputBuffer_2[i] * this->mixer->track2RMIX) +
+                      (inputBuffer_3[i] * this->mixer->track3RMIX) +
+                      (inputBuffer_4[i] * this->mixer->track4RMIX);
     }
 }
 

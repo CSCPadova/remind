@@ -56,7 +56,7 @@ void NativePlayer::setFFTFilters(SongEqualization newEqu) {
     float secondFilter[size];
 
     for (int i = 0; i < size; i++) {
-            firstFilter[i] = 1.0f;
+        firstFilter[i] = 1.0f;
     }
     for (int i = 0; i < size; i++) {
         secondFilter[i] = 1.0f;
@@ -71,8 +71,6 @@ void NativePlayer::setFFTFilters(SongEqualization newEqu) {
                 case SongEqualization::NAB:
                     NAB_3_75_INV_FILTER(firstFilter, startFreq, endFreq, points);
                     break;
-                default:
-                    break;
             }
             break;
         case SONG_SPEED_7_5:
@@ -82,8 +80,6 @@ void NativePlayer::setFFTFilters(SongEqualization newEqu) {
                     break;
                 case SongEqualization::NAB:
                     NAB_7_5_INV_FILTER(firstFilter, startFreq, endFreq, points);
-                    break;
-                default:
                     break;
             }
             break;
@@ -95,8 +91,6 @@ void NativePlayer::setFFTFilters(SongEqualization newEqu) {
                 case SongEqualization::NAB:
                     NAB_15_INV_FILTER(firstFilter, startFreq, endFreq, points);
                     break;
-                default:
-                    break;
             }
             break;
         case SONG_SPEED_30:
@@ -106,8 +100,6 @@ void NativePlayer::setFFTFilters(SongEqualization newEqu) {
                     break;
                 case SongEqualization::NAB:
                     NAB_30_INV_FILTER(firstFilter, startFreq, endFreq, points);
-                    break;
-                default:
                     break;
             }
             break;
@@ -124,8 +116,6 @@ void NativePlayer::setFFTFilters(SongEqualization newEqu) {
                 case SongEqualization::NAB:
                     NAB_3_75_FILTER(secondFilter, startFreq, endFreq, points);
                     break;
-                default:
-                    break;
             }
             break;
         case SONG_SPEED_7_5:
@@ -135,8 +125,6 @@ void NativePlayer::setFFTFilters(SongEqualization newEqu) {
                     break;
                 case SongEqualization::NAB:
                     NAB_7_5_FILTER(secondFilter, startFreq, endFreq, points);
-                    break;
-                default:
                     break;
             }
             break;
@@ -148,8 +136,6 @@ void NativePlayer::setFFTFilters(SongEqualization newEqu) {
                 case SongEqualization::NAB:
                     NAB_15_FILTER(secondFilter, startFreq, endFreq, points);
                     break;
-                default:
-                    break;
             }
             break;
         case SONG_SPEED_30:
@@ -160,8 +146,6 @@ void NativePlayer::setFFTFilters(SongEqualization newEqu) {
                 case SongEqualization::NAB:
                     NAB_30_FILTER(secondFilter, startFreq, endFreq, points);
                     break;
-                default:
-                    break;
             }
             break;
         default:
@@ -170,8 +154,6 @@ void NativePlayer::setFFTFilters(SongEqualization newEqu) {
 
     for (int i = 0; i < points; i++) {
         filter1[i] = firstFilter[i];
-
-        //LOGD("firstFilter[i] %f", firstFilter[i]);
     }
 
     for (int i = 0; i < points; i++) {
@@ -245,29 +227,6 @@ void NativePlayer::playbackCallback() {
             //32767 converte da -1.0f < x < 1.0f a -32767 < x < 32767
             intermediateAudioBuffer.push_back(leftBuffer[i] * 32767);
             intermediateAudioBuffer.push_back(rightBuffer[i] * 32767);
-
-            if(leftBuffer[i]>1.0f)
-            {
-                LOGD("Rilevato clipping a %f", leftBuffer[i]);
-            }
-            if(rightBuffer[i]>1.0f)
-            {
-                LOGD("Rilevato clipping a %f", rightBuffer[i]);
-            }
-            /*
-            if (leftBuffer[i] > 1 | rightBuffer[i] > 1) {
-                if (leftBuffer[i] > rightBuffer[i]) {
-                    if (1.0f / leftBuffer[i] < MASTER_VOLUME) {
-                        MASTER_VOLUME = 1.0f / leftBuffer[i];
-                        LOGD("Rilevato clipping, nuovo volume impostato a %f", MASTER_VOLUME);
-                    }
-                } else {
-                    if (1.0f / rightBuffer[i] < MASTER_VOLUME) {
-                        MASTER_VOLUME = 1.0f / rightBuffer[i];
-                        LOGD("Rilevato clipping, nuovo volume impostato a %f", MASTER_VOLUME);
-                    }
-                }
-            }*/
         }
     }
 

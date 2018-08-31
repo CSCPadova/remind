@@ -63,15 +63,26 @@ private:
 
     bool loop();    // da FilterBase
 
+    void setMixingVolumes();
+
     //volume delle tracce
-    float track1L;
-    float track1R;
-    float track2L;
-    float track2R;
-    float track3L;
-    float track3R;
-    float track4L;
-    float track4R;
+    float track1LGUI;
+    float track1RGUI;
+    float track2LGUI;
+    float track2RGUI;
+    float track3LGUI;
+    float track3RGUI;
+    float track4LGUI;
+    float track4RGUI;
+
+    float track1LMIX;
+    float track1RMIX;
+    float track2LMIX;
+    float track2RMIX;
+    float track3LMIX;
+    float track3RMIX;
+    float track4LMIX;
+    float track4RMIX;
 };
 
 class MixerProcessor {

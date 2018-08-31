@@ -13,7 +13,7 @@ void FILTER(float *values, double t1, double t2, int startFreq, int endFreq, int
     float f = startFreq;
     float w = 0;
     int index = 0;
-    while (f < endFreq) {
+    while (index<points) {
         w = 2 * M_PI * f;
         CkFftComplex value;
         values[index] = w * t1 * sqrt((1 + pow(w * t2, 2)) / (1 + pow(w * t1, 2)))*-1;
@@ -27,7 +27,7 @@ void INV_FILTER(float *values, double t1, double t2, int startFreq, int endFreq,
     float f = startFreq;
     float w = 0;
     int index = 0;
-    while (f < endFreq) {
+    while (index<points) {
         w = 2 * M_PI * f;
         CkFftComplex value;
         values[index] = w * t1 * sqrt((1 + pow(w * t2, 2)) / (1 + pow(w * t1, 2)));

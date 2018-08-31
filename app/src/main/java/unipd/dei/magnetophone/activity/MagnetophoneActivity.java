@@ -23,6 +23,7 @@ import unipd.dei.magnetophone.graphics.VideoView;
 
 import static unipd.dei.magnetophone.database.DatabaseHelper.DATABASE_NAME;
 
+//utile per debug di database e dati interni all'app
 //import com.facebook.stetho.Stetho;
 
 /**
@@ -64,11 +65,6 @@ public class MagnetophoneActivity extends AppCompatActivity {
 
         startService(new Intent(this, MusicService.class));
         player.setContext(this);
-
-        //SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        //SharedPreferences.Editor editor = sharedPref.edit();
-        //editor.putBoolean("ImportareImpostazioni", true);
-        //editor.commit();
 
         checkTheFirstTime();
     }
@@ -114,6 +110,8 @@ public class MagnetophoneActivity extends AppCompatActivity {
 
         Log.d("MagnetophoneActivity", "onResume MagnetophoneActivity");
 
+
+        canvasView.setVideoView(videoView);
         canvasView.enableAnimation();
         player.setVideoController(videoView);
 
@@ -126,19 +124,8 @@ public class MagnetophoneActivity extends AppCompatActivity {
          */
 
         player.onResume();
-        fullscreen();
 
-		/*
-		SharedPreferences preferences = getSharedPreferences("service", Context.MODE_PRIVATE);
-		int songId = preferences.getInt("song_id", -1);
-		
-		// Se l'utente aveva gia'� selezionato una canzone
-		if(songId != -1) {
-			Song songFromDatabase = DatabaseManager.getSongFromDatabase(songId, this);
-			if(songFromDatabase != null){
-				player.setSong(songFromDatabase);
-			}
-		}*/
+        fullscreen();
     }
 
     @Override
