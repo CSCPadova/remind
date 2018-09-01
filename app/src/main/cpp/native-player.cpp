@@ -44,62 +44,57 @@ void NativePlayer::setFFTFilters(SongEqualization newEqu) {
     std::vector<float> filter1(size, 1.0f);
     std::vector<float> filter2(size, 1.0f);
 
-    int startFreq = 20;
-    int endFreq = 20000;
-
-    //only in 20-20000 we need the response (over 20.000Hz don't touch)
-    int points = (int) ceil(((double) (endFreq) - (double) (startFreq)) /
-                            (((double) (songSampleRate / 2) - (double) (startFreq)) /
-                             (double) (size)));
-
     float firstFilter[size];
     float secondFilter[size];
 
+    float endFreq = songSampleRate / 2;
+
+    /* for degug
     for (int i = 0; i < size; i++) {
         firstFilter[i] = 1.0f;
     }
     for (int i = 0; i < size; i++) {
         secondFilter[i] = 1.0f;
-    }
+    }*/
 
     switch (songSpeedOriginal) {
         case SONG_SPEED_3_75:
             switch (EQOriginal) {
                 case SongEqualization::CCIR:
-                    CCIR_3_75_INV_FILTER(firstFilter, startFreq, endFreq, points);
+                    CCIR_3_75_INV_FILTER(firstFilter, endFreq, size);
                     break;
                 case SongEqualization::NAB:
-                    NAB_3_75_INV_FILTER(firstFilter, startFreq, endFreq, points);
+                    NAB_3_75_INV_FILTER(firstFilter, endFreq, size);
                     break;
             }
             break;
         case SONG_SPEED_7_5:
             switch (EQOriginal) {
                 case SongEqualization::CCIR:
-                    CCIR_7_5_INV_FILTER(firstFilter, startFreq, endFreq, points);
+                    CCIR_7_5_INV_FILTER(firstFilter, endFreq, size);
                     break;
                 case SongEqualization::NAB:
-                    NAB_7_5_INV_FILTER(firstFilter, startFreq, endFreq, points);
+                    NAB_7_5_INV_FILTER(firstFilter, endFreq, size);
                     break;
             }
             break;
         case SONG_SPEED_15:
             switch (EQOriginal) {
                 case SongEqualization::CCIR:
-                    CCIR_15_INV_FILTER(firstFilter, startFreq, endFreq, points);
+                    CCIR_15_INV_FILTER(firstFilter, endFreq, size);
                     break;
                 case SongEqualization::NAB:
-                    NAB_15_INV_FILTER(firstFilter, startFreq, endFreq, points);
+                    NAB_15_INV_FILTER(firstFilter, endFreq, size);
                     break;
             }
             break;
         case SONG_SPEED_30:
             switch (EQOriginal) {
                 case SongEqualization::CCIR:
-                    CCIR_30_INV_FILTER(firstFilter, startFreq, endFreq, points);
+                    CCIR_30_INV_FILTER(firstFilter, endFreq, size);
                     break;
                 case SongEqualization::NAB:
-                    NAB_30_INV_FILTER(firstFilter, startFreq, endFreq, points);
+                    NAB_30_INV_FILTER(firstFilter, endFreq, size);
                     break;
             }
             break;
@@ -111,40 +106,40 @@ void NativePlayer::setFFTFilters(SongEqualization newEqu) {
         case SONG_SPEED_3_75:
             switch (EQCurrent) {
                 case SongEqualization::CCIR:
-                    CCIR_3_75_FILTER(secondFilter, startFreq, endFreq, points);
+                    CCIR_3_75_FILTER(secondFilter, endFreq, size);
                     break;
                 case SongEqualization::NAB:
-                    NAB_3_75_FILTER(secondFilter, startFreq, endFreq, points);
+                    NAB_3_75_FILTER(secondFilter, endFreq, size);
                     break;
             }
             break;
         case SONG_SPEED_7_5:
             switch (EQCurrent) {
                 case SongEqualization::CCIR:
-                    CCIR_7_5_FILTER(secondFilter, startFreq, endFreq, points);
+                    CCIR_7_5_FILTER(secondFilter, endFreq, size);
                     break;
                 case SongEqualization::NAB:
-                    NAB_7_5_FILTER(secondFilter, startFreq, endFreq, points);
+                    NAB_7_5_FILTER(secondFilter, endFreq, size);
                     break;
             }
             break;
         case SONG_SPEED_15:
             switch (EQCurrent) {
                 case SongEqualization::CCIR:
-                    CCIR_15_FILTER(secondFilter, startFreq, endFreq, points);
+                    CCIR_15_FILTER(secondFilter, endFreq, size);
                     break;
                 case SongEqualization::NAB:
-                    NAB_15_FILTER(secondFilter, startFreq, endFreq, points);
+                    NAB_15_FILTER(secondFilter, endFreq, size);
                     break;
             }
             break;
         case SONG_SPEED_30:
             switch (EQCurrent) {
                 case SongEqualization::CCIR:
-                    CCIR_30_FILTER(secondFilter, startFreq, endFreq, points);
+                    CCIR_30_FILTER(secondFilter, endFreq, size);
                     break;
                 case SongEqualization::NAB:
-                    NAB_30_FILTER(secondFilter, startFreq, endFreq, points);
+                    NAB_30_FILTER(secondFilter, endFreq, size);
                     break;
             }
             break;
@@ -152,11 +147,11 @@ void NativePlayer::setFFTFilters(SongEqualization newEqu) {
             break;
     }
 
-    for (int i = 0; i < points; i++) {
+    for (int i = 0; i < size; i++) {
         filter1[i] = firstFilter[i];
     }
 
-    for (int i = 0; i < points; i++) {
+    for (int i = 0; i < size; i++) {
         filter2[i] = secondFilter[i];
     }
 
