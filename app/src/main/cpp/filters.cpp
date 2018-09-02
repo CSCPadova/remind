@@ -4,8 +4,8 @@
  * Nei nastri veri in registrazione si applica il filtro e in riporduzione lo si toglie
  * La formula toglie l'eq dal nastro e in questo codice il punto di vista e' quello di riproduzione.
  * Per cui:
- * INV_FILTER toglie l'eq del nastro (formula senza il meno 1)
- * FILTER applica l'eq al nastro (formula con il meno 1)
+ * INV_FILTER toglie l'eq del nastro (formula senza il / 1)
+ * FILTER applica l'eq al nastro (formula con il / 1)
  */
 
 void FILTER(float *values, double t1, double t2, int endFreq, int len) {
@@ -16,7 +16,7 @@ void FILTER(float *values, double t1, double t2, int endFreq, int len) {
     while (index < len) {
         w = 2 * M_PI * f;
         if (f > 20.0f && f < 20000.0f) {
-            values[index] = (w * t1 * sqrt((1 + pow(w * t2, 2)) / (1 + pow(w * t1, 2)))) * -1;
+            values[index] = 1.0 / (w * t1 * sqrt((1 + pow(w * t2, 2)) / (1 + pow(w * t1, 2))));
         } else {
             values[index] = DEFAULT_FILTER_VALUE;
         }
