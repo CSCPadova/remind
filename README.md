@@ -1,9 +1,9 @@
-
 # REMIND
 
 ## Description
 
-This repository contains an Android application that simulates a megnetophone, specifically the Studer A810
+This repository contains an Android application that simulates a magnetophone, specifically the Studer A810.
+
 ## Installation
 
 **Windows** (tested) **Mac** (not tested) & **Linux** (tested)
@@ -36,9 +36,11 @@ You will need:
 
 *   NDK
 
-The installation and configuration of all these components can be done through Android Studio in `Tools->SDK Manager` or with the packet manager of your distribution (like `apt`, `pacman` and `aurman` if you are using Linux)
+The installation and configuration of all these components can be done through Android Studio in `Tools->SDK Manager` or with the packet manager of your distribution (like `apt`, `pacman` and `aurman` if you are using Linux).
 
-`Tools->AVD Manager->Create Virtual Device...` is usefull for the Android Emulator 
+After cloning the repository and some Android Studio automatic config the application may not be configured to start. To solve this go in `File->Sync Project with Gradle Files`.
+
+`Tools->AVD Manager->Create Virtual Device...` is usefull for the Android Emulator.
 
 ## Credits
 
@@ -46,10 +48,10 @@ This project is based on various works from different researchers and students o
 
 ## References
 
-A lot actually, to many to put them here
+A lot actually, to many to put them here.
 
 ## Notes
 
 To copy files in the Android Emulator or in the real devices you can use the `adb` tool (with `adb push` and `adb pull` commands) or the Device File Explorer in Android Studio.
 
-The folder that will contain the file that the app can use is `/storage/self/primary`
+The folder that will contain the file that the app can use is `/storage/self/primary`.
