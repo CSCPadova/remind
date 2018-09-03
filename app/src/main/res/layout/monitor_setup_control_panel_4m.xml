@@ -45,14 +45,15 @@
                         android:id="@+id/n1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="left"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginTop="-2dp"
                         android:text="@string/label_left" />
 
                     <SeekBar
                         android:id="@+id/monitor_channel1_vol_l"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="right"
+                        android:layout_gravity="center_vertical"
                         android:layout_marginBottom="5dp"
                         android:layout_marginTop="5dp"
                         android:max="100"
@@ -75,14 +76,15 @@
                         android:id="@+id/n2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="left"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginTop="-2dp"
                         android:text="@string/label_right" />
 
                     <SeekBar
                         android:id="@+id/monitor_channel1_vol_r"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="right"
+                        android:layout_gravity="center_vertical"
                         android:layout_marginBottom="5dp"
                         android:layout_marginTop="5dp"
                         android:max="100"
@@ -130,14 +132,14 @@
                         android:id="@+id/n3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="left"
+                        android:layout_gravity="center_vertical"
                         android:text="@string/label_left" />
 
                     <SeekBar
                         android:id="@+id/monitor_channel2_vol_l"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="right"
+                        android:layout_gravity="center_vertical"
                         android:layout_marginBottom="5dp"
                         android:layout_marginTop="5dp"
                         android:max="100"
@@ -160,14 +162,15 @@
                         android:id="@+id/n4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="left"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginTop="-2dp"
                         android:text="@string/label_right" />
 
                     <SeekBar
                         android:id="@+id/monitor_channel2_vol_r"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="right"
+                        android:layout_gravity="center_vertical"
                         android:layout_marginBottom="5dp"
                         android:layout_marginTop="5dp"
                         android:max="100"
@@ -214,14 +217,15 @@
                         android:id="@+id/n5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="left"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginTop="-2dp"
                         android:text="@string/label_left" />
 
                     <SeekBar
                         android:id="@+id/monitor_channel3_vol_l"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="right"
+                        android:layout_gravity="center_vertical"
                         android:layout_marginBottom="5dp"
                         android:layout_marginTop="5dp"
                         android:max="100"
@@ -244,14 +248,15 @@
                         android:id="@+id/n6"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="left"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginTop="-2dp"
                         android:text="@string/label_right" />
 
                     <SeekBar
                         android:id="@+id/monitor_channel3_vol_r"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="right"
+                        android:layout_gravity="center_vertical"
                         android:layout_marginBottom="5dp"
                         android:layout_marginTop="5dp"
                         android:max="100"
@@ -299,14 +304,15 @@
                         android:id="@+id/n7"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="left"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginTop="-2dp"
                         android:text="@string/label_left" />
 
                     <SeekBar
                         android:id="@+id/monitor_channel4_vol_l"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="right"
+                        android:layout_gravity="center_vertical"
                         android:layout_marginBottom="5dp"
                         android:layout_marginTop="5dp"
                         android:max="100"
@@ -329,14 +335,15 @@
                         android:id="@+id/n8"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="left"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginTop="-2dp"
                         android:text="@string/label_right" />
 
                     <SeekBar
                         android:id="@+id/monitor_channel4_vol_r"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="right"
+                        android:layout_gravity="center_vertical"
                         android:layout_marginBottom="5dp"
                         android:layout_marginTop="5dp"
                         android:max="100"

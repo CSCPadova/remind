@@ -96,14 +96,11 @@ public class LibraryFragment extends ListFragment {
 
         int time = checkTheFirstTime();//guardo se questa è la prima volta che l'applicazione parte
 
-        //TODO DEBUG TIME=0 per fare tests
-        //time = 0;
-
         //se c'è stata una qualche modifica alla cartella oppure se questa è la prima volta che partiamo
         if (currentModified > lastModified || time == 0) {
             SharedPreferences.Editor editor = sharedPref.edit();
-            editor.putLong("LastModified", currentModified);//aggiorniamo la nostra memoria sull'ultima volta che
-            //ci siamo modificati
+            //aggiorniamo la nostra memoria sull'ultima volta che ci siamo modificati
+            editor.putLong("LastModified", currentModified);
             editor.commit();
 
             //Carichiamo tutte le canzoni del database con le relative informazioni
@@ -115,10 +112,6 @@ public class LibraryFragment extends ListFragment {
     private int checkTheFirstTime() {
         SharedPreferences pref = getActivity().getSharedPreferences("first_time", Context.MODE_PRIVATE);
         int toReturn = pref.getInt("FirstTime", 0);
-        //SharedPreferences.Editor editor = pref.edit();
-        //editor.putInt("FirstTime", toReturn + 1);
-        //editor.commit();
-
         return toReturn;
     }
 
@@ -166,35 +159,6 @@ public class LibraryFragment extends ListFragment {
         if (savedInstanceState != null && savedInstanceState.containsKey(STATE_ACTIVATED_POSITION)) {
             setActivatedPosition(savedInstanceState.getInt(STATE_ACTIVATED_POSITION));
         }
-
-
-//		SharedPreferences songPrefSelected = getActivity().getSharedPreferences("selected", Context.MODE_PRIVATE);
-//		int viewId = songPrefSelected.getInt("view", -1);
-//		int position = songPrefSelected.getInt("position", -1);
-//		int listId = songPrefSelected.getInt("listview", -1);
-//
-//		if(viewId!=-1 && position !=-1 && listId!=-1)
-//		{
-//			ListView listView = getListView();
-//
-//			View v = null;
-//			if(listView!=null)
-//				v = listView.getChildAt(position);
-//
-//			if(listView!=null && v !=null)
-//			{
-//				for(int i = 0; i< listView.getChildCount(); i++)
-//					listView.getChildAt(i).setSelected(false);
-//
-//				StateListDrawable states = new StateListDrawable();
-//				states.addState(new int[] {android.R.attr.state_selected},
-//						getResources().getDrawable(R.drawable.list_pressed));
-//				states.addState(new int[] { },
-//						getResources().getDrawable(R.drawable.list_altered));
-//				v.setBackground(states);
-//				v.setSelected(true);
-//			}
-//		}
     }
 
     //controlla che l'activity che tiene questo fragment implementi il callback

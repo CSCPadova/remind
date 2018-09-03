@@ -444,7 +444,7 @@ public class StuderTapeDeck extends TapeDeck {
 
     @Override
     public void onSongChanged(Song newSong) {
-        // L'evento viene richiamato anche quando vengono "rimosse le bobina"
+        // L'evento viene richiamato anche quando vengono "rimosse le bobine"
         songLoaded = (newSong != null);
 
         // Se non c'è nessuna canzone, nascondi alcuni componenti

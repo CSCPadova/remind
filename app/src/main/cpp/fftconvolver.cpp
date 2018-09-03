@@ -66,7 +66,9 @@ void FFTConvolver::reset()
 {
 	std::fill(overflowData.begin(), overflowData.end(), 0.0f);
 	std::fill(inputBuffers[0].begin(), inputBuffers[0].end(), 0.0f);
-	currentBuffer = 0;
+	std::fill(inputBuffers[1].begin(), inputBuffers[1].end(), 0.0f);
+	output.flush();
+    currentBuffer = 0;
 }
 
 /**

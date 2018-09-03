@@ -24,12 +24,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewTreeObserver;
-import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.util.LinkedList;
@@ -55,7 +51,6 @@ public class LibraryActivity extends AppCompatActivity implements
      * device.
      */
     private boolean mTwoPane;
-    private ProgressBar progress;//la mia barra di progresso
 
     /**
      * metodo che elimina la canzone eliminata dal database
@@ -67,7 +62,6 @@ public class LibraryActivity extends AppCompatActivity implements
 
         deleteSongFromLinkedList(s);
         ad.notifyDataSetChanged();
-
     }
 
     /**
@@ -150,28 +144,6 @@ public class LibraryActivity extends AppCompatActivity implements
             // Creo e aggiungo la progressbar, posizionandola all'inizio del content (sotto la ActionBar)
             final FrameLayout decorView = (FrameLayout) getWindow().getDecorView();
 
-            progress = new ProgressBar(this, null, android.R.attr.progressBarStyleHorizontal);
-            progress.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, 15));
-
-            decorView.addView(progress);
-
-            // Non posso posizionarlo ora, aspetto che tutte le view siano state posizionate nel layout
-            ViewTreeObserver observer = progress.getViewTreeObserver();
-            observer.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
-                @Override
-                public void onGlobalLayout() {
-                    View contentView = decorView.findViewById(android.R.id.content);
-                    progress.setY(contentView.getY() - 5);
-
-                    // Non rimuovo la callback perchè verrà chiamata più volte quando cambia il layout,
-                    // e ogni volta aggiusto la posizione della progressbar.
-                    // Serve in alcuni casi, come quando entrando nell'activity viene preparato il layout
-                    // prima che la barra notifiche sia riapparsa (si sta uscendo dal fullscreen) e solo
-                    // successivamente viene spinto giù tutto tranne la progress bar che finisce a metà
-                    // dell'action bar.
-                }
-            });
-
             //se c'è un brano nel magnetofono e non sto tornando dalla ricerca, faccio vedere il brano nel magnetofono
             if (id != -1 && fromSearch == -1) {
 
@@ -195,14 +167,9 @@ public class LibraryActivity extends AppCompatActivity implements
                 //gli do il via
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.song_detail_container, fragment).commit();
-            }
-//<<<<<<<
-            else if (fromSearch == 1 && selectedId != -1)//stiamo tornando da una ricerca o da un import o da una modifica e c'è
-            //un brano selezionato
+            } else if (fromSearch == 1 && selectedId != -1)
+            //stiamo tornando da una ricerca o da un import o da una modifica e c'è un brano selezionato
             {
-//=======
-//			else if(fromSearch==1)//stiamo tornando da una ricerca o da un import o da una modifica
-//			{
 
 
                 songPrefSelected = this.getSharedPreferences("selected", Context.MODE_PRIVATE);
@@ -230,64 +197,8 @@ public class LibraryActivity extends AppCompatActivity implements
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.song_detail_container, fragment).commit();
             }
-
         }
-
-        manageBar();
-
     }//fine onCreate
-
-    /**
-     * Da il via all'aggiornamento della progressBar, invocato solo se la canzone è in riproduzione
-     */
-    public void startProgressBar() {
-        MusicPlayer player = MusicPlayer.getInstance();
-        progress.setMax((int) player.getCurrentSongLength());
-        //progress.setProgress((int)player.getCurrentSongProgress());
-        (new BarUpdaterThread()).start();
-    }
-
-    /**
-     * setta la progress bar al valore passato come parametro
-     *
-     * @param position
-     */
-    public void setProgressBar(int position) {
-        SharedPreferences songPref = getSharedPreferences("service", Context.MODE_PRIVATE);
-        float maxLength = songPref.getFloat("song_recovery_length", 0);
-
-        if (maxLength >= position && maxLength > 0) {
-            progress.setMax((int) maxLength);
-            progress.setProgress(position);
-        } else {
-            //l'utente ha caricato la canzone ed è tornato indietro subito alla libreria, non facendo nulla
-            //mostra la barra vuota
-        }
-    }
-
-    /**
-     * gestisce la bar che mostra la song in riproduzione ogni volta che si ritorna sulla lista
-     */
-    public void manageBar() {
-        //Intent intent = null;
-        //intent = new Intent(this, MusicService.class);
-//
-        //this.bindService(intent, mServerConn, Context.BIND_AUTO_CREATE);
-
-        MusicPlayer player = MusicPlayer.getInstance();
-        Song s = player.getSong();
-
-        SharedPreferences songPref = this.getSharedPreferences("service", Context.MODE_PRIVATE);
-
-        if (s != null)//la canzone è in riproduzione
-        {
-            startProgressBar();                        //facciamo partire l'aggiornamento della progressBar
-        } else//può essere che la canzone non sia in riproduzione attualmente, in quel caso getSong ritorna null
-        {
-            float position = songPref.getFloat("CurrentSecond", 0);
-            setProgressBar((int) position);
-        }
-    }
 
     /**
      * Callback invocato dal fragment quando viene selezionato un elemento della lista
@@ -556,7 +467,6 @@ public class LibraryActivity extends AppCompatActivity implements
             editor.putBoolean("refreshed", false);
             editor.commit();
         }
-        manageBar();
     }
 
     /**
@@ -767,34 +677,6 @@ public class LibraryActivity extends AppCompatActivity implements
             });
 
             return builder.create();
-        }
-    }
-
-    public class BarUpdaterThread extends Thread {
-        SharedPreferences songPref = getSharedPreferences("service", Context.MODE_PRIVATE);
-
-        @Override
-        public void run() {
-            MusicPlayer player = MusicPlayer.getInstance();
-            float currentPosition = 0;
-            int total = (int) player.getCurrentSongLength();//lunghezza totale della canzone
-            SharedPreferences.Editor editor = songPref.edit();
-            do {
-                try {
-                    Thread.sleep(250);
-                    //currentPosition= player.getCurrentSongProgress();
-                    editor.putFloat("CurrentSecond", currentPosition);
-                    editor.commit();
-                } catch (InterruptedException e) {
-                    return;
-                } catch (Exception e) {
-                    return;
-                }
-                progress.setProgress((int) currentPosition);
-            }
-            while (currentPosition < total && player.isPlaying());
-
-            progress.setProgress(total);
         }
     }
 }

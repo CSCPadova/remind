@@ -312,7 +312,7 @@
     <string name="button_equal_volumes">L=R</string>
     <string name="label_left">Sinistra</string>
     <string name="label_right">Destra \u0020</string>
-    <string name="permission_denied">Senza i permessi non sarà impossibile riprodurre i brani</string>
+    <string name="permission_denied">Senza i permessi sarà impossibile riprodurre i brani</string>
 
     <!-- stringhe per la notifica-->
     <string name="channel_name">Magnetofono</string>
@@ -322,4 +322,8 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string name="action_bar_preview">Apri file</string>
+    <string name="signature">Signature:</string>
+    <string name="tracks_type">Tipo di tracce:</string>
+    <string name="tracks_count">Contatore tracce:</string>
+    <string name="tracks_list">Lista tracce:</string>
 </resources>

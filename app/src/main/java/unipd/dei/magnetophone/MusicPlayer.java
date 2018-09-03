@@ -49,8 +49,11 @@ public class MusicPlayer {
             SharedPreferences preferences = context.getSharedPreferences("service", Context.MODE_PRIVATE);
             int songId = preferences.getInt("song_id", -1);
 
-            if (songId == -1)
+            if (songId == -1) {
+                //siccome non c'e' nessun nastro pronto a partire, allora nasconde le bobine
+                actrl.onSongChanged(null);
                 return;
+            }
 
             Song songFromDatabase = DatabaseManager.getSongFromDatabase(songId,
                     context);
@@ -341,15 +344,6 @@ public class MusicPlayer {
     }
 
     /**
-     * Ritorna la durata della canzone corrente in secondi
-     *
-     * @return
-     */
-    public float getCurrentSongLength() {
-        return -1;
-    }
-
-    /**
      * Ritorna la velocità corrente di riproduzione.
      *
      * @return
@@ -357,7 +351,6 @@ public class MusicPlayer {
     public SongSpeed getCurrentSpeed() {
         if (musicServiceBinder != null)
             return musicServiceBinder.getSpeed();
-
         return null;
     }
 

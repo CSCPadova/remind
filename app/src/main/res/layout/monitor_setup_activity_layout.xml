@@ -23,7 +23,7 @@
                 android:id="@+id/monitor_signature_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Signature:"
+                android:text="@string/signature"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
@@ -42,7 +42,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingTop="10dp"
-                    android:text="Tracks type:"
+                    android:text="@string/tracks_type"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
                 <TextView
@@ -59,7 +59,7 @@
                     android:layout_height="wrap_content"
                     android:paddingLeft="10dp"
                     android:paddingTop="10dp"
-                    android:text="Tracks count:"
+                    android:text="@string/tracks_count"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
                 <TextView
@@ -117,9 +117,8 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
-                    android:text="Tracks list:"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@android:color/black" />
+                    android:text="@string/tracks_list"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
 
 
                 <LinearLayout
@@ -128,10 +127,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical" />
 
-
             </LinearLayout>
-
         </LinearLayout>
     </ScrollView>
-
 </LinearLayout>

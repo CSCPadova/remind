@@ -325,33 +325,27 @@ void NativePlayer::seek(double timeCentisec) {
         std::lock_guard<std::mutex> guard(
                 threadJoinMtx);    // Impedisce di rientrare finchè non finiamo
 
-        if (mixer != NULL)
-            mixer->scheduleStop();
-
         if (waveReader != NULL)
             waveReader->scheduleStop();
-
-        if (rateConverter != NULL)
-            rateConverter->scheduleStop();
 
         fftconvolver[0].scheduleStop();
         fftconvolver[1].scheduleStop();
         fftconvolver[2].scheduleStop();
         fftconvolver[3].scheduleStop();
 
+        if (rateConverter != NULL)
+            rateConverter->scheduleStop();
+
         fftconvolver[4].scheduleStop();
         fftconvolver[5].scheduleStop();
         fftconvolver[6].scheduleStop();
         fftconvolver[7].scheduleStop();
 
+        if (mixer != NULL)
+            mixer->scheduleStop();
+
         // -- Join --
         LOGD("join");
-        if (mixer != NULL)
-            mixer->join();
-
-        if (rateConverter != NULL)
-            rateConverter->join();
-
         if (waveReader != NULL)
             waveReader->join();
 
@@ -360,18 +354,19 @@ void NativePlayer::seek(double timeCentisec) {
         fftconvolver[2].join();
         fftconvolver[3].join();
 
+        if (rateConverter != NULL)
+            rateConverter->join();
+
         fftconvolver[4].join();
         fftconvolver[5].join();
         fftconvolver[6].join();
         fftconvolver[7].join();
 
+        if (mixer != NULL)
+            mixer->join();
+
         // -- Flush --
         LOGD("flush");
-        if (mixer != NULL)
-            mixer->flush();
-
-        if (rateConverter != NULL)
-            rateConverter->flush();
 
         if (waveReader != NULL) {
             waveReader->flush();
@@ -383,18 +378,18 @@ void NativePlayer::seek(double timeCentisec) {
         fftconvolver[2].reset();
         fftconvolver[3].reset();
 
+        if (rateConverter != NULL)
+            rateConverter->flush();
+
         fftconvolver[4].reset();
         fftconvolver[5].reset();
         fftconvolver[6].reset();
         fftconvolver[7].reset();
 
-        // -- Run --
         if (mixer != NULL)
-            mixer->run();
+            mixer->flush();
 
-        if (rateConverter != NULL)
-            rateConverter->run();
-
+        // -- Run --
         if (waveReader != NULL) {
             LOGD("partito wave reader");
             waveReader->run();
@@ -405,10 +400,16 @@ void NativePlayer::seek(double timeCentisec) {
         fftconvolver[2].run();
         fftconvolver[3].run();
 
+        if (rateConverter != NULL)
+            rateConverter->run();
+
         fftconvolver[4].run();
         fftconvolver[5].run();
         fftconvolver[6].run();
         fftconvolver[7].run();
+
+        if (mixer != NULL)
+            mixer->run();
 
         LOGD("tutti filtri ok");
     });
