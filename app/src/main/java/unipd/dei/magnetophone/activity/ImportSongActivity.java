@@ -932,8 +932,6 @@ public class ImportSongActivity extends AppCompatActivity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle(R.string.photos_choice);
 
-                //TODO
-//				imp = new XmlImport(getActivity());
                 //mi prendo i path e i nomi delle cartelle
                 LinkedList<String> directoriesName = new LinkedList<String>();//lista che conterrà solo i nomi delle cartelle
                 final LinkedList<String> pathList = getTheFilesList(getActivity(), directoriesName);//lista che conterrà i path
