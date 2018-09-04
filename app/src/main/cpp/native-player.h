@@ -18,6 +18,7 @@
 
 #define BUFFER_SIZE_AUTOMATIC 0
 
+#define THR_READ_WAIT_TIMEOUT_USEC (1000)
 
 static std::mutex threadJoinMtx;
 
@@ -29,7 +30,6 @@ class NativePlayer : oboe::AudioStreamCallback {
 
     int playbackState;
     int songSampleRate;
-    int loadState;
 
     float MASTER_VOLUME = 1.0f;
 
@@ -53,8 +53,7 @@ class NativePlayer : oboe::AudioStreamCallback {
 
     SongType songType;
     std::thread *fastThread = nullptr;
-
-    //std::thread *getAudioDataThread = nullptr;
+    std::thread *readThread = nullptr;
 
     bool reverse;
 
@@ -68,7 +67,8 @@ class NativePlayer : oboe::AudioStreamCallback {
 
     void songLoaded();
 
-    void playbackCallback();
+    //return false if EOF
+    bool playbackCallback();
 
     //roba jni
     JavaVM *jvm = nullptr;
@@ -76,7 +76,6 @@ class NativePlayer : oboe::AudioStreamCallback {
     jmethodID onTimeUpdateMethodID, songSpeedCallbackID, songLoadedCallbackID, playbackStateCallbackID;
 
     oboe::AudioStream *stream;
-
 
     int32_t playbackDeviceId_;
     int32_t bufferSizeSelection_ = BUFFER_SIZE_AUTOMATIC;
@@ -93,8 +92,12 @@ class NativePlayer : oboe::AudioStreamCallback {
 private:
     int32_t playStreamUnderrunCount_;
     std::vector<float> intermediateAudioBuffer;
+
     //quanto riempire il buffer?
     int intermAudioBufferFillValue;
+
+    bool threadNeedRead=true;
+    bool threadReadRun=true;
 
     void closeOutputStream();
 
@@ -103,7 +106,7 @@ private:
                           int sampleChannels_,
                           int sampleRate_);
 
-    //void threadReadData();
+    void threadReadData();
 
     // Performance options
     void setThreadAffinity();
@@ -135,7 +138,7 @@ public:
 
     void unloadSong();
 
-    void loadSong(JNIEnv *env, jclass clazz, jobjectArray pathsArray, jint songTypeNum,
+    void loadSong(JNIEnv *env, jobjectArray pathsArray, jint songTypeNum,
                   jint songSpeedNum, jstring songEquStr);
 
 

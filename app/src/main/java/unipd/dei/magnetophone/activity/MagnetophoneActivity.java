@@ -110,10 +110,10 @@ public class MagnetophoneActivity extends AppCompatActivity {
 
         Log.d("MagnetophoneActivity", "onResume MagnetophoneActivity");
 
-
         canvasView.setVideoView(videoView);
         canvasView.enableAnimation();
         player.setVideoController(videoView);
+        videoView.play();
 
         /*
          * Avverto il player di ricollegarsi al servizio per riprendere a funzionare

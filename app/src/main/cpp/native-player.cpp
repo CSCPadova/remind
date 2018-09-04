@@ -47,7 +47,7 @@ void NativePlayer::setFFTFilters(SongEqualization newEqu) {
     float firstFilter[size];
     float secondFilter[size];
 
-    float endFreq = songSampleRate / 2;
+    int endFreq = songSampleRate / 2;
 
     /* for degug
     for (int i = 0; i < size; i++) {
@@ -181,8 +181,6 @@ SongEqualization NativePlayer::convertJavaEqualization(JNIEnv *env, jstring java
         outEqu = SongEqualization::CCIR;
     else if (strcmp(equName, "NAB") == 0)
         outEqu = SongEqualization::NAB;
-        //else if (strcmp(equName, "FLAT") == 0)
-        //    outEqu = SongEqualization::FLAT;
     else {
         // wut?
         LOGE("setEqualization: passata equalizzazione non valida: %s", equName);
@@ -200,15 +198,14 @@ SongEqualization NativePlayer::getCurrentEqu() {
     return EQCurrent;
 }
 
-void NativePlayer::playbackCallback() {
+bool NativePlayer::playbackCallback() {
     audio::AudioBuffer leftBuffer, rightBuffer;
 
-    //if (waveReader->isEof() && !inLeft.hasData() && !inRight.hasData()) {
     if (waveReader->isEof()) {
         //controllo stato bufferqueue
         LOGD("dati finiti");
-        stop();
-        return;
+        //stop();
+        return false;
     }
 
     inLeft.waitIfEmpty();
@@ -223,12 +220,27 @@ void NativePlayer::playbackCallback() {
             intermediateAudioBuffer.push_back(leftBuffer[i] * 32767);
             intermediateAudioBuffer.push_back(rightBuffer[i] * 32767);
         }
-    }
 
-    currentTime +=
-            (double) (audio::AudioBufferSize * 100) / (double) mixer->getSamplingFrequency() /
-            rateConverter->getRatio();
-    timeUpdate();
+        currentTime +=
+                (double) (audio::AudioBufferSize * 100) / (double) mixer->getSamplingFrequency() /
+                rateConverter->getRatio();
+        timeUpdate();
+    }
+    return true;
+}
+
+void NativePlayer::threadReadData() {
+    bool state = true;
+    // if is playing and is not EOF
+    while (playbackState == PLAYBACK_STATE_PLAYING && state) {
+        state = playbackCallback();
+        //if still empty and is not EOF
+        while (intermediateAudioBuffer.size() <= 0 && state) {
+            state = playbackCallback();
+            usleep(THR_READ_WAIT_TIMEOUT_USEC);
+        }
+        threadReadLock.lock();
+    }
 }
 
 void NativePlayer::stop() {
@@ -245,11 +257,12 @@ void NativePlayer::stop() {
             //cambia playbackState, unlock thread e solo dopo faccio un join
             playbackState = PLAYBACK_STATE_STOPPED;
 
+            //stop the read thread
             threadReadLock.unlock();
-            //if (getAudioDataThread->joinable()) {
-            //    getAudioDataThread->join();
-            //    delete getAudioDataThread;
-            //}
+            if (readThread->joinable()) {
+                readThread->join();
+                delete readThread;
+            }
 
             oboe::Result result = stream->stop();
             if (result != oboe::Result::OK) {
@@ -277,14 +290,9 @@ void NativePlayer::play() {
         if (playbackState != PLAYBACK_STATE_STOPPED)
             return;
 
-        //if(getAudioDataThread!= nullptr) {
-        //    if (getAudioDataThread->joinable())
-        //        getAudioDataThread->join();
-        //    delete getAudioDataThread;
-        //}
-        //getAudioDataThread = new std::thread(&NativePlayer::threadReadData, this);
-
         playbackState = PLAYBACK_STATE_PLAYING;
+
+        readThread = new std::thread(&NativePlayer::threadReadData, this);
 
         oboe::Result result = stream->start();
         if (result != oboe::Result::OK) {
@@ -298,6 +306,7 @@ void NativePlayer::seek(double timeCentisec) {
         return;
 
     stop();
+
     intermediateAudioBuffer.clear();
 
     /*
@@ -442,6 +451,7 @@ void NativePlayer::fastFunction() {
             currentTime = 0;
             igo = false;
         }
+
         timeUpdate();
         std::this_thread::sleep_for(dura);
     }
@@ -498,29 +508,27 @@ oboe::DataCallbackResult NativePlayer::onAudioReady(
     }
     int16_t *temp = static_cast<int16_t *>(audioData);
 
+    //zeroing the audio buffer for silence if stopped
     if (playbackState == PLAYBACK_STATE_STOPPED) {
-        //zeroing the audio buffer for silence
         memset(temp, 0, sizeof(int16_t) * currentSampleChannels * numFrames);
         return oboe::DataCallbackResult::Continue;
+    } else if (playbackState == PLAYBACK_STATE_PLAYING && waveReader->isEof()) {
+        stop();
     }
 
     if (intermediateAudioBuffer.empty() ||
         intermediateAudioBuffer.size() < numFrames * currentSampleChannels) {
         memset(temp, 0, sizeof(int16_t) * currentSampleChannels * numFrames);
-        playbackCallback();
+        threadReadLock.unlock();
         return oboe::DataCallbackResult::Continue;
     }
-
-    //float max = 0;
 
     if (!intermediateAudioBuffer.empty() &&
         intermediateAudioBuffer.size() >= numFrames * currentSampleChannels) {
 
         int i;
         for (i = 0; i < numFrames * 2; i++) {
-            temp[i] = intermediateAudioBuffer.at(i) * MASTER_VOLUME;
-            //if (max < abs(temp[i]))
-            //    max = temp[i];
+            temp[i] = (int16_t) (intermediateAudioBuffer.at(i) * MASTER_VOLUME);
         }
         intermediateAudioBuffer.erase(intermediateAudioBuffer.begin(),
                                       intermediateAudioBuffer.begin() + i);
@@ -529,7 +537,7 @@ oboe::DataCallbackResult NativePlayer::onAudioReady(
     //TODO decidere se tenere un numero magico
     intermAudioBufferFillValue = numFrames * 2 * 2;
     if (intermediateAudioBuffer.size() < intermAudioBufferFillValue)
-        playbackCallback();
+        threadReadLock.unlock();
 
     return oboe::DataCallbackResult::Continue;
 }
@@ -638,9 +646,8 @@ void NativePlayer::unloadSong() {
     playbackChange(0, false);
 }
 
-//TODO verificare che songSpeedNum sia il valore originale della canzone e non quello selezionato dlla manopola
 void
-NativePlayer::loadSong(JNIEnv *env, jclass clazz, jobjectArray pathsArray,
+NativePlayer::loadSong(JNIEnv *env, jobjectArray pathsArray,
                        jint songTypeNum, jint songSpeedNum, jstring songEquStr) {
     if (playbackState != PLAYBACK_STATE_INITIALIZED)
         return;
@@ -666,6 +673,7 @@ NativePlayer::loadSong(JNIEnv *env, jclass clazz, jobjectArray pathsArray,
     songSpeedOriginal = songSpeed;
 
     switch (songTypeNum) {
+        default:
         case SONG_TYPE_1M:
             songType = SONG_TYPE_1M;
             ntracce = 1;
@@ -703,7 +711,6 @@ NativePlayer::loadSong(JNIEnv *env, jclass clazz, jobjectArray pathsArray,
     }
 
     // --- Collega i filtri ---
-    //numChannels = waveReader->getChannelCount();
     songSampleRate = waveReader->getSamplerate();
     mixer = new Mixer(songType, songSampleRate);
 
@@ -713,7 +720,6 @@ NativePlayer::loadSong(JNIEnv *env, jclass clazz, jobjectArray pathsArray,
 
     EQCurrent = EQOriginal;
 
-    //loadEquImpResp(env, songSampleRate, songSpeed, songEqu, equPath);
     setFFTFilters(EQCurrent);
 
     // --- Connessione dei filtri ---
@@ -742,7 +748,7 @@ NativePlayer::loadSong(JNIEnv *env, jclass clazz, jobjectArray pathsArray,
 
     //setup parametri motore audio
     currentPlaybackDeviceId = 0;
-    currentSampleFormat = oboe::AudioFormat::I16;//oboe::AudioFormat::Float;//;
+    currentSampleFormat = oboe::AudioFormat::I16;
     currentSampleChannels = 2;
     currentSampleRate = songSampleRate;
 
@@ -851,9 +857,9 @@ float NativePlayer::getRatio() {
 
     if (threadGo)
         //sono in fast
-        return pow(0.5, rateConverter->getOriginalSongSpeed() - (SONG_SPEED_FAST + 1));
+        return (float) (pow(0.5, rateConverter->getOriginalSongSpeed() - (SONG_SPEED_FAST + 1)));
 
-    return 1.0f / rateConverter->getRatio();
+    return (float) (1.0f / rateConverter->getRatio());
 }
 
 void NativePlayer::setNewGlobalRef(jobject jObject) {

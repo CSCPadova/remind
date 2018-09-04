@@ -101,7 +101,7 @@ JNIEXPORT void JNICALL Java_unipd_dei_magnetophone_MusicService_loadSong(JNIEnv 
         return;
     }
 
-    engine->loadSong(env, clazz, pathsArray, songTypeNum, songSpeedNum, songEquStr);
+    engine->loadSong(env, pathsArray, songTypeNum, songSpeedNum, songEquStr);
 }
 
 JNIEXPORT void JNICALL

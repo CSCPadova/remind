@@ -228,6 +228,10 @@ public class MusicPlayer {
     public void onResume() {
         Log.d("MusicPlayer", "onresume player");
         context.bindService(new Intent(context, MusicService.class), musicServiceConnection, Context.BIND_ABOVE_CLIENT);
+        if(musicServiceBinder!=null) {
+            vctrl.onSongLoaded(musicServiceBinder.getSong());
+            synchronizeVideoWithSong();
+        }
     }
 
     /**

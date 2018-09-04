@@ -23,6 +23,8 @@ void FILTER(float *values, double t1, double t2, int endFreq, int len) {
         f = f + step;
         index++;
     }
+    //componente continua nulla
+    values[0]=0.0f;
 }
 
 void INV_FILTER(float *values, double t1, double t2, int endFreq, int len) {
@@ -41,6 +43,8 @@ void INV_FILTER(float *values, double t1, double t2, int endFreq, int len) {
         f = f + step;
         index++;
     }
+    //componente continua nulla
+    values[0]=0.0f;
 }
 
 void NAB_3_75_FILTER(float *values, int endFreq, int len) {
