@@ -254,9 +254,10 @@ public class ImportSongActivity extends AppCompatActivity {
         private boolean thirdSelected = false;
         private boolean fourthSelected = false;
 
+        private boolean allowStereoWAV = false;
+
         @Override
         public void onCreatePreferences(Bundle bundle, String s) {
-            //super.onCreate(savedInstanceState);
             //Creo una lista di preference dall'xml
             addPreferencesFromResource(R.xml.import_song_dati);
 
@@ -311,8 +312,6 @@ public class ImportSongActivity extends AppCompatActivity {
 
             isa.songToAdd.setEqualization((String) prefEqualization.getEntryValues()[0]);
             isa.songToAdd.setSpeed(Float.parseFloat((String) prefSpeed.getEntryValues()[0]));
-
-//			isa.songToAdd.setNumberOfTracks(Integer.parseInt((String)prefNumberOfTracks.getEntryValues()[0]));
 
             isa.songToAdd.setAuthor(getString(R.string.sconosciuto));
             isa.songToAdd.setTitle(getString(R.string.sconosciuto));
@@ -447,8 +446,16 @@ public class ImportSongActivity extends AppCompatActivity {
                             //prendo le reference alle preference
 
 
+                            ((ImportSongActivity) getActivity()).songToAdd.clearTrackList();
+
+                            prefTrack1.setTitle(getString(R.string.title_canale1_importazione) + ": ");
+                            prefTrack2.setTitle(getString(R.string.title_canale1_importazione) + ": ");
+                            prefTrack3.setTitle(getString(R.string.title_canale1_importazione) + ": ");
+                            prefTrack4.setTitle(getString(R.string.title_canale1_importazione) + ": ");
+
                             switch (number) {
                                 case -1: //1 traccia mono
+                                    allowStereoWAV = false;
                                     removeExtraTracks(1);
 
                                     if (prefTrack2 != null)
@@ -458,8 +465,10 @@ public class ImportSongActivity extends AppCompatActivity {
                                     if (prefTrack4 != null)
                                         pc.removePreference(prefTrack4);
 
+
                                     break;
                                 case 1: //1 traccia stereo
+                                    allowStereoWAV = true;
                                     removeExtraTracks(1);
 
                                     pc.removePreference(prefTrack2);
@@ -468,6 +477,7 @@ public class ImportSongActivity extends AppCompatActivity {
 
                                     break;
                                 case 2:
+                                    allowStereoWAV = false;
                                     removeExtraTracks(2);
 
                                     pc.addPreference(prefTrack2);
@@ -476,6 +486,7 @@ public class ImportSongActivity extends AppCompatActivity {
 
                                     break;
                                 case 4:
+                                    allowStereoWAV = false;
 
                                     pc.addPreference(prefTrack1);
                                     pc.addPreference(prefTrack2);
@@ -616,7 +627,6 @@ public class ImportSongActivity extends AppCompatActivity {
             });
 
 
-
             //Setto l'evento alle preference a cui è collegato
             prefSignature.setOnPreferenceChangeListener(eventChange);
             prefProvenance.setOnPreferenceChangeListener(eventChange);
@@ -705,6 +715,7 @@ public class ImportSongActivity extends AppCompatActivity {
                 throw new InvalidParameterException("Il parametro del metodo è errato, inserire un indice valido");
 
             Intent intent = new Intent(getActivity(), AudioFilePickerActivity.class);
+            intent.putExtra("allowStereo", allowStereoWAV);
             startActivityForResult(intent, RESULT_LOAD_AUDIO_FILE);
         }
 
@@ -784,10 +795,10 @@ public class ImportSongActivity extends AppCompatActivity {
                             break;
                     }
                 }
-                if (requestCode == RESULT_LOAD_PDF_FILE && resultCode == RESULT_OK && data != null){
+                if (requestCode == RESULT_LOAD_PDF_FILE && resultCode == RESULT_OK && data != null) {
                     String filePath = data.getStringExtra("filePDFAbsPath");    //prendo la path assoluta
 
-                    prefPDFFile.setSummary(getString(R.string.pdf_path_summary)+ filePath);
+                    prefPDFFile.setSummary(getString(R.string.pdf_path_summary) + filePath);
                     ((ImportSongActivity) getActivity()).songToAdd.setPDF(filePath); //salvo nella song il path della cartella delle foto
                 }
             }
@@ -976,7 +987,7 @@ public class ImportSongActivity extends AppCompatActivity {
                         File fileChoice = new File(choice);
                         File[] videos = fileChoice.listFiles();//in teoria dovrebbe esserci solo 1 video
 
-                        prefVideo.setSummary(getString(R.string.video_path_summary)  + choice);
+                        prefVideo.setSummary(getString(R.string.video_path_summary) + choice);
                         ((ImportSongActivity) getActivity()).songToAdd.setVideo(videos[0].getAbsolutePath()); //salvo nella song il path della cartella delle foto
 
                     }
@@ -1004,8 +1015,8 @@ public class ImportSongActivity extends AppCompatActivity {
                     //Salvataggio dei dati su database
                     DatabaseManager db = new DatabaseManager(getActivity());
                     //Setto l'id creato dal database per la canzone
-                    int result=db.insertSingleSongInDatabase(((ImportSongActivity) getActivity()).songToAdd);
-                    if(result>=0) {
+                    int result = db.insertSingleSongInDatabase(((ImportSongActivity) getActivity()).songToAdd);
+                    if (result >= 0) {
                         ((ImportSongActivity) getActivity()).songToAdd.setId(result);
 
                         //Notifica di avvenuta importazione
@@ -1013,9 +1024,7 @@ public class ImportSongActivity extends AppCompatActivity {
 
                         //Passo alla lista dei brani (esco dall'importazione)
                         ((ImportSongActivity) getActivity()).goToSongsList(true);
-                    }
-                    else
-                    {
+                    } else {
                         Toast.makeText(getActivity(), getString(R.string.duplicate_error), Toast.LENGTH_SHORT).show();
                     }
                 }

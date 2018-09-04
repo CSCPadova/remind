@@ -12,7 +12,16 @@ Mixer::Mixer(SongType songType, int samplingFrequency) {
             processor = new MixerProcessor1M(this);
             break;
 
-        case SONG_TYPE_1S: // !!!
+        case SONG_TYPE_1S:
+            this->trackMap[0] = 0;
+            this->trackMap[1] = 1;
+
+            this->trackEnabled[0] = true;
+            this->trackEnabled[1] = true;
+
+            processor = new MixerProcessor2M(this);
+            break;
+
         case SONG_TYPE_2M:
 
             this->trackMap[0] = 0;
@@ -135,14 +144,18 @@ bool Mixer::loop() {
     audio::AudioBuffer temp[4], outLeft, outRight;
 
     auto stat = outputLeft.waitIfFull();
-    if (stat == audio::Status::ERROR)
+    if (stat == audio::Status::ERROR) {
+        __android_log_print(ANDROID_LOG_ERROR, "ERROR", "Mixer: pushData outputLeft NOT ok");
         return false;
+    }
     if (stat == audio::Status::TIMEOUT)
         return true;
 
     stat = outputRight.waitIfFull();
-    if (stat == audio::Status::ERROR)
+    if (stat == audio::Status::ERROR){
+        __android_log_print(ANDROID_LOG_ERROR, "ERROR", "Mixer: pushData outputRight NOT ok");
         return false;
+    }
     if (stat == audio::Status::TIMEOUT)
         return true;
 
@@ -166,10 +179,9 @@ bool Mixer::loop() {
     audio::Status pullStatus;
     for (int i = 0; i < chansToPull; i++) {
         pullStatus = inputs[i].waitIfEmpty();
-
         if (pullStatus ==
             audio::Status::ERROR) {        // se un pullData è fallito per qualche motivo
-            LOGD("pull mixer errore");
+            __android_log_print(ANDROID_LOG_ERROR, "ERROR", "Mixer: pullData NOT ok");
             return false;        // ritorna false così si interrompe l'elaborazione
         }
         if (pullStatus == audio::Status::TIMEOUT)
@@ -183,12 +195,8 @@ bool Mixer::loop() {
     this->processor->process(temp, outLeft, outRight);
 
     // --- Scrive i risultati ---
-    auto pushStatusL = outputLeft.pushData(outLeft);
-    auto pushStatusR = outputRight.pushData(outRight);
-    if (pushStatusL == audio::Status::ERROR || pushStatusR == audio::Status::ERROR) {
-        LOGD("push mixer non ok");
-        return false;
-    }
+    outputLeft.pushData(outLeft);
+    outputRight.pushData(outRight);
 
     return true;
 }
@@ -207,19 +215,6 @@ void MixerProcessor1M::process(audio::AudioBuffer (&buffers)[4], audio::AudioBuf
         outRight[i] = inputBuffer[i] * this->mixer->track1RMIX;
     }
 
-}
-
-void MixerProcessor1S::process(audio::AudioBuffer (&buffers)[4], audio::AudioBuffer &outLeft,
-                               audio::AudioBuffer &outRight) {
-    auto &inputBuffer_1 = mixer->trackEnabled[0] ? buffers[0] : silence;
-    auto &inputBuffer_2 = mixer->trackEnabled[1] ? buffers[1] : silence;
-
-    for (unsigned int i = 0; i < audio::AudioBufferSize; i++) {
-        outLeft[i] = (inputBuffer_1[i] * this->mixer->track1LMIX) +
-                     (inputBuffer_2[i] * this->mixer->track2LMIX);
-        outRight[i] = (inputBuffer_1[i] * this->mixer->track1RMIX) +
-                      (inputBuffer_2[i] * this->mixer->track2RMIX);
-    }
 }
 
 void MixerProcessor2M::process(audio::AudioBuffer (&buffers)[4], audio::AudioBuffer &outLeft,

@@ -20,23 +20,23 @@ import java.util.LinkedList;
 public class Song {
     public static final String INVALID = "[INVALID]";
     //valori =INVALID per mia scelta arbitraria
-    private String author=INVALID; // nome dell'autore della canzone
-    private String title=INVALID; // nome della canzone
-    private String year=INVALID; // anno di pubblicazione
+    private String author = INVALID; // nome dell'autore della canzone
+    private String title = INVALID; // nome della canzone
+    private String year = INVALID; // anno di pubblicazione
     private float speed; // velocità di riproduzione, anche nota come Tape
     // Transfer Rate
-    private String equalization=INVALID;// equalizzazione
-    private String signature=INVALID;// una sigla che va con la song
-    private String provenance=INVALID;// fondo, archivio o altro luogo di provenienza
+    private String equalization = INVALID;// equalizzazione
+    private String signature = INVALID;// una sigla che va con la song
+    private String provenance = INVALID;// fondo, archivio o altro luogo di provenienza
     // della song
     private float duration;// durata della song in secondi e millisecondi
-    private String extension=INVALID;// estensione del file delle track che compongono
+    private String extension = INVALID;// estensione del file delle track che compongono
     private int bitdepth;// profondità di bit utilizzata per il singolo sample
     // della canzone, per noi 16
     private int sampleRate;// numero di sample letti al secondo per la canzone,
-    private String tapeWidth=INVALID; // larghezza del nastro, sarà 1/4, 1/2 o 1 inch
+    private String tapeWidth = INVALID; // larghezza del nastro, sarà 1/4, 1/2 o 1 inch
     // la song, ad esempio .wav
-    private String description=INVALID;// descrizione legata alla song
+    private String description = INVALID;// descrizione legata alla song
     private int xmlref; // id di riferimento all'xml associato
     // es. 96 kHz
     private int songId; // id di riferimento della song nel database
@@ -88,11 +88,12 @@ public class Song {
     public Song() {
         trackList = new LinkedList<Track>();
     }
+
     /**
      * Costruttore della canzone stereo (2 tracce)
      *
-     * @param i : id della song
-     * @param track : prima traccia della song
+     * @param i      : id della song
+     * @param track  : prima traccia della song
      * @param track2 : seconda traccia della song
      */
     public Song(int i, String track, String track2) {
@@ -105,6 +106,10 @@ public class Song {
         if (track2 != null)
             setTrack(track2, 2);
 
+    }
+
+    public void clearTrackList() {
+        trackList = new LinkedList<Track>();
     }
 
     /**
@@ -346,7 +351,7 @@ public class Song {
     }
 
     public String getYear() {
-        if(year==null)
+        if (year == null)
             return "0000";
         return year;
     }
@@ -505,7 +510,7 @@ public class Song {
     }
 
     public FilePDF getPdf() {
-        if(filePDF!=null)
+        if (filePDF != null)
             return filePDF;
 
         return new FilePDF("");
@@ -541,7 +546,7 @@ public class Song {
      * crea un nuovo track e lo aggiunge alla lista dei track della song,
      * inserisce i metadati della track nella song
      *
-     * @param p path della traccia
+     * @param p   path della traccia
      * @param ind indice che si desidera far avere alla traccia
      */
     public void setTrack(String p, int ind) {

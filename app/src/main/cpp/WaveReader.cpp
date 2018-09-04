@@ -29,7 +29,11 @@ WaveReader::WaveReader(const char *paths[], int nPaths) {
     //for(; i < 4; i++)	// il resto li mette a null
     //	fileAudio[i] = nullptr;
 
-    nTracks = nPaths;
+    inTracks = nPaths;
+    outTracks = inTracks;
+
+    if (info.channels == 2)
+        outTracks = 2;
 
     if (getAudioFileFormat() != SF_FORMAT_WAV)
         throw FILE_FORMAT_NOT_SUPPORTED_EXCEPTION;
@@ -49,7 +53,7 @@ int WaveReader::getAudioFileFormat() {
 }
 
 WaveReader::~WaveReader(void) {
-    for (int i = 0; i < nTracks; i++)
+    for (int i = 0; i < inTracks; i++)
         sf_close(this->fileAudio[i]);
 }
 
@@ -58,9 +62,10 @@ bool WaveReader::isEof() {
 }
 
 bool WaveReader::loop() {
-    for (int i = 0; i < nTracks; i++) {
+    for (int i = 0; i < outTracks; i++) {
         auto s = outStreams[i].waitIfFull();
         if (s == audio::Status::ERROR) {
+            __android_log_print(ANDROID_LOG_ERROR, "ERROR", "WaveReader: pushData NOT ok");
             return false;
         } else if (s == audio::Status::TIMEOUT) {
             return true;
@@ -73,7 +78,7 @@ bool WaveReader::loop() {
         letti = sf_read_float(fileAudio[0], tempBuffer, audio::AudioBufferSize * 2);
     } else {
         //tracce mono
-        for (int i = 0; i < nTracks; i++) {
+        for (int i = 0; i < inTracks; i++) {
             letti = sf_read_float(fileAudio[i], buffers[i].data(), audio::AudioBufferSize);
             if (letti == 0)
                 break;
@@ -86,25 +91,21 @@ bool WaveReader::loop() {
     }
 
     if (info.channels == 2) {
-        //traccia stereo
-        int i;
-        for (i = 0; i < letti / 2; i++) {
-            buffers[0].data()[i] = tempBuffer[i * 2 + 1];
-            buffers[1].data()[i] = tempBuffer[i * 2];
+        int i = 0;
+        for (; i < letti / 2; i++) {
+            buffers[0].data()[i] = tempBuffer[i * 2];
+            buffers[1].data()[i] = tempBuffer[i * 2 + 1];
         }
-
         for (; i < audio::AudioBufferSize; i++) {
             buffers[0].data()[i] = 0.0f;
             buffers[1].data()[i] = 0.0f;
         }
-
-        outStreams[0].pushData(buffers[0]);
-        outStreams[1].pushData(buffers[1]);
-        //fine traccia stereo
-    } else {
-        for (int i = 0; i < nTracks; i++)
-            outStreams[i].pushData(buffers[i]);
     }
+
+    for (int i = 0; i < outTracks; i++) {
+        outStreams[i].pushData(buffers[i]);
+    }
+
     return true;
 }
 
@@ -125,7 +126,7 @@ double WaveReader::getSongDuration() {
 }
 
 void WaveReader::flush() {
-    for (int i = 0; i < nTracks; i++)
+    for (int i = 0; i < outTracks; i++)
         outStreams[i].flush();
 }
 
@@ -144,7 +145,7 @@ void WaveReader::seek(double timeCentiSec) {
     int blockDim = info.channels == 2 ? audio::AudioBufferSize * 2 : audio::AudioBufferSize;
 
     framesFromBegin = framesFromBegin - framesFromBegin % blockDim;
-    for (int i = 0; i < nTracks; i++)
+    for (int i = 0; i < inTracks; i++)
         sf_seek(fileAudio[i], framesFromBegin, SEEK_SET);
 
     eof = false;

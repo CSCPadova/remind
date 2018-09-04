@@ -49,8 +49,6 @@ public:
 private:
     friend class MixerProcessor1M;
 
-    friend class MixerProcessor1S;
-
     friend class MixerProcessor2M;
 
     friend class MixerProcessor4M;
@@ -102,16 +100,6 @@ public:
 class MixerProcessor1M : public MixerProcessor {
 public:
     MixerProcessor1M(Mixer *mixer)
-            : MixerProcessor(mixer) {
-    }
-
-    void process(audio::AudioBuffer (&buffers)[4], audio::AudioBuffer &outLeft,
-                 audio::AudioBuffer &outRight);
-};
-
-class MixerProcessor1S : public MixerProcessor {
-public:
-    MixerProcessor1S(Mixer *mixer)
             : MixerProcessor(mixer) {
     }
 

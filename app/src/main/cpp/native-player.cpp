@@ -680,7 +680,7 @@ NativePlayer::loadSong(JNIEnv *env, jobjectArray pathsArray,
             break;
         case SONG_TYPE_1S:
             songType = SONG_TYPE_1S;
-            ntracce = 2;
+            ntracce = 1;
             break;
         case SONG_TYPE_2M:
             songType = SONG_TYPE_2M;
@@ -714,7 +714,10 @@ NativePlayer::loadSong(JNIEnv *env, jobjectArray pathsArray,
     songSampleRate = waveReader->getSamplerate();
     mixer = new Mixer(songType, songSampleRate);
 
-    rateConverter = new RateConverter(songSpeed, ntracce);
+    if (songType == SONG_TYPE_1S)
+        rateConverter = new RateConverter(songSpeed, 2);
+    else
+        rateConverter = new RateConverter(songSpeed, ntracce);
 
     EQOriginal = convertJavaEqualization(env, songEquStr);
 

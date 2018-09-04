@@ -77,11 +77,11 @@ public class PDFFilePickerActivity extends AppCompatActivity {
         ContentResolver cr = this.getContentResolver();
         Uri uri = MediaStore.Files.getContentUri("external");
 
-// every column, although that is huge waste, you probably need
-// BaseColumns.DATA (the path) only.
+        // every column, although that is huge waste, you probably need
+        // BaseColumns.DATA (the path) only.
         String[] projection = null;
 
-// exclude media files, they would be here also.
+        // exclude media files, they would be here also.
         String selection = MediaStore.Files.FileColumns.MEDIA_TYPE + "="
                 + MediaStore.Files.FileColumns.MEDIA_TYPE_NONE;
         String[] selectionArgs = null; // there is no ? in selection so null here

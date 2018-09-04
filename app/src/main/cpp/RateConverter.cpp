@@ -34,26 +34,26 @@ void RateConverter::execute() {
     FilterBase::execute();
 }
 
-/*
- * TODO Mancano tutti i controlli di validità sui push e pull
- * 	-Marco
- */
 bool RateConverter::loop() {
-    //audio::Status pullStatus;		<-- LUCA! Queste cose servono a qualcosa sai? Si devono CONTROLLARE
-
     int i;
     for (i = 0; i < nStreams; i++) {
         auto stat = outStreams[i].waitIfFull();
-        if (stat == audio::Status::ERROR)
+        if (stat == audio::Status::ERROR) {
+            __android_log_print(ANDROID_LOG_ERROR, "ERROR",
+                                "RateConverter: pushData outStreams NOT ok");
             return false;
+        }
         if (stat == audio::Status::TIMEOUT)
             return true;
     }
 
     for (i = 0; i < nStreams; i++) {
         auto stat = inStreams[i].waitIfEmpty();
-        if (stat == audio::Status::ERROR)
+        if (stat == audio::Status::ERROR) {
+            __android_log_print(ANDROID_LOG_ERROR, "ERROR",
+                                "RateConverter: pullData inStreams NOT ok");
             return false;
+        }
         if (stat == audio::Status::TIMEOUT)
             return true;
     }

@@ -83,7 +83,7 @@ public class MonitorSetupActivity extends AppCompatActivity {
                     if (monitorSong.getTrackAtIndex(0).isMono())
                         getLayoutInflater().inflate(R.layout.monitor_setup_control_panel_1m, mainLayout);
                     else
-                        getLayoutInflater().inflate(R.layout.monitor_setup_control_panel_1s, mainLayout);
+                        getLayoutInflater().inflate(R.layout.monitor_setup_control_panel_2m, mainLayout);
                     break;
 
                 case 2:

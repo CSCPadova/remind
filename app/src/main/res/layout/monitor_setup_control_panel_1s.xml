@@ -62,8 +62,7 @@
                         android:splitTrack="false"
                         android:thumb="@drawable/thumb_drawable"
                         android:thumbOffset="0dp" />
-                    <!--android:progressDrawable="@android:color/black"
-                    android:thumb="@drawable/monitor_setup_speaker"/>-->
+
                 </LinearLayout>
 
                 <LinearLayout

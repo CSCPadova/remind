@@ -63,8 +63,7 @@
                         android:splitTrack="false"
                         android:thumb="@drawable/thumb_drawable"
                         android:thumbOffset="0dp" />
-                    <!--android:progressDrawable="@android:color/black"
-                    android:thumb="@drawable/monitor_setup_speaker"/>-->
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -94,8 +93,7 @@
                         android:splitTrack="false"
                         android:thumb="@drawable/thumb_drawable"
                         android:thumbOffset="0dp" />
-                    <!--android:progressDrawable="@android:color/black"
-                    android:thumb="@drawable/monitor_setup_speaker"/>-->
+
                 </LinearLayout>
             </LinearLayout>
 
@@ -105,7 +103,6 @@
                 android:layout_weight="1"
                 android:orientation="vertical">
 
-                <!-- seekbar & spinner ch 1-->
                 <TextView
                     android:id="@+id/monitor_channel2_track_name"
                     android:layout_width="match_parent"
@@ -148,8 +145,7 @@
                         android:splitTrack="false"
                         android:thumb="@drawable/thumb_drawable"
                         android:thumbOffset="0dp" />
-                    <!--android:progressDrawable="@android:color/black"
-                    android:thumb="@drawable/monitor_setup_speaker"/>-->
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -179,10 +175,8 @@
                         android:splitTrack="false"
                         android:thumb="@drawable/thumb_drawable"
                         android:thumbOffset="0dp" />
-                    <!--android:progressDrawable="@android:color/black"
-                    android:thumb="@drawable/monitor_setup_speaker"/>-->
-                </LinearLayout>
 
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

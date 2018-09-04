@@ -3,6 +3,8 @@ package unipd.dei.magnetophone.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.media.MediaExtractor;
+import android.media.MediaFormat;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -52,7 +55,10 @@ public class AudioFilePickerActivity extends AppCompatActivity {
         //Permetto la pressione di back nell'action bar
         showSupportActionBar(this, null, getWindow().getDecorView());
 
-        listView = (ListView) findViewById(R.id.fileList);
+        Bundle p = getIntent().getExtras();
+        final boolean allowStereo = p.getBoolean("allowStereo");
+
+        listView = findViewById(R.id.fileList);
 
         LinkedList<File> fileList = createListOfFilteredFiles(fileFormatFilter);    //Creo una lista di file audio wav
 
@@ -66,8 +72,22 @@ public class AudioFilePickerActivity extends AppCompatActivity {
                 File file = (File) listView.getAdapter().getItem(position);
                 fileName = file.getAbsolutePath();
 
+                //ottengo il numero di canali dal file
+                MediaExtractor extractor = new MediaExtractor();
+                int count = -1;
+                try {
+                    extractor.setDataSource(fileName);
+                    MediaFormat format = extractor.getTrackFormat(0);
+                    count = format.getInteger(MediaFormat.KEY_CHANNEL_COUNT);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                if (!allowStereo && count == 2 || allowStereo && count != 2)
+                    fileName = null;
+
                 //Se non sto riproducendo gia' con il magnetofono faccio ascoltare il file
                 //Altrimenti non disturbo la riproduzione
+                //se il path e' null e quindi mp va in errore allora il file non e' valido
                 if (!player.isPlaying()) {
                     try {
                         //Seleziono un altro brano, quindi resetto il file

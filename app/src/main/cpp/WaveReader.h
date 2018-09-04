@@ -17,7 +17,8 @@ class WaveReader : public FilterBase
 {
 	private:
 		SNDFILE * fileAudio[4] = {nullptr};
-		int nTracks = -1;
+		int inTracks = -1;
+		int outTracks = -1;
 		SF_INFO info;
 		bool eof = false;
 		bool validReader = false;
