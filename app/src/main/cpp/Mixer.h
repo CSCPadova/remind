@@ -55,6 +55,7 @@ private:
 
     SongType songType;
     int samplingFrequency;
+    int chansToPull;
     int trackMap[4];
     bool trackEnabled[4];
     MixerProcessor *processor;
@@ -123,7 +124,7 @@ private:
 public:
 
     MixerProcessor4M(Mixer *mixer)
-    : MixerProcessor(mixer) {
+            : MixerProcessor(mixer) {
     }
 
     ~MixerProcessor4M() {

@@ -4,8 +4,21 @@
 
 Mixer::Mixer(SongType songType, int samplingFrequency) {
     this->samplingFrequency = samplingFrequency;
+
+    // --- Legge il numero di input adeguato ---
+    chansToPull = 0;
+    switch (this->songType) {
+        case SONG_TYPE_2M:
+            break;
+        case SONG_TYPE_1S:
+            break;
+        case SONG_TYPE_1M:
+            break;
+    }
     switch (songType) {
         case SONG_TYPE_1M:
+
+            chansToPull = 1;
 
             this->trackEnabled[0] = true;
 
@@ -13,6 +26,9 @@ Mixer::Mixer(SongType songType, int samplingFrequency) {
             break;
 
         case SONG_TYPE_1S:
+
+            chansToPull = 2;
+
             this->trackMap[0] = 0;
             this->trackMap[1] = 1;
 
@@ -24,6 +40,8 @@ Mixer::Mixer(SongType songType, int samplingFrequency) {
 
         case SONG_TYPE_2M:
 
+            chansToPull = 2;
+
             this->trackMap[0] = 0;
             this->trackMap[1] = 1;
 
@@ -34,6 +52,8 @@ Mixer::Mixer(SongType songType, int samplingFrequency) {
             break;
 
         case SONG_TYPE_4M:
+
+            chansToPull = 4;
 
             this->trackMap[0] = 0;
             this->trackMap[1] = 1;
@@ -64,18 +84,17 @@ Mixer::~Mixer() {
     delete this->processor;
 }
 
-void Mixer::setMixingVolumes()
-{
-    float sum=track1LGUI + track1RGUI + track2LGUI + track2RGUI + track3LGUI + track3RGUI +
-              track4LGUI + track4RGUI;
-    track1LMIX = track1LGUI/sum;
-    track1RMIX = track1RGUI/sum;
-    track2LMIX = track2LGUI/sum;
-    track2RMIX = track2RGUI/sum;
-    track3LMIX = track3LGUI/sum;
-    track3RMIX = track3RGUI/sum;
-    track4LMIX = track4LGUI/sum;
-    track4RMIX = track4RGUI/sum;
+void Mixer::setMixingVolumes() {
+    float sum = track1LGUI + track1RGUI + track2LGUI + track2RGUI + track3LGUI + track3RGUI +
+                track4LGUI + track4RGUI;
+    track1LMIX = track1LGUI / sum;
+    track1RMIX = track1RGUI / sum;
+    track2LMIX = track2LGUI / sum;
+    track2RMIX = track2RGUI / sum;
+    track3LMIX = track3LGUI / sum;
+    track3RMIX = track3RGUI / sum;
+    track4LMIX = track4LGUI / sum;
+    track4RMIX = track4RGUI / sum;
 }
 
 void Mixer::setTrackVolume(int trackNumber, float volumeL, float volumeR) {
@@ -85,8 +104,8 @@ void Mixer::setTrackVolume(int trackNumber, float volumeL, float volumeR) {
             track1RGUI = volumeR;
             break;
         case 2:
-            track2LGUI= volumeL;
-            track2RGUI= volumeR;
+            track2LGUI = volumeL;
+            track2RGUI = volumeR;
             break;
         case 3:
             track3LGUI = volumeL;
@@ -152,29 +171,12 @@ bool Mixer::loop() {
         return true;
 
     stat = outputRight.waitIfFull();
-    if (stat == audio::Status::ERROR){
+    if (stat == audio::Status::ERROR) {
         __android_log_print(ANDROID_LOG_ERROR, "ERROR", "Mixer: pushData outputRight NOT ok");
         return false;
     }
     if (stat == audio::Status::TIMEOUT)
         return true;
-
-    // --- Legge il numero di input adeguato ---
-    int chansToPull = 0;
-    switch (this->songType) {
-        case SONG_TYPE_4M:
-            chansToPull = 4;
-            break;
-        case SONG_TYPE_2M:
-            chansToPull = 2;
-            break;
-        case SONG_TYPE_1S:
-            chansToPull = 2;
-            break;
-        case SONG_TYPE_1M:
-            chansToPull = 1;
-            break;
-    }
 
     audio::Status pullStatus;
     for (int i = 0; i < chansToPull; i++) {

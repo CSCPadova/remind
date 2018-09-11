@@ -135,8 +135,6 @@ public class SettingsActivity extends AppCompatActivity {
      * Questo fragment mostra le opzioni definite nel file xml prefs
      */
     public static class SettingsFragment extends PreferenceFragmentCompat {
-        //@Override
-        //public void onCreate(Bundle savedInstanceState){
 
         @Override
         public void onCreatePreferences(Bundle bundle, String s) {
@@ -233,7 +231,6 @@ public class SettingsActivity extends AppCompatActivity {
                 }
             });
 
-
             // Opzioni avanzate
             prefAdvancedOptions
                     .setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
@@ -244,6 +241,8 @@ public class SettingsActivity extends AppCompatActivity {
 
                             if (prefAdvancedOptions.isChecked()) // attivo o disattivo le preference delle opzioni avanzate
                             {
+                                //disattivo il tick, la sua eventuale riattivazione averra' in PasswordFragment
+                                prefAdvancedOptions.setChecked(false);
                                 PasswordFragment prefPath = new PasswordFragment();//crea il nuovo fragment, definito a fine file
                                 prefPath.show(getFragmentManager(), null);
                             } else//se stiamo disattivando non richiediamo alcuna password
@@ -261,10 +260,7 @@ public class SettingsActivity extends AppCompatActivity {
             // abilitato o meno
             if (!(prefAdvancedOptions.isChecked())) {
                 preferenceCategory.removePreference(prefMaintenance);
-//				preferenceCategory.removePreference(prefImport);
-//				preferenceCategory.removePreference(prefDelete);
                 preferenceCategory.removePreference(prefPath);
-//				preferenceCategory.removePreference(prefModify);
                 preferenceCategory.removePreference(prefXml);
                 preferenceCategory.removePreference(prefPassword);
             }
@@ -408,13 +404,12 @@ public class SettingsActivity extends AppCompatActivity {
                                 preferenceCategory.addPreference(prefPath);
                                 preferenceCategory.addPreference(prefXml);
                                 preferenceCategory.addPreference(prefPassword);
+                                prefAdvancedOptions.setChecked(true);
                             } else {
                                 //password errata, riprovare
                                 String text = getString(R.string.wrong_password);
                                 Toast toast = Toast.makeText(getActivity(), text, Toast.LENGTH_SHORT);
                                 toast.show();
-
-                                //disattiviamo il checkbox altrimenti resterebbe selezionato
                                 prefAdvancedOptions.setChecked(false);
 
                             }
