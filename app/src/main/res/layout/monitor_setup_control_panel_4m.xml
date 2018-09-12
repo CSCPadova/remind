@@ -10,7 +10,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <LinearLayout
@@ -26,341 +26,220 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
-                    android:gravity="center"
-                    android:text="TextView"
-                    android:textAlignment="center" />
-
-                <Button
-                    android:id="@+id/buttonLR1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:text="@string/button_equal_volumes" />
+                    android:text="TextView" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <TextView
-                        android:id="@+id/n1"
+                    <CheckBox
+                        android:id="@+id/checkBox_enable_track1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginTop="-2dp"
-                        android:text="@string/label_left" />
+                        android:text="@string/check_box_enable_track" />
 
-                    <SeekBar
-                        android:id="@+id/monitor_channel1_vol_l"
-                        android:layout_width="match_parent"
+                    <Button
+                        android:id="@+id/buttonLR1"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginBottom="5dp"
-                        android:layout_marginTop="5dp"
-                        android:max="100"
-                        android:paddingLeft="5dp"
-                        android:paddingRight="5dp"
-                        android:progress="50"
-                        android:progressDrawable="@drawable/progress_drawable"
-                        android:splitTrack="false"
-                        android:thumb="@drawable/thumb_drawable"
-                        android:thumbOffset="0dp" />
-                    <!--android:progressDrawable="@android:color/black"
-                    android:thumb="@drawable/monitor_setup_speaker"/>-->
+                        android:text="@string/button_equal_volumes" />
+
+
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <TextView
-                        android:id="@+id/n2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginTop="-2dp"
-                        android:text="@string/label_right" />
-
                     <SeekBar
-                        android:id="@+id/monitor_channel1_vol_r"
+                        android:id="@+id/monitor_channel1_pan"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginBottom="5dp"
-                        android:layout_marginTop="5dp"
-                        android:max="100"
-                        android:paddingLeft="5dp"
-                        android:paddingRight="5dp"
-                        android:progress="50"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="10dp"
+                        android:max="200"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:progress="100"
                         android:progressDrawable="@drawable/progress_drawable"
                         android:splitTrack="false"
                         android:thumb="@drawable/thumb_drawable"
                         android:thumbOffset="0dp" />
+
                 </LinearLayout>
-
-                <!--android:progressDrawable="@android:color/black"
-                android:thumb="@drawable/monitor_setup_speaker"/>-->
-
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingLeft="0dp"
+                android:paddingTop="0dp">
 
-                <!-- seekbar & spinner ch 1-->
                 <TextView
                     android:id="@+id/monitor_channel2_track_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
-                    android:gravity="center"
                     android:text="TextView" />
 
-                <Button
-                    android:id="@+id/buttonLR2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:text="@string/button_equal_volumes" />
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <TextView
-                        android:id="@+id/n3"
+                    <CheckBox
+                        android:id="@+id/checkBox_enable_track2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:text="@string/label_left" />
+                        android:text="@string/check_box_enable_track" />
 
-                    <SeekBar
-                        android:id="@+id/monitor_channel2_vol_l"
-                        android:layout_width="match_parent"
+                    <Button
+                        android:id="@+id/buttonLR2"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginBottom="5dp"
-                        android:layout_marginTop="5dp"
-                        android:max="100"
-                        android:paddingLeft="5dp"
-                        android:paddingRight="5dp"
-                        android:progress="50"
-                        android:progressDrawable="@drawable/progress_drawable"
-                        android:splitTrack="false"
-                        android:thumb="@drawable/thumb_drawable"
-                        android:thumbOffset="0dp" />
-                    <!--android:progressDrawable="@android:color/black"
-                    android:thumb="@drawable/monitor_setup_speaker"/>-->
+                        android:text="@string/button_equal_volumes" />
+
+
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <TextView
-                        android:id="@+id/n4"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginTop="-2dp"
-                        android:text="@string/label_right" />
-
                     <SeekBar
-                        android:id="@+id/monitor_channel2_vol_r"
+                        android:id="@+id/monitor_channel2_pan"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginBottom="5dp"
-                        android:layout_marginTop="5dp"
-                        android:max="100"
-                        android:paddingLeft="5dp"
-                        android:paddingRight="5dp"
-                        android:progress="50"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="10dp"
+                        android:max="200"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:progress="100"
                         android:progressDrawable="@drawable/progress_drawable"
                         android:splitTrack="false"
                         android:thumb="@drawable/thumb_drawable"
                         android:thumbOffset="0dp" />
-                    <!--android:progressDrawable="@android:color/black"
-                    android:thumb="@drawable/monitor_setup_speaker"/>-->
+
                 </LinearLayout>
-
-
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingLeft="0dp"
+                android:paddingTop="0dp">
 
                 <TextView
                     android:id="@+id/monitor_channel3_track_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
-                    android:gravity="center"
                     android:text="TextView" />
 
-                <Button
-                    android:id="@+id/buttonLR3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:text="@string/button_equal_volumes" />
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <TextView
-                        android:id="@+id/n5"
+                    <CheckBox
+                        android:id="@+id/checkBox_enable_track3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginTop="-2dp"
-                        android:text="@string/label_left" />
+                        android:text="@string/check_box_enable_track" />
 
-                    <SeekBar
-                        android:id="@+id/monitor_channel3_vol_l"
-                        android:layout_width="match_parent"
+                    <Button
+                        android:id="@+id/buttonLR3"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginBottom="5dp"
-                        android:layout_marginTop="5dp"
-                        android:max="100"
-                        android:paddingLeft="5dp"
-                        android:paddingRight="5dp"
-                        android:progress="50"
-                        android:progressDrawable="@drawable/progress_drawable"
-                        android:splitTrack="false"
-                        android:thumb="@drawable/thumb_drawable"
-                        android:thumbOffset="0dp" />
-                    <!--android:progressDrawable="@android:color/black"
-                    android:thumb="@drawable/monitor_setup_speaker" />-->
+                        android:text="@string/button_equal_volumes" />
+
+
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <TextView
-                        android:id="@+id/n6"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginTop="-2dp"
-                        android:text="@string/label_right" />
-
                     <SeekBar
-                        android:id="@+id/monitor_channel3_vol_r"
+                        android:id="@+id/monitor_channel3_pan"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginBottom="5dp"
-                        android:layout_marginTop="5dp"
-                        android:max="100"
-                        android:paddingLeft="5dp"
-                        android:paddingRight="5dp"
-                        android:progress="50"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="10dp"
+                        android:max="200"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:progress="100"
                         android:progressDrawable="@drawable/progress_drawable"
                         android:splitTrack="false"
                         android:thumb="@drawable/thumb_drawable"
                         android:thumbOffset="0dp" />
-                    <!--android:progressDrawable="@android:color/black"
-                    android:thumb="@drawable/monitor_setup_speaker" />-->
-                </LinearLayout>
 
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:orientation="vertical">
-
-                <!-- seekbar & spinner ch 4-->
+                android:orientation="vertical"
+                android:paddingLeft="0dp"
+                android:paddingTop="0dp">
 
                 <TextView
                     android:id="@+id/monitor_channel4_track_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
-                    android:gravity="center"
                     android:text="TextView" />
 
-                <Button
-                    android:id="@+id/buttonLR4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:text="@string/button_equal_volumes" />
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <TextView
-                        android:id="@+id/n7"
+                    <CheckBox
+                        android:id="@+id/checkBox_enable_track4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginTop="-2dp"
-                        android:text="@string/label_left" />
+                        android:text="@string/check_box_enable_track" />
 
-                    <SeekBar
-                        android:id="@+id/monitor_channel4_vol_l"
-                        android:layout_width="match_parent"
+                    <Button
+                        android:id="@+id/buttonLR4"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginBottom="5dp"
-                        android:layout_marginTop="5dp"
-                        android:max="100"
-                        android:paddingLeft="5dp"
-                        android:paddingRight="5dp"
-                        android:progress="50"
-                        android:progressDrawable="@drawable/progress_drawable"
-                        android:splitTrack="false"
-                        android:thumb="@drawable/thumb_drawable"
-                        android:thumbOffset="0dp" />
-                    <!--android:progressDrawable="@android:color/black"
-                    android:thumb="@drawable/monitor_setup_speaker" />-->
+                        android:text="@string/button_equal_volumes" />
+
+
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <TextView
-                        android:id="@+id/n8"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginTop="-2dp"
-                        android:text="@string/label_right" />
-
                     <SeekBar
-                        android:id="@+id/monitor_channel4_vol_r"
+                        android:id="@+id/monitor_channel4_pan"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginBottom="5dp"
-                        android:layout_marginTop="5dp"
-                        android:max="100"
-                        android:paddingLeft="5dp"
-                        android:paddingRight="5dp"
-                        android:progress="50"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="10dp"
+                        android:max="200"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:progress="100"
                         android:progressDrawable="@drawable/progress_drawable"
                         android:splitTrack="false"
                         android:thumb="@drawable/thumb_drawable"
                         android:thumbOffset="0dp" />
-                    <!--android:progressDrawable="@android:color/black"
-                    android:thumb="@drawable/monitor_setup_speaker" />-->
-                </LinearLayout>
 
+                </LinearLayout>
             </LinearLayout>
-
         </LinearLayout>
     </ScrollView>
-
 </FrameLayout>

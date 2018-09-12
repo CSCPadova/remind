@@ -309,7 +309,8 @@
     <string name="button_to_open_filemanager">Apri file video</string>
     <string name="text_select_frame">Seleziona un frame </string>
     <string name="image_frame">Frame del video</string>
-    <string name="button_equal_volumes">L=R</string>
+    <string name="button_equal_volumes">Centra</string>
+    <string name="check_box_enable_track">Abilita traccia</string>
     <string name="label_left">Sinistra</string>
     <string name="label_right">Destra \u0020</string>
     <string name="permission_denied">Senza i permessi sarà impossibile riprodurre i brani</string>

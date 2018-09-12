@@ -52,7 +52,9 @@ public class MusicService extends Service {
 
     public native int getTime();
 
-    public native int setChannelEnabled(int channel, int enabled);
+    public native void setTrackEnabled(int track, boolean enabled);
+
+    public native boolean getTrackEnabled(int track);
 
     public native void setTrackChannel(int track, int channel);
 
@@ -210,16 +212,22 @@ public class MusicService extends Service {
             return volumeLogToLin(MusicService.this.getTrackVolumeR(track));
         }
 
-        private float volumeLinToLog(float volume)
-        {
-            //assuming values from 0 to 1
-            return (float)((Math.pow(10, volume)-1)/10);
+        public void setTrackEnable(int track, boolean enable) {
+            MusicService.this.setTrackEnabled(track, enable);
         }
 
-        private float volumeLogToLin(float volume)
-        {
+        public boolean getTrackEnable(int track) {
+            return MusicService.this.getTrackEnabled(track);
+        }
+
+        private float volumeLinToLog(float volume) {
             //assuming values from 0 to 1
-            return (float)(Math.log10(10*volume+1));
+            return (float) ((Math.pow(10, volume) - 1) / 10);
+        }
+
+        private float volumeLogToLin(float volume) {
+            //assuming values from 0 to 1
+            return (float) (Math.log10(10 * volume + 1));
         }
 
         public void stop() {

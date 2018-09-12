@@ -67,14 +67,16 @@ Mixer::Mixer(SongType songType, int samplingFrequency) {
             processor = new MixerProcessor4M(this);
             break;
     }
-    track1LGUI = 1.0f;
-    track1RGUI = 1.0f;
-    track2LGUI = 1.0f;
-    track2RGUI = 1.0f;
-    track3LGUI = 1.0f;
-    track3RGUI = 1.0f;
-    track4LGUI = 1.0f;
-    track4RGUI = 1.0f;
+
+    float volume= (pow(10,0.5f)-1.0f)/10.0f;
+    track1LGUI = volume;
+    track1RGUI = volume;
+    track2LGUI = volume;
+    track2RGUI = volume;
+    track3LGUI = volume;
+    track3RGUI = volume;
+    track4LGUI = volume;
+    track4RGUI = volume;
     setMixingVolumes();
 
     this->songType = songType;

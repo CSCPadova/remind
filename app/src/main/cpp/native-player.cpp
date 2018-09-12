@@ -785,6 +785,17 @@ float NativePlayer::mixerGetTrackVolumeR(int trackNumber) {
     return -1;
 }
 
+void NativePlayer::mixerSetTrackEnable(int trackNumber, bool enable) {
+    if (mixer != NULL)
+        mixer->setChannelEnabled(trackNumber, enable);
+}
+
+bool NativePlayer::mixerGetTrackEnable(int trackNumber) {
+    if (mixer != NULL)
+        return mixer->getChannelEnabled(trackNumber);
+    return false;
+}
+
 void NativePlayer::setSpeed(int speed) {
     if (playbackState == PLAYBACK_STATE_INITIALIZED)
         return;

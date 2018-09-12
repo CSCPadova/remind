@@ -196,4 +196,21 @@ Java_unipd_dei_magnetophone_MusicService_getTrackVolumeR(JNIEnv *env, jclass cla
     }
     return engine->mixerGetTrackVolumeR(track);
 }
+
+JNIEXPORT void JNICALL
+Java_unipd_dei_magnetophone_MusicService_setTrackEnabled(JNIEnv *env, jclass clazz, jint track, jboolean enable) {
+    if (engine == nullptr) {
+        LOGE("Engine is null, you must call MusicService_init before calling this method");
+    }
+    engine->mixerSetTrackEnable(track, enable);
+}
+
+JNIEXPORT jboolean JNICALL
+Java_unipd_dei_magnetophone_MusicService_getTrackEnabled(JNIEnv *env, jclass clazz, jint track) {
+    if (engine == nullptr) {
+        LOGE("Engine is null, you must call MusicService_init before calling this method");
+        return false;
+    }
+    return engine->mixerGetTrackEnable(track);
+}
 }

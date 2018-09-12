@@ -152,6 +152,10 @@ public:
 
     float mixerGetTrackVolumeR(int trackNumber);
 
+    void mixerSetTrackEnable(int trackNumber, bool enable);
+
+    bool mixerGetTrackEnable(int trackNumber);
+
     void setSpeed(int speed);
 
     void speedChange();

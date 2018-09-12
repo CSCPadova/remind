@@ -1,16 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
- <item android:id="@android:id/background">
-  <shape>
-   <gradient
-       android:startColor="#1E9600"
-       android:centerColor="#FFF200"
-       android:endColor="#FF0000"
-       android:angle="0" />
-   <size
-       android:height="13dp"
-       android:width="13dp" />
-   <corners android:radius="7dp" />
-  </shape>
- </item>
+    <item android:id="@android:id/background">
+        <shape>
+            <gradient
+                android:angle="0"
+                android:centerColor="#434343"
+                android:endColor="#434343"
+                android:startColor="#434343" />
+            <!--android:startColor="#1E9600"
+            android:centerColor="#FFF200"
+            android:endColor="#FF0000"
+            android:angle="0" />-->
+
+            <size
+                android:width="13dp"
+                android:height="13dp" />
+            <corners android:radius="7dp" />
+        </shape>
+    </item>
 </layer-list>
