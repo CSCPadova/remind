@@ -42,6 +42,8 @@ After cloning the repository and some Android Studio automatic config the applic
 
 `Tools->AVD Manager->Create Virtual Device...` is usefull for the Android Emulator.
 
+The application can be installed using the APK file in folder `Application APK`, simply copy the .apk on the device and launch it, it will install the app.
+
 ## Credits
 
 This project is based on various works from different researchers and students of the Department of Information Engineering at Padova University’s Engineering Faculty.
