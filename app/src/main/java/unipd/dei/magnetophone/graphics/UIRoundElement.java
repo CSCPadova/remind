@@ -165,6 +165,12 @@ public class UIRoundElement extends UIBaseElement {
         return false;
     }
 
+
+    @Override
+    public boolean isReleased() {
+        return false;
+    }
+
     protected void drawTransformed(Canvas canvas) {
         super.draw(canvas);
     }

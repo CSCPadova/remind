@@ -2,6 +2,7 @@ package unipd.dei.magnetophone.graphics;
 
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.MotionEvent;
 
 /**
@@ -10,7 +11,7 @@ import android.view.MotionEvent;
 public class UIButton extends UIBaseElement {
 
     private Bitmap downRes, upRes;
-    private boolean pressed, latching, changed;
+    private boolean pressed, latching, changed, released;
 
     public UIButton(int x, int y, int zIndex, int w, int h, Drawable normal, Drawable pressed) {
         super(x, y, zIndex, w, h, normal);
@@ -55,21 +56,31 @@ public class UIButton extends UIBaseElement {
         return pressed;
     }
 
+    @Override
+    public boolean isReleased() {
+        return released;
+    }
+
 
     @Override
     protected boolean processTouch(MotionEvent e, int x, int y) {
         boolean old = pressed;
         if (e.getAction() == MotionEvent.ACTION_DOWN && !pressed) {
+            Log.d("DEBUG TOUCH", "ACTION_DOWN");
             pressed = true;
-        } else if (e.getAction() == MotionEvent.ACTION_UP && !latching) {
+            released = false;
+        } else if (e.getAction() == MotionEvent.ACTION_UP && !released) {
+
+            Log.d("DEBUG TOUCH", "MotionEvent.ACTION_UP");
             pressed = false;
+            released = true;
         } else {
             return false;
         }
 
         changed = (old != pressed);
 
-        return pressed;
+        return true;
     }
 
 }

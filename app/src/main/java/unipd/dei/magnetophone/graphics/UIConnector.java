@@ -124,6 +124,11 @@ public class UIConnector extends UIComponent {
         return false;
     }
 
+    @Override
+    public boolean isReleased() {
+        return false;
+    }
+
     public enum Side {LEFT_TO_LEFT, LEFT_TO_RIGHT, RIGHT_TO_LEFT, RIGHT_TO_RIGHT}
 
 }

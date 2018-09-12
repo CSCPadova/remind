@@ -22,7 +22,7 @@ import static java.lang.Thread.sleep;
 //import it.unipd.dei.esp1314.magnetophone.R;
 
 public class StuderTapeDeck extends TapeDeck {
-    private final float VIDEO_OFFSET_STEP = 0.001f;
+    private final float VIDEO_OFFSET_STEP = 0.01f;
     private final PlayerEqualization[] eq_values = {
             PlayerEqualization.CCIR,
             PlayerEqualization.NAB
@@ -40,7 +40,7 @@ public class StuderTapeDeck extends TapeDeck {
     private UIConnector[] tapeChunks;
     // Componenti che userò spesso
     private UITapeReel leftReel, rightReel;    // Bobine
-    private UIKnob speedKnob, eqKnob;            // Manopole (per due non conveniva usare un'array)
+    private final UIKnob speedKnob, eqKnob;            // Manopole (per due non conveniva usare un'array)
     private UILcd lcd;                            // Display
     private UILcdCustom lcdOffset;
     private float video_offset_increment;
@@ -122,7 +122,7 @@ public class StuderTapeDeck extends TapeDeck {
 
         // PULSANTI PLAYER
 
-        UIButton[] controlButtons = new UIButton[5];
+        final UIButton[] controlButtons = new UIButton[5];
 
         controlButtons[0] = (UIButton) addComponent(new UIButton(250, 1412, 3, 97, 97, r.getDrawable(R.raw.btn_rew_up), r.getDrawable(R.raw.btn_rew_down)));
         controlButtons[1] = (UIButton) addComponent(new UIButton(360, 1412, 3, 97, 97, r.getDrawable(R.raw.btn_ff_up), r.getDrawable(R.raw.btn_ff_down)));
@@ -134,7 +134,8 @@ public class StuderTapeDeck extends TapeDeck {
         controlButtons[0].setCallback(new ComponentCallback() {
             @Override
             public void stateChanged(UIComponent obj) {
-                player.startFastReverse();
+                if (controlButtons[0].isPressed())
+                    player.startFastReverse();
             }
         });
 
@@ -142,7 +143,8 @@ public class StuderTapeDeck extends TapeDeck {
         controlButtons[1].setCallback(new ComponentCallback() {
             @Override
             public void stateChanged(UIComponent obj) {
-                player.startFastForward();
+                if (controlButtons[1].isPressed())
+                    player.startFastForward();
             }
         });
 
@@ -150,7 +152,8 @@ public class StuderTapeDeck extends TapeDeck {
         controlButtons[2].setCallback(new ComponentCallback() {
             @Override
             public void stateChanged(UIComponent obj) {
-                player.play();
+                if (controlButtons[2].isPressed())
+                    player.play();
             }
         });
 
@@ -158,7 +161,8 @@ public class StuderTapeDeck extends TapeDeck {
         controlButtons[3].setCallback(new ComponentCallback() {
             @Override
             public void stateChanged(UIComponent obj) {
-                player.stop();
+                if (controlButtons[3].isPressed())
+                    player.stop();
             }
         });
 
@@ -166,15 +170,17 @@ public class StuderTapeDeck extends TapeDeck {
         controlButtons[4].setCallback(new ComponentCallback() {
             @Override
             public void stateChanged(UIComponent obj) {
-                referenceTimestamp = player.getCurrentTimestamp();
-                lcd.setTime(0);
+                if (controlButtons[4].isPressed()) {
+                    referenceTimestamp = player.getCurrentTimestamp();
+                    lcd.setTime(0);
+                }
             }
         });
 
         // PULSANTI UI
 
         //UIButton[] uiButtons = new UIButton[5];
-        UIButton[] uiButtons = new UIButton[4];
+        final UIButton[] uiButtons = new UIButton[4];
 
         uiButtons[0] = (UIButton) addComponent(new UIButton(1864 - 75, 18, 4, 172, 172, r.getDrawable(R.raw.btn_settings_up), r.getDrawable(R.raw.btn_settings_down))); // -29px per l'ombra
         uiButtons[1] = (UIButton) addComponent(new UIButton(2014 - 75, 18, 4, 172, 172, r.getDrawable(R.raw.btn_library_up), r.getDrawable(R.raw.btn_library_down)));
@@ -186,8 +192,8 @@ public class StuderTapeDeck extends TapeDeck {
         uiButtons[0].setCallback(new ComponentCallback() {
             @Override
             public void stateChanged(UIComponent obj) {
-                //player.stop();
-                context.startActivity(new Intent(context, SettingsActivity.class));
+                if (uiButtons[0].isPressed())
+                    context.startActivity(new Intent(context, SettingsActivity.class));
             }
         });
 
@@ -195,8 +201,8 @@ public class StuderTapeDeck extends TapeDeck {
         uiButtons[1].setCallback(new ComponentCallback() {
             @Override
             public void stateChanged(UIComponent obj) {
-                //player.stop();
-                context.startActivity(new Intent(context, LibraryActivity.class));
+                if (uiButtons[1].isPressed())
+                    context.startActivity(new Intent(context, LibraryActivity.class));
             }
         });
 
@@ -204,11 +210,12 @@ public class StuderTapeDeck extends TapeDeck {
         uiButtons[2].setCallback(new ComponentCallback() {
             @Override
             public void stateChanged(UIComponent obj) {
-                //player.stop();
-                if (songLoaded)
-                    context.startActivity(new Intent(context, MonitorSetupActivity.class));
-                else
-                    Toast.makeText(context, context.getString(R.string.monitor_setup_unavailable), Toast.LENGTH_SHORT).show();
+                if (uiButtons[2].isPressed()) {
+                    if (songLoaded)
+                        context.startActivity(new Intent(context, MonitorSetupActivity.class));
+                    else
+                        Toast.makeText(context, context.getString(R.string.monitor_setup_unavailable), Toast.LENGTH_SHORT).show();
+                }
             }
         });
         // WHAT'S NEW: Callback del pulsante
@@ -246,7 +253,7 @@ public class StuderTapeDeck extends TapeDeck {
                         y_pos + 12, 3, lcd_v_width, (int) (width_heigth * 0.76),
                         r.getDrawable(R.raw.lcd), 8));
 
-        UIButton[] videoSyncButtons = new UIButton[2];
+        final UIButton[] videoSyncButtons = new UIButton[2];
 
         videoSyncButtons[0] = (UIButton) addComponent(new UIButton(minus_x_pos,
                 y_pos, 4, width_heigth, width_heigth,
@@ -259,17 +266,11 @@ public class StuderTapeDeck extends TapeDeck {
             @Override
             public void stateChanged(UIComponent obj) {
                 if (songLoaded) {
-                    startIncrementing(false);
-                } else
-                    Toast.makeText(context, context.getString(R.string.monitor_setup_unavailable), Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        videoSyncButtons[0].setCallbackActUp(new ComponentCallback() {
-            @Override
-            public void stateChanged(UIComponent obj) {
-                if (songLoaded) {
-                    stopIncrementing();
+                    if (videoSyncButtons[0].isPressed()) {
+                        startIncrementing(false);
+                    } else if (videoSyncButtons[0].isReleased()) {
+                        stopIncrementing();
+                    }
                 } else
                     Toast.makeText(context, context.getString(R.string.monitor_setup_unavailable), Toast.LENGTH_SHORT).show();
             }
@@ -279,16 +280,12 @@ public class StuderTapeDeck extends TapeDeck {
             @Override
             public void stateChanged(UIComponent obj) {
                 if (songLoaded) {
-                    startIncrementing(true);
-                } else
-                    Toast.makeText(context, context.getString(R.string.monitor_setup_unavailable), Toast.LENGTH_SHORT).show();
-            }
-        });
-        videoSyncButtons[1].setCallbackActUp(new ComponentCallback() {
-            @Override
-            public void stateChanged(UIComponent obj) {
-                if (songLoaded) {
-                    stopIncrementing();
+                    if (videoSyncButtons[1].isPressed()) {
+                        startIncrementing(true);
+                    } else if (videoSyncButtons[1].isReleased()) {
+                        stopIncrementing();
+                    }
+
                 } else
                     Toast.makeText(context, context.getString(R.string.monitor_setup_unavailable), Toast.LENGTH_SHORT).show();
             }
@@ -308,10 +305,12 @@ public class StuderTapeDeck extends TapeDeck {
         speedKnob.setCallback(new ComponentCallback() {
             @Override
             public void stateChanged(UIComponent obj) {
-                player.setPlayerSpeed(speed_values[speedKnob.getSelectedStep()]);
+                if(speedKnob.isPressed()) {
+                    player.setPlayerSpeed(speed_values[speedKnob.getSelectedStep()]);
 
-                if (player.isPlaying())
-                    updateRotatingElementSpeed(1);
+                    if (player.isPlaying())
+                        updateRotatingElementSpeed(1);
+                }
             }
         });
 
@@ -319,6 +318,7 @@ public class StuderTapeDeck extends TapeDeck {
         eqKnob.setCallback(new ComponentCallback() {
             @Override
             public void stateChanged(UIComponent obj) {
+                if(eqKnob.isPressed())
                 player.setEqualization(eq_values[eqKnob.getSelectedStep()]);
             }
         });
@@ -331,13 +331,19 @@ public class StuderTapeDeck extends TapeDeck {
 
     private void startIncrementing(boolean forward) {
         video_offset_increment = VIDEO_OFFSET_STEP;
+
+        Log.d("DEBUG", "startIncrementing");
         if (!forward)
             video_offset_increment = video_offset_increment * -1;
         setIsIncrementing(true);
         new Thread(new Runnable() {
             public void run() {
+
+                Log.d("DEBUG", "THREAD run");
                 int count = 0;
                 while (isIncrementing()) {
+
+                    Log.d("DEBUG", "while (isIncrementing())");
                     video_offset_increment = Math.min(video_offset_increment * 1.05f, 3000);
                     player.setVideoSyncOffset(player.getVideoSyncOffset() + video_offset_increment);
                     lcdOffset.setTime(player.getScaledTime(player.getVideoSyncOffset()));
@@ -355,13 +361,13 @@ public class StuderTapeDeck extends TapeDeck {
                         }
                     }
                     count++;
-
                 }
             }
         }).start();
     }
 
     synchronized private void stopIncrementing() {
+        Log.d("DEBUG", "stopIncrementing");
         video_offset_increment = 0;
         setIsIncrementing(false);
     }
@@ -376,6 +382,12 @@ public class StuderTapeDeck extends TapeDeck {
 
     @Override
     public boolean isPressed() {
+        return false;
+    }
+
+
+    @Override
+    public boolean isReleased() {
         return false;
     }
 

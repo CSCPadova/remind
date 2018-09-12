@@ -204,7 +204,7 @@ bool NativePlayer::playbackCallback() {
     if (waveReader->isEof()) {
         //controllo stato bufferqueue
         LOGD("dati finiti");
-        //stop();
+        stop();
         return false;
     }
 
@@ -229,20 +229,6 @@ bool NativePlayer::playbackCallback() {
     return true;
 }
 
-void NativePlayer::threadReadData() {
-    bool state = true;
-    // if is playing and is not EOF
-    while (playbackState == PLAYBACK_STATE_PLAYING && state) {
-        state = playbackCallback();
-        //if still empty and is not EOF
-        while (intermediateAudioBuffer.size() <= 0 && state) {
-            state = playbackCallback();
-            usleep(THR_READ_WAIT_TIMEOUT_USEC);
-        }
-        threadReadLock.lock();
-    }
-}
-
 void NativePlayer::stop() {
     if (songReady) {
         if (threadGo) {
@@ -254,15 +240,8 @@ void NativePlayer::stop() {
         }
 
         if (playbackState == PLAYBACK_STATE_PLAYING) {
-            //cambia playbackState, unlock thread e solo dopo faccio un join
-            playbackState = PLAYBACK_STATE_STOPPED;
 
-            //stop the read thread
-            threadReadLock.unlock();
-            if (readThread->joinable()) {
-                readThread->join();
-                delete readThread;
-            }
+            playbackState = PLAYBACK_STATE_STOPPED;
 
             oboe::Result result = stream->stop();
             if (result != oboe::Result::OK) {
@@ -291,8 +270,6 @@ void NativePlayer::play() {
             return;
 
         playbackState = PLAYBACK_STATE_PLAYING;
-
-        readThread = new std::thread(&NativePlayer::threadReadData, this);
 
         oboe::Result result = stream->start();
         if (result != oboe::Result::OK) {
@@ -325,7 +302,6 @@ void NativePlayer::seek(double timeCentisec) {
      * ma prevenire che il codice venga chiamato mentre un'altra copia è in esecuzione;
      * in caso ciò succeda, la seconda esecuzione viene bloccata.
      */
-    //static std::mutex threadJoinMtx;
 
     threadJoinMtx.lock();    // Prova a fare un lock sul mutex; se si blocca, vuol dire che c'è ancora un thread che sta reinizializzando
     threadJoinMtx.unlock();    // i filtri, quindi blocca finchè non si libera. Appena il lock() ha successo, lo sblocchiamo subito.
@@ -487,7 +463,7 @@ oboe::DataCallbackResult NativePlayer::onAudioReady(
          */
         bufferSize += framesPerBurst_; // Increase buffer size by one burst
         shouldChangeBufferSize = true;
-        //LOGD("UNDERRUN DETECTED");
+        LOGD("UNDERRUN DETECTED");
     } else if (bufferSizeSelection_ > 0 &&
                (bufferSizeSelection_ * framesPerBurst_) != bufferSize) {
 
@@ -519,7 +495,7 @@ oboe::DataCallbackResult NativePlayer::onAudioReady(
     if (intermediateAudioBuffer.empty() ||
         intermediateAudioBuffer.size() < numFrames * currentSampleChannels) {
         memset(temp, 0, sizeof(int16_t) * currentSampleChannels * numFrames);
-        threadReadLock.unlock();
+        playbackCallback();
         return oboe::DataCallbackResult::Continue;
     }
 
@@ -534,10 +510,9 @@ oboe::DataCallbackResult NativePlayer::onAudioReady(
                                       intermediateAudioBuffer.begin() + i);
     }
 
-    //TODO decidere se tenere un numero magico
     intermAudioBufferFillValue = numFrames * 2 * 2;
     if (intermediateAudioBuffer.size() < intermAudioBufferFillValue)
-        threadReadLock.unlock();
+        playbackCallback();
 
     return oboe::DataCallbackResult::Continue;
 }

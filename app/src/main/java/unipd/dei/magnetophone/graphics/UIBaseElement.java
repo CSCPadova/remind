@@ -140,8 +140,6 @@ public abstract class UIBaseElement extends UIComponent {
             if (processTouch(e, x, y)) {
                 // Richiama la callback
                 callback.stateChanged(this);
-            } else if (callbackActUp != null) {
-                callbackActUp.stateChanged(this);
             }
 
             return true;

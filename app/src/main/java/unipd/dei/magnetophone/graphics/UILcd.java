@@ -102,4 +102,10 @@ public class UILcd extends UIBaseElement {
         return false;
     }
 
+
+    @Override
+    public boolean isReleased() {
+        return false;
+    }
+
 }

@@ -35,6 +35,11 @@ public class UIStatic extends UIBaseElement {
     }
 
     @Override
+    public boolean isReleased() {
+        return false;
+    }
+
+    @Override
     protected boolean processTouch(MotionEvent e, int x, int y) {
         return false;
     }

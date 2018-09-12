@@ -18,11 +18,7 @@
 
 #define BUFFER_SIZE_AUTOMATIC 0
 
-#define THR_READ_WAIT_TIMEOUT_USEC (1000)
-
 static std::mutex threadJoinMtx;
-
-static std::mutex threadReadLock;
 
 class NativePlayer : oboe::AudioStreamCallback {
 
@@ -53,7 +49,6 @@ class NativePlayer : oboe::AudioStreamCallback {
 
     SongType songType;
     std::thread *fastThread = nullptr;
-    std::thread *readThread = nullptr;
 
     bool reverse;
 
@@ -95,9 +90,6 @@ private:
 
     //quanto riempire il buffer?
     int intermAudioBufferFillValue;
-
-    bool threadNeedRead=true;
-    bool threadReadRun=true;
 
     void closeOutputStream();
 

@@ -47,4 +47,10 @@ public class UILed extends UIBaseElement {
         return false;
     }
 
+
+    @Override
+    public boolean isReleased() {
+        return false;
+    }
+
 }

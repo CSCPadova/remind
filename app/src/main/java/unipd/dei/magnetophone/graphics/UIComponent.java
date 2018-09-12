@@ -2,6 +2,7 @@ package unipd.dei.magnetophone.graphics;
 
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.util.Log;
 import android.view.MotionEvent;
 
 /**
@@ -15,7 +16,6 @@ public abstract class UIComponent implements Comparable<UIComponent> {
     protected boolean visible;
 
     protected ComponentCallback callback;
-    protected ComponentCallback callbackActUp;
 
 
     protected UIComponent(int zIndex) {
@@ -54,10 +54,6 @@ public abstract class UIComponent implements Comparable<UIComponent> {
         this.callback = callback;
     }
 
-    public void setCallbackActUp(ComponentCallback callback) {
-        this.callbackActUp = callback;
-    }
-
     public abstract Rect getBoundingRect();
 
     public abstract boolean animate(float frameTime);
@@ -67,4 +63,6 @@ public abstract class UIComponent implements Comparable<UIComponent> {
     public abstract boolean onTouch(MotionEvent e, int x, int y);
 
     public abstract boolean isPressed();
+
+    public abstract boolean isReleased();
 }
