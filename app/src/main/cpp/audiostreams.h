@@ -20,7 +20,7 @@
 namespace audio
 {
 	// Il buffer per passare l'audio da un blocco all'altro
-	constexpr int AudioBufferSize = 2048;//1024
+	constexpr int AudioBufferSize = 1024;//1024
 	using AudioBuffer = std::array<float, AudioBufferSize>;
 
 	enum class Status {
