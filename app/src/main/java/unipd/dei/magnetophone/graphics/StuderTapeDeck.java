@@ -22,7 +22,7 @@ import static java.lang.Thread.sleep;
 //import it.unipd.dei.esp1314.magnetophone.R;
 
 public class StuderTapeDeck extends TapeDeck {
-    private final float VIDEO_OFFSET_STEP = 0.01f;
+    private final float VIDEO_OFFSET_STEP = 0.1f;
     private final PlayerEqualization[] eq_values = {
             PlayerEqualization.CCIR,
             PlayerEqualization.NAB
@@ -182,9 +182,9 @@ public class StuderTapeDeck extends TapeDeck {
         //UIButton[] uiButtons = new UIButton[5];
         final UIButton[] uiButtons = new UIButton[4];
 
-        uiButtons[0] = (UIButton) addComponent(new UIButton(1864 - 75, 18, 4, 172, 172, r.getDrawable(R.raw.btn_settings_up), r.getDrawable(R.raw.btn_settings_down))); // -29px per l'ombra
-        uiButtons[1] = (UIButton) addComponent(new UIButton(2014 - 75, 18, 4, 172, 172, r.getDrawable(R.raw.btn_library_up), r.getDrawable(R.raw.btn_library_down)));
-        uiButtons[2] = (UIButton) addComponent(new UIButton(2164 - 75, 18, 4, 172, 172, r.getDrawable(R.raw.btn_setup_mon_up), r.getDrawable(R.raw.btn_setup_mon_down)));
+        uiButtons[0] = (UIButton) addComponent(new UIButton(1854 - 75, 18, 4, 172, 172, r.getDrawable(R.raw.btn_settings_up), r.getDrawable(R.raw.btn_settings_down))); // -29px per l'ombra
+        uiButtons[1] = (UIButton) addComponent(new UIButton(2074 - 75, 18, 4, 172, 172, r.getDrawable(R.raw.btn_library_up), r.getDrawable(R.raw.btn_library_down)));
+        uiButtons[2] = (UIButton) addComponent(new UIButton(2294 - 75, 18, 4, 172, 172, r.getDrawable(R.raw.btn_setup_mon_up), r.getDrawable(R.raw.btn_setup_mon_down)));
         //uiButtons[3] = (UIButton) addComponent(new UIButton(2314 - 75, 18, 4, 172, 172, r.getDrawable(R.raw.btn_help_up), r.getDrawable(R.raw.btn_help_down)));
         //uiButtons[4] = (UIButton) addComponent(new UIButton(2464-75, 18, 4, 172, 172, r.getDrawable(R.raw.btn_whatsnew_up), r.getDrawable(R.raw.btn_whatsnew_down)));
 
@@ -244,21 +244,21 @@ public class StuderTapeDeck extends TapeDeck {
         //video offset UI
 
 
-        int minus_x_pos = 1778, plus_x_pos = 2305, lcd_v_width = 305, y_pos = 320, width_heigth = 90;
+        int minus_x_pos = 1810, plus_x_pos = 2250, lcd_v_width = 250, y_pos = 320, width_heigth = 90;
 
         addComponent(new UIStatic(minus_x_pos - 14, y_pos - 10, 3, lcd_v_width + width_heigth * 2 + 160, width_heigth + 20, r.getDrawable(R.raw.background_video_offset)));
 
         lcdOffset = (UILcdCustom) addComponent(
-                new UILcdCustom((minus_x_pos + width_heigth) + 29,
+                new UILcdCustom((minus_x_pos + width_heigth) + 49,
                         y_pos + 12, 3, lcd_v_width, (int) (width_heigth * 0.76),
-                        r.getDrawable(R.raw.lcd), 8));
+                        r.getDrawable(R.raw.lcd), 6));
 
         final UIButton[] videoSyncButtons = new UIButton[2];
 
-        videoSyncButtons[0] = (UIButton) addComponent(new UIButton(minus_x_pos,
+        videoSyncButtons[0] = (UIButton) addComponent(new UIButton(minus_x_pos+5,
                 y_pos, 4, width_heigth, width_heigth,
                 r.getDrawable(R.raw.btn_minus), r.getDrawable(R.raw.btn_minus)));
-        videoSyncButtons[1] = (UIButton) addComponent(new UIButton(plus_x_pos,
+        videoSyncButtons[1] = (UIButton) addComponent(new UIButton(plus_x_pos+25,
                 y_pos, 4, width_heigth, width_heigth,
                 r.getDrawable(R.raw.btn_plus), r.getDrawable(R.raw.btn_plus)));
 

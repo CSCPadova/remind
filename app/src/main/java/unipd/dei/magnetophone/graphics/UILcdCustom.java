@@ -2,13 +2,14 @@ package unipd.dei.magnetophone.graphics;
 
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 
 import java.util.concurrent.TimeUnit;
 
 public class UILcdCustom extends UILcd {
 
     public UILcdCustom(int x, int y, int zIndex, int w, int h, Drawable res, int numberDigits) {
-        super(x, y, zIndex, w + 1, h + 1, res);
+        super(x, y, zIndex, w + 1, h + 1, res,0);
 
         if (numberDigits < 5)
             return;
@@ -58,16 +59,21 @@ public class UILcdCustom extends UILcd {
 
         digits[1] = (int) (min / 10);
         digits[2] = (int) (min % 10);
+
         digits[3] = (int) (sec / 10);
         digits[4] = (int) (sec % 10);
+
         int i = digits.length - 1;
+        millis = millis / 10;//toglie le unita' dei millisecondi
+        millis = millis / 10;//toglie le decine dei millisecondi
         while (i >= 5) {
             digits[i] = (int) (millis % 10);
             millis = millis / 10;
             i--;
         }
+
         //Log.d("DEBUG", "DIGITS: " + digits[0] + "|" + digits[1] + "|" + digits[2] + "|"
-        //        + digits[3] + "|" + digits[4] + "|" + digits[5] + "|" + digits[6] + "|" + digits[7]);
+        //       + digits[3] + "|" + digits[4] + "|" + digits[5] + "|" + digits[6]);
 
         changed = true;
     }

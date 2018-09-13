@@ -28,7 +28,7 @@
                 android:layout_margin="5dp"
                 android:text="TextView" />
 
-            <LinearLayout
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -36,16 +36,18 @@
                     android:id="@+id/checkBox_enable_track1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="left|center_vertical"
                     android:text="@string/check_box_enable_track" />
 
                 <Button
                     android:id="@+id/buttonLR1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:text="@string/button_equal_volumes" />
 
 
-            </LinearLayout>
+            </FrameLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -85,7 +87,7 @@
                 android:layout_margin="5dp"
                 android:text="TextView" />
 
-            <LinearLayout
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -93,16 +95,18 @@
                     android:id="@+id/checkBox_enable_track2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="left|center_vertical"
                     android:text="@string/check_box_enable_track" />
 
                 <Button
                     android:id="@+id/buttonLR2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:text="@string/button_equal_volumes" />
 
 
-            </LinearLayout>
+            </FrameLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"

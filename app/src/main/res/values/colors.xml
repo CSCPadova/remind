@@ -6,6 +6,7 @@
 
     <color name="goblinGreen">#168686</color>
     <color name="lvHeaderDividerColor">#168686</color>
+    <color name="lvHeaderDividerColorBlack">#363636</color>
     <color name="lvDividerColor">#E0E0E0</color>
     
     <color name="white">#FFFFFF</color>

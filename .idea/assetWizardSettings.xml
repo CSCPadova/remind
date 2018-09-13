@@ -23,7 +23,7 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
-                                                <entry key="scalingPercent" value="119" />
+                                                <entry key="scalingPercent" value="105" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -34,7 +34,7 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
-                                                <entry key="scalingPercent" value="111" />
+                                                <entry key="scalingPercent" value="110" />
                                                 <entry key="trimmed" value="true" />
                                               </map>
                                             </option>
@@ -45,13 +45,13 @@
                                   </option>
                                   <option name="values">
                                     <map>
-                                      <entry key="backgroundAssetType" value="COLOR" />
                                       <entry key="backgroundColor" value="e6e6e6" />
                                       <entry key="backgroundImage" value="$USER_HOME$/backtransparent.png" />
-                                      <entry key="foregroundImage" value="$USER_HOME$/reeloriginal.png" />
-                                      <entry key="legacyIconShape" value="NONE" />
+                                      <entry key="foregroundImage" value="$USER_HOME$/icon.png" />
+                                      <entry key="legacyIconShape" value="CIRCLE" />
+                                      <entry key="previewDensity" value="XXXHIGH" />
                                       <entry key="showGrid" value="true" />
-                                      <entry key="webIconShape" value="NONE" />
+                                      <entry key="webIconShape" value="CIRCLE" />
                                     </map>
                                   </option>
                                 </PersistentState>
