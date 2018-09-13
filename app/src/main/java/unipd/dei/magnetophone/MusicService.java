@@ -38,6 +38,8 @@ public class MusicService extends Service {
     private OnPlaybackChangeListener playbackChangeListener = null;
     private OnSpeedChangeListener speedChangeListener = null;
 
+    private double videoOffset=0;
+
     public native void init();
 
     public native void loadSong(String paths[], int songType, int songSpeed, String equalization);
@@ -300,6 +302,14 @@ public class MusicService extends Service {
         public void setEqualization(PlayerEqualization eq) {
             MusicService.this.playerEqualization = eq;
             MusicService.this.setEqualization(eq.name());
+        }
+
+        public void setVideoOffsetValue(double value) {
+            videoOffset=value;
+        }
+
+        public double getVideoOffsetValue() {
+            return videoOffset;
         }
 
         public SongSpeed getSpeed() {

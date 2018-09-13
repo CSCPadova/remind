@@ -228,7 +228,7 @@ public class MusicPlayer {
     public void onResume() {
         Log.d("MusicPlayer", "onresume player");
         context.bindService(new Intent(context, MusicService.class), musicServiceConnection, Context.BIND_ABOVE_CLIENT);
-        if(musicServiceBinder!=null) {
+        if (musicServiceBinder != null) {
             vctrl.onSongLoaded(musicServiceBinder.getSong());
             synchronizeVideoWithSong();
         }
@@ -427,10 +427,17 @@ public class MusicPlayer {
     }
 
     public float getVideoSyncOffset() {
-        return vctrl.getVideoOffset();
+        float value = vctrl.getVideoOffset();
+        if (musicServiceBinder != null) {
+            value = (float) (musicServiceBinder.getVideoOffsetValue());
+            vctrl.setVideoOffset(value);
+        }
+        return value;
     }
 
     public void setVideoSyncOffset(float offset) {
+        if (musicServiceBinder != null)
+            musicServiceBinder.setVideoOffsetValue((double) offset);
         vctrl.setVideoOffset(offset);
     }
 

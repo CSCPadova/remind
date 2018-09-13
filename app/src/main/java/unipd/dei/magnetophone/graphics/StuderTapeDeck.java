@@ -305,12 +305,10 @@ public class StuderTapeDeck extends TapeDeck {
         speedKnob.setCallback(new ComponentCallback() {
             @Override
             public void stateChanged(UIComponent obj) {
-                if (speedKnob.isPressed()) {
                     player.setPlayerSpeed(speed_values[speedKnob.getSelectedStep()]);
 
                     if (player.isPlaying())
                         updateRotatingElementSpeed(1);
-                }
             }
         });
 
@@ -318,7 +316,6 @@ public class StuderTapeDeck extends TapeDeck {
         eqKnob.setCallback(new ComponentCallback() {
             @Override
             public void stateChanged(UIComponent obj) {
-                if (eqKnob.isPressed())
                     player.setEqualization(eq_values[eqKnob.getSelectedStep()]);
             }
         });

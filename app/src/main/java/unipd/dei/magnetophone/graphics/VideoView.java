@@ -248,11 +248,6 @@ public class VideoView extends SurfaceView implements SurfaceHolder.Callback, Ru
         seeking = true;
 
         seek(musicPos + videoOffset);
-        //if (seekTo + musicPos < 0) {
-        //   clearSurfaceView = true;
-        //}
-
-        //Log.d("VideoView", "seekTo: "+seekTo+" Music pos: "+(musicPos * 1000));
     }
 
     /* Eventi della SurfaceView */
@@ -349,6 +344,7 @@ public class VideoView extends SurfaceView implements SurfaceHolder.Callback, Ru
             /* - DECODIFICA ------------------- */
 
             // Richiedo al decoder su quale buffer in uscita troverò il frame decodificato.
+
             bufferIndex = decoder.dequeueOutputBuffer(info, 10000);
 
             // Il valore ritornato può avere più significati
