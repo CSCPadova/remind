@@ -27,8 +27,7 @@ public class VideoView extends SurfaceView implements SurfaceHolder.Callback, Ru
     private MediaCodec decoder;
 
     private boolean running, seeking, breakPause;
-    private long seekTo, musicPos;
-    private float videoOffset;
+    private long seekTo, musicPos, videoOffset;
 
     private float playbackRate;
 
@@ -231,11 +230,10 @@ public class VideoView extends SurfaceView implements SurfaceHolder.Callback, Ru
 
             return;
         }
-
         // Se c'è un video caricato
         if (extractor != null && decoder != null) {
             // Trasformo in microsecondi
-            seekTo = to * 1000 + (long) (videoOffset * 1000);
+            seekTo = to * 1000;
             breakPause = true;
         }
     }
@@ -246,13 +244,15 @@ public class VideoView extends SurfaceView implements SurfaceHolder.Callback, Ru
     }
 
     public void setVideoOffset(float offset) {
-        videoOffset = offset * 1000.0f;
+        videoOffset = (long) (offset * 1000.0f);
         seeking = true;
 
-        seek(musicPos);
-        if (seekTo + musicPos < 0) {
-            clearSurfaceView = true;
-        }
+        seek(musicPos + videoOffset);
+        //if (seekTo + musicPos < 0) {
+        //   clearSurfaceView = true;
+        //}
+
+        //Log.d("VideoView", "seekTo: "+seekTo+" Music pos: "+(musicPos * 1000));
     }
 
     /* Eventi della SurfaceView */
@@ -301,7 +301,6 @@ public class VideoView extends SurfaceView implements SurfaceHolder.Callback, Ru
 
 
     /* Codice del thread */
-
     @Override
     public void run() {
         Log.d("VideoView", "Thread started");
@@ -368,7 +367,6 @@ public class VideoView extends SurfaceView implements SurfaceHolder.Callback, Ru
                     try {
                         Thread.sleep(100);
                     } catch (InterruptedException e1) {
-                        e1.printStackTrace();
                     }
                     break;
 
@@ -441,21 +439,9 @@ public class VideoView extends SurfaceView implements SurfaceHolder.Callback, Ru
             } else {
                 // Se non sono in reverse
                 if (playbackRate >= 0) {
+
                     // Se dall'esterno è stato segnalato di saltare a un timestamp specifico
-                    //prestando attenzione all'offset audio-video che si puo' settare
-                    //antecedente a zero
-                    if (seekTo < -1) {
-                        if (seekTo + musicPos * 1000 >= 0) {
-                            seekTo = seekTo + musicPos * 1000;
-                        }
-                        if (clearSurfaceView) {
-                            //TODO dovrebbe pulirla invece di mostrare un frame video statico ma non ci riesco
-                            clearSurfaceViewCanvas();
-                            clearSurfaceView = false;
-                            extractor.seekTo(0, MediaExtractor.SEEK_TO_PREVIOUS_SYNC);
-                            doFlush = true;
-                        }
-                    } else if (seekTo >= 0) {
+                    if (seekTo >= 0) {
                         // Salto ad keyframe subito precedente al timestamp voluto
                         extractor.seekTo(seekTo, MediaExtractor.SEEK_TO_PREVIOUS_SYNC);
 
@@ -470,7 +456,8 @@ public class VideoView extends SurfaceView implements SurfaceHolder.Callback, Ru
 
                         // Resetto il tramite con l'esterno così il prossimo giro non ricominicio.
                         seekTo = -1;
-                    } else {
+
+                    } else if (musicPos + videoOffset >= 0) {
                         // Avanza al sample successivo
                         extractor.advance();
                     }
@@ -480,7 +467,7 @@ public class VideoView extends SurfaceView implements SurfaceHolder.Callback, Ru
                     // lo faccio saltando al keyframe precedente.
                     extractor.seekTo(info.presentationTimeUs - 1000, MediaExtractor.SEEK_TO_PREVIOUS_SYNC);
 
-                    // Segnalo di fare pulizia, così che vengano elaborati direttamente i frame a cui sono saltato.
+                    // Segnalo di fare pulizia, così che vangano elaborati direttamente i frame a cui sono saltato.
                     doFlush = true;
 
                 }
@@ -494,10 +481,6 @@ public class VideoView extends SurfaceView implements SurfaceHolder.Callback, Ru
         }
 
         Log.d("VideoView", "Thread ended");
-    }
-
-    private void clearSurfaceViewCanvas() {
-        //TODO non so come fare
     }
 
     /* Eventi del MusicService */
@@ -524,15 +507,18 @@ public class VideoView extends SurfaceView implements SurfaceHolder.Callback, Ru
      */
     @Override
     public void onSeek(float position) {
-        int pos = (int) (position * 1000);
-        seek(pos);
+        int pos = Math.round(position * 1000);
         musicPos = pos;
+        seek(pos + videoOffset);
+
     }
 
     @Override
     public void onProgress(float position) {
+        //if the video need to start (position before<0 and now >0) seek to the start
+        if (Math.round(position * 1000) + videoOffset > 0 && musicPos + videoOffset < 0)
+            seek(Math.round(position * 1000) + videoOffset);
         musicPos = Math.round(position * 1000);
-        //Log.d("VideoView", " musicPos: " + musicPos + "with offset" + videoOffset);
     }
 
     /**
@@ -547,11 +533,17 @@ public class VideoView extends SurfaceView implements SurfaceHolder.Callback, Ru
     public void onPlaybackRateChanged(float multiplier, boolean doPlay) {
         // Al cambio di velocità ne approfitto per sincronizzarmi con la musica.
         // Evito di farlo in fastreverse per evitare problemi.
-        if (multiplier >= 0) {
-            seek(musicPos);
-            if (seekTo < -1 && multiplier > 0)
-                seekTo = (long) (seekTo * multiplier);
-        }
+        //   if (multiplier >= 0) {
+        //       seek(musicPos);
+        //       if (seekTo < -1 && multiplier > 0)
+        //           seekTo = (long) (seekTo * multiplier);
+        //   }
+
+
+        // Al cambio di velocità ne approfitto per sincronizzarmi con la musica.
+        // Evito di farlo in fastreverse per evitare problemi.
+        if (multiplier >= 0)
+            seek(musicPos + videoOffset);
 
 
         Log.d("VideoView", "Change speed to " + multiplier);

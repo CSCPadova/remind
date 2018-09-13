@@ -34,13 +34,13 @@ public class StuderTapeDeck extends TapeDeck {
             SongSpeed.SONG_SPEED_7_5,
             SongSpeed.SONG_SPEED_3_75
     };
+    private final UIKnob speedKnob, eqKnob;            // Manopole (per due non conveniva usare un'array)
     // Componenti che cambieranno stato ma che sono simili tra loro
     private UILed[] controlLeds;
     private UILed tapeKnob;
     private UIConnector[] tapeChunks;
     // Componenti che userò spesso
     private UITapeReel leftReel, rightReel;    // Bobine
-    private final UIKnob speedKnob, eqKnob;            // Manopole (per due non conveniva usare un'array)
     private UILcd lcd;                            // Display
     private UILcdCustom lcdOffset;
     private float video_offset_increment;
@@ -255,10 +255,10 @@ public class StuderTapeDeck extends TapeDeck {
 
         final UIButton[] videoSyncButtons = new UIButton[2];
 
-        videoSyncButtons[0] = (UIButton) addComponent(new UIButton(minus_x_pos+5,
+        videoSyncButtons[0] = (UIButton) addComponent(new UIButton(minus_x_pos + 5,
                 y_pos, 4, width_heigth, width_heigth,
                 r.getDrawable(R.raw.btn_minus), r.getDrawable(R.raw.btn_minus)));
-        videoSyncButtons[1] = (UIButton) addComponent(new UIButton(plus_x_pos+25,
+        videoSyncButtons[1] = (UIButton) addComponent(new UIButton(plus_x_pos + 25,
                 y_pos, 4, width_heigth, width_heigth,
                 r.getDrawable(R.raw.btn_plus), r.getDrawable(R.raw.btn_plus)));
 
@@ -305,7 +305,7 @@ public class StuderTapeDeck extends TapeDeck {
         speedKnob.setCallback(new ComponentCallback() {
             @Override
             public void stateChanged(UIComponent obj) {
-                if(speedKnob.isPressed()) {
+                if (speedKnob.isPressed()) {
                     player.setPlayerSpeed(speed_values[speedKnob.getSelectedStep()]);
 
                     if (player.isPlaying())
@@ -318,8 +318,8 @@ public class StuderTapeDeck extends TapeDeck {
         eqKnob.setCallback(new ComponentCallback() {
             @Override
             public void stateChanged(UIComponent obj) {
-                if(eqKnob.isPressed())
-                player.setEqualization(eq_values[eqKnob.getSelectedStep()]);
+                if (eqKnob.isPressed())
+                    player.setEqualization(eq_values[eqKnob.getSelectedStep()]);
             }
         });
 
@@ -331,19 +331,13 @@ public class StuderTapeDeck extends TapeDeck {
 
     private void startIncrementing(boolean forward) {
         video_offset_increment = VIDEO_OFFSET_STEP;
-
-        Log.d("DEBUG", "startIncrementing");
         if (!forward)
             video_offset_increment = video_offset_increment * -1;
         setIsIncrementing(true);
         new Thread(new Runnable() {
             public void run() {
-
-                Log.d("DEBUG", "THREAD run");
                 int count = 0;
                 while (isIncrementing()) {
-
-                    Log.d("DEBUG", "while (isIncrementing())");
                     video_offset_increment = Math.min(video_offset_increment * 1.05f, 3000);
                     player.setVideoSyncOffset(player.getVideoSyncOffset() + video_offset_increment);
                     lcdOffset.setTime(player.getScaledTime(player.getVideoSyncOffset()));
@@ -367,7 +361,6 @@ public class StuderTapeDeck extends TapeDeck {
     }
 
     synchronized private void stopIncrementing() {
-        Log.d("DEBUG", "stopIncrementing");
         video_offset_increment = 0;
         setIsIncrementing(false);
     }

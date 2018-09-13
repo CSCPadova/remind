@@ -2,7 +2,6 @@ package unipd.dei.magnetophone.graphics;
 
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.MotionEvent;
 
 /**
@@ -42,12 +41,9 @@ public class UIButton extends UIBaseElement {
     public boolean animate(float frameTime) {
         if (changed) {
             resource = pressed ? downRes : upRes;
-
             changed = false;
-
             return true;
         }
-
         return false;
     }
 
@@ -66,12 +62,9 @@ public class UIButton extends UIBaseElement {
     protected boolean processTouch(MotionEvent e, int x, int y) {
         boolean old = pressed;
         if (e.getAction() == MotionEvent.ACTION_DOWN && !pressed) {
-            Log.d("DEBUG TOUCH", "ACTION_DOWN");
             pressed = true;
             released = false;
         } else if (e.getAction() == MotionEvent.ACTION_UP && !released) {
-
-            Log.d("DEBUG TOUCH", "MotionEvent.ACTION_UP");
             pressed = false;
             released = true;
         } else {
