@@ -241,25 +241,24 @@ public class StuderTapeDeck extends TapeDeck {
             }
         });*/
 
+
         //video offset UI
 
-
-        int minus_x_pos = 1810, plus_x_pos = 2250, lcd_v_width = 250, y_pos = 320, width_heigth = 90;
-
-        addComponent(new UIStatic(minus_x_pos - 14, y_pos - 10, 3, lcd_v_width + width_heigth * 2 + 160, width_heigth + 20, r.getDrawable(R.raw.background_video_offset)));
-
+        //lcd: 69x101
+        addComponent(new UIStatic(1796, 310, 3, 590, 110, r.getDrawable(R.raw.background_video_offset)));
+        int wLCD=440;
         lcdOffset = (UILcdCustom) addComponent(
-                new UILcdCustom((minus_x_pos + width_heigth) + 49,
-                        y_pos + 12, 3, lcd_v_width, (int) (width_heigth * 0.76),
+                new UILcdCustom(1940,
+                        327, 3, wLCD+10, wLCD/6*(101/69),
                         r.getDrawable(R.raw.lcd), 6));
 
         final UIButton[] videoSyncButtons = new UIButton[2];
 
-        videoSyncButtons[0] = (UIButton) addComponent(new UIButton(minus_x_pos + 5,
-                y_pos, 4, width_heigth, width_heigth,
+        videoSyncButtons[0] = (UIButton) addComponent(new UIButton(1815,
+                320, 4, 90, 90,
                 r.getDrawable(R.raw.btn_minus), r.getDrawable(R.raw.btn_minus)));
-        videoSyncButtons[1] = (UIButton) addComponent(new UIButton(plus_x_pos + 25,
-                y_pos, 4, width_heigth, width_heigth,
+        videoSyncButtons[1] = (UIButton) addComponent(new UIButton(2275,
+                320, 4, 90, 90,
                 r.getDrawable(R.raw.btn_plus), r.getDrawable(R.raw.btn_plus)));
 
         videoSyncButtons[0].setCallback(new ComponentCallback() {
