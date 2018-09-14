@@ -488,31 +488,17 @@ oboe::DataCallbackResult NativePlayer::onAudioReady(
     if (playbackState == PLAYBACK_STATE_STOPPED) {
         memset(temp, 0, sizeof(int16_t) * currentSampleChannels * numFrames);
         return oboe::DataCallbackResult::Continue;
-    } else if (playbackState == PLAYBACK_STATE_PLAYING && waveReader->isEof()) {
-        stop();
-    }
-
-    if (intermediateAudioBuffer.empty() ||
-        intermediateAudioBuffer.size() < numFrames * currentSampleChannels) {
-        memset(temp, 0, sizeof(int16_t) * currentSampleChannels * numFrames);
-        playbackCallback();
-        return oboe::DataCallbackResult::Continue;
-    }
-
-    if (!intermediateAudioBuffer.empty() &&
-        intermediateAudioBuffer.size() >= numFrames * currentSampleChannels) {
-
-        int i;
-        for (i = 0; i < numFrames * 2; i++) {
-            temp[i] = (int16_t) (intermediateAudioBuffer.at(i) * MASTER_VOLUME);
-        }
-        intermediateAudioBuffer.erase(intermediateAudioBuffer.begin(),
-                                      intermediateAudioBuffer.begin() + i);
     }
 
     intermAudioBufferFillValue = numFrames * 2 * 2;
-    if (intermediateAudioBuffer.size() < intermAudioBufferFillValue)
-        playbackCallback();
+    while (intermediateAudioBuffer.size() < intermAudioBufferFillValue && playbackCallback());
+
+    int i;
+    for (i = 0; i < numFrames * currentSampleChannels; i++) {
+        temp[i] = (int16_t) (intermediateAudioBuffer.at(i) * MASTER_VOLUME);
+    }
+    intermediateAudioBuffer.erase(intermediateAudioBuffer.begin(),
+                                  intermediateAudioBuffer.begin() + i);
 
     return oboe::DataCallbackResult::Continue;
 }

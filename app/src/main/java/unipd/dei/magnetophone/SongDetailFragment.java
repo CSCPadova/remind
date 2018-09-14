@@ -23,6 +23,7 @@ import android.widget.TextView;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import unipd.dei.magnetophone.activity.LibraryActivity;
 import unipd.dei.magnetophone.activity.deprecated.SongDetailActivity;
@@ -58,7 +59,6 @@ public class SongDetailFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         //se siamo stati chiamati con la giusta chiave
         //getArguments ritorna il Bundle che ci è stato dato quando siamo nati nati, creati da un'activity,
         //sempre che quell'activity abbia provveduto a darcene uno
@@ -185,11 +185,9 @@ public class SongDetailFragment extends Fragment {
 
             TextView descriptionText = (TextView) v.findViewById(R.id.effective_description);
 
-            if (s.getDescription() != null && s.getDescription().compareTo(Song.INVALID)!=0) {
+            if (s.getDescription() != null && s.getDescription().compareTo(Song.INVALID) != 0) {
                 descriptionText.setText(s.getDescription());
-            }
-            else
-            {
+            } else {
                 v.findViewById(R.id.info_description).setVisibility(View.GONE);
                 v.findViewById(R.id.item_separator19).setVisibility(View.GONE);
                 v.findViewById(R.id.effective_description).setVisibility(View.GONE);
@@ -274,6 +272,11 @@ public class SongDetailFragment extends Fragment {
 
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+    }
+
     //############# sessione per lo slide show ###############
 
     /**
@@ -334,6 +337,7 @@ public class SongDetailFragment extends Fragment {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
+
             View rootView = inflater.inflate(R.layout.single_photo_layout, container, false);
             Bundle args = getArguments();
             int photoIndex = args.getInt(ARG_OBJECT);//prendo l'indice della foto
@@ -349,8 +353,7 @@ public class SongDetailFragment extends Fragment {
                 if (photoFile.exists()) {
 
                     Bitmap myBitmap = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
-
-                    ImageView myImage = (ImageView) rootView.findViewById(R.id.photoImage);
+                    ImageView myImage = rootView.findViewById(R.id.photoImage);
 
                     //int height = myBitmap.getHeight(), width = myBitmap.getWidth();
 
@@ -370,10 +373,14 @@ public class SongDetailFragment extends Fragment {
 //					{
                     myImage.setImageBitmap(myBitmap);
 //					}
-
                 }
             } catch (NullPointerException e) {
                 Log.d("SongDetailFragment", "photos directory not available for this Song");
+            } catch (java.lang.OutOfMemoryError e) {
+                e.printStackTrace();
+                System.gc();
+            } catch (java.lang.RuntimeException e) {
+                e.printStackTrace();
             }
 
             return rootView;

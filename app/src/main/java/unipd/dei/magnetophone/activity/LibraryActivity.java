@@ -20,6 +20,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDialog;
 import android.support.v7.app.AppCompatDialogFragment;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -140,10 +141,6 @@ public class LibraryActivity extends AppCompatActivity implements
             SharedPreferences songPrefSelected = this.getSharedPreferences("selected", Context.MODE_PRIVATE);
             int selectedId = songPrefSelected.getInt("song_id", -1);
 
-
-            // Creo e aggiungo la progressbar, posizionandola all'inizio del content (sotto la ActionBar)
-            final FrameLayout decorView = (FrameLayout) getWindow().getDecorView();
-
             //se c'è un brano nel magnetofono e non sto tornando dalla ricerca, faccio vedere il brano nel magnetofono
             if (id != -1 && fromSearch == -1) {
 
@@ -170,8 +167,6 @@ public class LibraryActivity extends AppCompatActivity implements
             } else if (fromSearch == 1 && selectedId != -1)
             //stiamo tornando da una ricerca o da un import o da una modifica e c'è un brano selezionato
             {
-
-
                 songPrefSelected = this.getSharedPreferences("selected", Context.MODE_PRIVATE);
 
                 id = songPrefSelected.getInt("song_id", -1);
@@ -184,7 +179,6 @@ public class LibraryActivity extends AppCompatActivity implements
             } else//non c'è nulla nel magnetofono e non stiamo tornado da alcuna ricerca,
             //dunque faccio comparire un detail che inviti a scegliere un nuovo brano
             {
-
                 Bundle arguments = new Bundle();
                 //inserisco nel bundle l'info -3, che per mia convenzione considero come l'informazione di
                 //mostrare il default detail
@@ -206,7 +200,7 @@ public class LibraryActivity extends AppCompatActivity implements
     @Override
     public void onItemSelected(ListView listView, View view, int position) {
 
-
+        Log.d("DEBUG","START");
         Song currentSong = LibraryFragment.finalList.get(position);
         //prendo l'id della song scelta
         int id = currentSong.getId();
@@ -256,7 +250,7 @@ public class LibraryActivity extends AppCompatActivity implements
             detailIntent.putExtra(SongDetailFragment.ARG_ITEM_ID, id);
             startActivity(detailIntent);
         }
-
+        Log.d("DEBUG","END");
     }
 
     /**
@@ -359,8 +353,6 @@ public class LibraryActivity extends AppCompatActivity implements
             Toast.makeText(getApplicationContext(), getString(R.string.charging_song_alert), Toast.LENGTH_SHORT).show();
         }
         ////
-
-
     }
 
     /**

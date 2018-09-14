@@ -164,6 +164,10 @@ public class SlideShowActivity extends AppCompatActivity {
             } catch (NullPointerException e) {
                 Log.e("SlideShowActivity", "photos directory not available for this Song");
             }
+            catch(java.lang.OutOfMemoryError e){
+                e.printStackTrace();
+                System.gc();
+            }
 
             return rootView;
         }
