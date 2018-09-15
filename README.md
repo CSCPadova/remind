@@ -58,10 +58,12 @@ The folllowing libraries are used in the application:
 *   Android audio `Google Oboe`: <https://www.github.com/google/oboe>
 
 *   PDF Viewer `AndroidPdfViewer`: <https://www.github.com/barteksc/AndroidPdfViewer>
+   
+*   Efficient Image Library `Glide`: <https://github.com/bumptech/glide>
 
 ## References
 
-A lot actually, to many to put them here.
+A lot actually.
 
 ## Notes
 
