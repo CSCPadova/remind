@@ -88,7 +88,7 @@ public class AudioFilePickerActivity extends AppCompatActivity {
                 //Se non sto riproducendo gia' con il magnetofono faccio ascoltare il file
                 //Altrimenti non disturbo la riproduzione
                 //se il path e' null e quindi mp va in errore allora il file non e' valido
-                if (!player.isPlaying()) {
+                if (!player.isPlaying() && fileName!=null) {
                     try {
                         //Seleziono un altro brano, quindi resetto il file
                         if (mp.isPlaying())
