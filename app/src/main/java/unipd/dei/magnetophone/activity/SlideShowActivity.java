@@ -17,6 +17,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+
 import java.io.File;
 
 import unipd.dei.magnetophone.R;
@@ -138,9 +140,10 @@ public class SlideShowActivity extends AppCompatActivity {
                 File photoFile = slideSong.getPhotosFiles()[photoIndex];
 
                 if (photoFile.exists()) {
-                    Bitmap myBitmap = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
+                    //Bitmap myBitmap = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
 
                     ImageView myImage = rootView.findViewById(R.id.photoImage);
+                    Glide.with(this).load(photoFile.getAbsolutePath()).into(myImage);
 
                     //int height = myBitmap.getHeight(), width = myBitmap.getWidth();
 
@@ -157,7 +160,7 @@ public class SlideShowActivity extends AppCompatActivity {
 //					}
 //					else
 //					{
-                    myImage.setImageBitmap(myBitmap);
+                    //myImage.setImageBitmap(myBitmap);
 //					}
 
                 }
