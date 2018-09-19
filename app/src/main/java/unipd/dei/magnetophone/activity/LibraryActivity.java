@@ -199,8 +199,6 @@ public class LibraryActivity extends AppCompatActivity implements
      */
     @Override
     public void onItemSelected(ListView listView, View view, int position) {
-
-        Log.d("DEBUG","START");
         Song currentSong = LibraryFragment.finalList.get(position);
         //prendo l'id della song scelta
         int id = currentSong.getId();
@@ -250,7 +248,6 @@ public class LibraryActivity extends AppCompatActivity implements
             detailIntent.putExtra(SongDetailFragment.ARG_ITEM_ID, id);
             startActivity(detailIntent);
         }
-        Log.d("DEBUG","END");
     }
 
     /**

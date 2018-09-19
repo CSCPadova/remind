@@ -433,18 +433,22 @@ public class StuderTapeDeck extends TapeDeck {
 
     @Override
     public void onMusicFastForward() {
-        // Il nastro viaggia veloce in avanti
-        updateRotatingElementSpeed(player.getFastSpeedMultiplier());
-
-        setLeds(1);
+        //abilita il fastforward solo se c'e' ancora audioS
+        if (player.getCurrentTimestamp() < songDuration) {
+            // Il nastro viaggia veloce in avanti
+            updateRotatingElementSpeed(player.getFastSpeedMultiplier());
+            setLeds(1);
+        }
     }
 
     @Override
     public void onMusicFastReverse() {
-        // Il nastro viaggia veloce all'indietro
-        updateRotatingElementSpeed(-player.getFastSpeedMultiplier());
-
-        setLeds(0);
+        //abilita il fastreverse solo se c'e' ancora audio
+        if (player.getCurrentTimestamp() > 0) {
+            // Il nastro viaggia veloce all'indietro
+            updateRotatingElementSpeed(-player.getFastSpeedMultiplier());
+            setLeds(0);
+        }
     }
 
     @Override
