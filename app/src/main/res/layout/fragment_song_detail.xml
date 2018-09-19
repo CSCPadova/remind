@@ -796,36 +796,6 @@
             android:text="@string/description_not_available"
             android:textIsSelectable="false" />
 
-        <!-- qui il file pdf -->
-
-        <TextView
-            android:id="@+id/info_pdf_file"
-            style="@style/listViewHeaderItem"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:gravity="bottom|left"
-            android:paddingTop="20dp"
-            android:text="@string/pdf_button"
-            android:textColor="@color/lvHeaderTextColor"
-            android:textIsSelectable="false" />
-
-        <View
-            android:id="@+id/item_separator20"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/lvDividerHeight"
-            android:layout_marginTop="@dimen/lvSectionDividerMarginTop"
-            android:background="@color/lvHeaderDividerColor" />
-
-        <ImageView
-            android:id="@+id/pdf_preview"
-            style="@style/listViewPrimaryDetail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:ellipsize="marquee"
-            android:text="@string/pdf_not_available"
-            android:textIsSelectable="false" />
-
         <!-- qui la slide show -->
 
         <TextView
@@ -861,6 +831,36 @@
                 android:paddingTop="4dp"
                 android:textColor="#fff" />
         </android.support.v4.view.ViewPager>
+
+        <!-- qui il file pdf -->
+
+        <TextView
+            android:id="@+id/info_pdf_file"
+            style="@style/listViewHeaderItem"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:gravity="bottom|left"
+            android:paddingTop="20dp"
+            android:text="@string/pdf_button"
+            android:textColor="@color/lvHeaderTextColor"
+            android:textIsSelectable="false" />
+
+        <View
+            android:id="@+id/item_separator20"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/lvDividerHeight"
+            android:layout_marginTop="@dimen/lvSectionDividerMarginTop"
+            android:background="@color/lvHeaderDividerColor" />
+
+        <ImageView
+            android:id="@+id/pdf_preview"
+            style="@style/listViewPrimaryDetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:ellipsize="marquee"
+            android:text="@string/pdf_not_available"
+            android:textIsSelectable="false" />
 
     </LinearLayout>
 

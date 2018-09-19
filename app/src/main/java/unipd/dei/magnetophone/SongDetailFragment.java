@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.pdf.PdfRenderer;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
@@ -247,11 +248,16 @@ public class SongDetailFragment extends Fragment {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+                } else {
+                    //pdfdefaultimage.png
+                    String imageUrl = Uri.parse("android.resource://" + R.class.getPackage().getName() + "/" + R.drawable.pdfdefaultimage).toString();
+
+                    Glide.with(this).load(imageUrl).override(600, 200).into(pdfPreview);
+
+                    //v.findViewById(R.id.info_pdf_file).setVisibility(View.GONE);
+                    //v.findViewById(R.id.item_separator20).setVisibility(View.GONE);
+                    //v.findViewById(R.id.pdf_preview).setVisibility(View.GONE);
                 }
-            } else {
-                v.findViewById(R.id.info_pdf_file).setVisibility(View.GONE);
-                v.findViewById(R.id.item_separator20).setVisibility(View.GONE);
-                v.findViewById(R.id.pdf_preview).setVisibility(View.GONE);
             }
 
             mViewPager = v.findViewById(R.id.myPager);
