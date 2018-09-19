@@ -112,6 +112,7 @@ public class SongDetailFragment extends Fragment {
             ((TextView) v.findViewById(R.id.my_signature)).setText(s.getSignature());
             ((TextView) v.findViewById(R.id.info_provenance)).setText(s.getProvenance());
             ((TextView) v.findViewById(R.id.info_equalization)).setText(s.getEqualization());
+            ((TextView) v.findViewById(R.id.info_tape_width)).setText(s.getTapeWidth());
             ((TextView) v.findViewById(R.id.info_speed)).setText("" + s.getSpeed());
             ((TextView) v.findViewById(R.id.info_numberOfTacks)).setText("" + s.getNumberOfTracks());
 

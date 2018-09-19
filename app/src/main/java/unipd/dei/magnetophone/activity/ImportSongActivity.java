@@ -52,6 +52,8 @@ public class ImportSongActivity extends AppCompatActivity {
     private Fragment obligatoryFrag;                //Reference al primo fragment: campi obbligatori
     private Song songToAdd = new Song();            //Canzone da aggiungere al database
 
+    private boolean isEditingSong = false;
+
     /**
      * ritorna una lista con tutti i path delle sottocartelle presenti nella cartella magnetofono, dalle quali si
      * possono scegliere quelle per foto e video
@@ -184,7 +186,6 @@ public class ImportSongActivity extends AppCompatActivity {
                 warning = getString(R.string.unknown_error);
 
             Toast.makeText(this, warning, Toast.LENGTH_LONG).show();
-
         }
 
     }
@@ -255,6 +256,8 @@ public class ImportSongActivity extends AppCompatActivity {
         private boolean fourthSelected = false;
 
         private boolean allowStereoWAV = false;
+
+        private Song songToUpdate;
 
         @Override
         public void onCreatePreferences(Bundle bundle, String s) {
@@ -355,36 +358,6 @@ public class ImportSongActivity extends AppCompatActivity {
             // MAYBE_TODO risolvere questa mancanza
             // questa mancanza sembra essere un bug della libreria
             //prefYear.getEditText().setInputType(InputType.TYPE_CLASS_NUMBER);
-
-
-            //########### setto i valori di default che appariranno come scritte nelle preference
-            prefSignature.setTitle(getString(R.string.signature_title) + ": "
-                    + getString(R.string.signature_canzone_default_importazione));
-            prefProvenance.setTitle(getString(R.string.provenance_title) +
-                    ": " + getString(R.string.provenance_canzone_default_importazione));
-
-            prefEqualization.setTitle(getString(R.string.title_equalizzazione_importazione) + ": " + prefEqualization.getValue());
-            prefSpeed.setTitle(getString(R.string.title_velocita_importazione) + ": " + prefSpeed.getEntry());
-
-
-            prefAuthorName.setTitle(getString(R.string.song_author_title_activity_single_song_settings) +
-                    ": " + getString(R.string.nome_canzone_default_importazione));
-
-            prefSongName.setTitle(getString(R.string.song_name_title_activity_single_song_settings) +
-                    ": " + getString(R.string.titolo_canzone_default_importazione));
-
-            prefYear.setTitle(getString(R.string.song_year_title_activity_single_song_settings) +
-                    ": " + getString(R.string.anno_canzone_default_importazione));
-
-            prefTapeWidth.setTitle(getString(R.string.tape_width_title) +
-                    ": " + prefTapeWidth.getEntry());
-
-            prefNumberOfTracks.setTitle(getString(R.string.number_of_tracks_title) + ":" + prefNumberOfTracks.getEntry());
-
-            prefTrack1.setTitle(getString(R.string.title_canale1_importazione) + ": ");
-            prefTrack2.setTitle(getString(R.string.title_canale1_importazione) + ": ");
-            prefTrack3.setTitle(getString(R.string.title_canale1_importazione) + ": ");
-            prefTrack4.setTitle(getString(R.string.title_canale1_importazione) + ": ");
 
 //			prefSampleRate.setTitle(getString(R.string.sample_rate_title) + ": " + prefSampleRate.getEntry());
 //			prefExtension.setTitle(getString(R.string.extension_title) + ": " + prefExtension.getEntry());
@@ -620,7 +593,7 @@ public class ImportSongActivity extends AppCompatActivity {
                     ((ImportSongActivity) getActivity()).songToAdd.setVideo(null);
 
                     prefPDFFile.setSummary(getString(R.string.pdf_path_summary));
-                    ((ImportSongActivity) getActivity()).songToAdd.setPDF(null); //salvo nel
+                    ((ImportSongActivity) getActivity()).songToAdd.setPDF(null);
 
                     return false;
                 }
@@ -642,6 +615,195 @@ public class ImportSongActivity extends AppCompatActivity {
             prefTapeWidth.setOnPreferenceChangeListener(eventChange);
 
             prefDescription.setOnPreferenceChangeListener(eventChange);
+
+            //########### setto i valori di default che appariranno come scritte nelle preference
+            prefSignature.setTitle(getString(R.string.signature_title) + ": "
+                    + getString(R.string.signature_canzone_default_importazione));
+            prefProvenance.setTitle(getString(R.string.provenance_title) +
+                    ": " + getString(R.string.provenance_canzone_default_importazione));
+
+            prefEqualization.setTitle(getString(R.string.title_equalizzazione_importazione) + ": " + prefEqualization.getValue());
+            prefSpeed.setTitle(getString(R.string.title_velocita_importazione) + ": " + prefSpeed.getEntry());
+
+            prefAuthorName.setTitle(getString(R.string.song_author_title_activity_single_song_settings) +
+                    ": " + getString(R.string.nome_canzone_default_importazione));
+
+            prefSongName.setTitle(getString(R.string.song_name_title_activity_single_song_settings) +
+                    ": " + getString(R.string.titolo_canzone_default_importazione));
+
+            prefYear.setTitle(getString(R.string.song_year_title_activity_single_song_settings) +
+                    ": " + getString(R.string.anno_canzone_default_importazione));
+
+            prefTapeWidth.setTitle(getString(R.string.tape_width_title) +
+                    ": " + prefTapeWidth.getEntry());
+
+            prefNumberOfTracks.setTitle(getString(R.string.number_of_tracks_title) + ":" + prefNumberOfTracks.getEntry());
+
+            prefTrack1.setTitle(getString(R.string.title_canale1_importazione) + ": ");
+            prefTrack2.setTitle(getString(R.string.title_canale1_importazione) + ": ");
+            prefTrack3.setTitle(getString(R.string.title_canale1_importazione) + ": ");
+            prefTrack4.setTitle(getString(R.string.title_canale1_importazione) + ": ");
+
+            Intent intent = getActivity().getIntent();
+            try {
+                songToUpdate = Song.songFromIntent(intent);
+            } catch (java.security.InvalidParameterException e) {
+                songToUpdate = null;
+            }
+            if (songToUpdate != null) {
+//dvvsdsd
+                prefSignature.setText(songToUpdate.getSignature());
+
+                prefProvenance.setText(songToUpdate.getProvenance());
+
+                prefSignature.setTitle(getString(R.string.signature_title) + ": "
+                        + songToUpdate.getSignature());
+                prefProvenance.setTitle(getString(R.string.provenance_title) +
+                        ": " + songToUpdate.getProvenance());
+
+                String[] mTestArray = getResources().getStringArray(R.array.listaEqualizzazioni);
+
+                for (int i = 0; i < mTestArray.length; i++) {
+                    if (songToUpdate.getEqualization().compareTo(mTestArray[i]) == 0)
+                        prefEqualization.setValue(songToUpdate.getEqualization());
+                }
+                prefEqualization.setTitle(getString(R.string.title_equalizzazione_importazione) + ": " + prefEqualization.getValue());
+
+
+                switch (Song.getEnumSpeed(songToUpdate.getSpeed())) {
+                    case SONG_SPEED_3_75:
+                        prefSpeed.setValue((String) prefSpeed.getEntryValues()[0]);
+                        break;
+                    case SONG_SPEED_7_5:
+                        prefSpeed.setValue((String) prefSpeed.getEntryValues()[1]);
+                        break;
+                    case SONG_SPEED_15:
+                        prefSpeed.setValue((String) prefSpeed.getEntryValues()[2]);
+                        break;
+                    case SONG_SPEED_30:
+                        prefSpeed.setValue((String) prefSpeed.getEntryValues()[3]);
+                        break;
+                }
+                prefSpeed.setTitle(getString(R.string.title_velocita_importazione) + ": " + prefSpeed.getEntry());
+
+                String pathTrack1 = null;
+                String pathTrack2 = null;
+                String pathTrack3 = null;
+                String pathTrack4 = null;
+                switch (songToUpdate.getNumberOfTracks()) {
+                    case 1:
+                        if (songToUpdate.getTrackAtIndex(0).isMono()) {
+                            allowStereoWAV = false;
+                            removeExtraTracks(1);
+
+                            if (prefTrack2 != null)
+                                pc.removePreference(prefTrack2);
+                            if (prefTrack3 != null)
+                                pc.removePreference(prefTrack3);
+                            if (prefTrack4 != null)
+                                pc.removePreference(prefTrack4);
+
+                            prefNumberOfTracks.setValue((String) prefNumberOfTracks.getEntryValues()[0]);
+                        } else {
+                            allowStereoWAV = true;
+                            removeExtraTracks(1);
+
+                            pc.removePreference(prefTrack2);
+                            pc.removePreference(prefTrack3);
+                            pc.removePreference(prefTrack4);
+                            prefNumberOfTracks.setValue((String) prefNumberOfTracks.getEntryValues()[1]);
+                        }
+                        prefTrack1.setTitle(getString(R.string.title_canale1_importazione) + ": " + songToUpdate.getTrackAtIndex(0).getPath());
+
+                        pathTrack1 = songToUpdate.getTrackAtIndex(0).getPath();
+                        songToUpdate.clearTrackList();
+                        songToUpdate.setTrack(pathTrack1, 1);
+
+                        firstSelected = true;
+                        break;
+                    case 2:
+                        allowStereoWAV = false;
+                        removeExtraTracks(2);
+
+                        pc.addPreference(prefTrack2);
+                        pc.removePreference(prefTrack3);
+                        pc.removePreference(prefTrack4);
+
+                        prefNumberOfTracks.setValue((String) prefNumberOfTracks.getEntryValues()[2]);
+                        prefTrack1.setTitle(getString(R.string.title_canale1_importazione) + ": " + songToUpdate.getTrackAtIndex(0).getPath());
+                        prefTrack2.setTitle(getString(R.string.title_canale1_importazione) + ": " + songToUpdate.getTrackAtIndex(1).getPath());
+
+                        pathTrack1 = songToUpdate.getTrackAtIndex(0).getPath();
+                        pathTrack2 = songToUpdate.getTrackAtIndex(1).getPath();
+                        songToUpdate.clearTrackList();
+                        songToUpdate.setTrack(pathTrack1, 1);
+                        songToUpdate.setTrack(pathTrack2, 2);
+
+                        firstSelected = true;
+                        secondSelected = true;
+                        break;
+                    case 4:
+                        allowStereoWAV = false;
+
+                        pc.addPreference(prefTrack1);
+                        pc.addPreference(prefTrack2);
+                        pc.addPreference(prefTrack3);
+                        pc.addPreference(prefTrack4);
+                        prefNumberOfTracks.setValue((String) prefNumberOfTracks.getEntryValues()[3]);
+                        prefTrack1.setTitle(getString(R.string.title_canale1_importazione) + ": " + songToUpdate.getTrackAtIndex(0).getPath());
+                        prefTrack2.setTitle(getString(R.string.title_canale1_importazione) + ": " + songToUpdate.getTrackAtIndex(1).getPath());
+                        prefTrack3.setTitle(getString(R.string.title_canale1_importazione) + ": " + songToUpdate.getTrackAtIndex(2).getPath());
+                        prefTrack4.setTitle(getString(R.string.title_canale1_importazione) + ": " + songToUpdate.getTrackAtIndex(3).getPath());
+
+                        pathTrack1 = songToUpdate.getTrackAtIndex(0).getPath();
+                        pathTrack2 = songToUpdate.getTrackAtIndex(1).getPath();
+                        pathTrack3 = songToUpdate.getTrackAtIndex(2).getPath();
+                        pathTrack4 = songToUpdate.getTrackAtIndex(3).getPath();
+                        songToUpdate.clearTrackList();
+                        songToUpdate.setTrack(pathTrack1, 1);
+                        songToUpdate.setTrack(pathTrack2, 2);
+                        songToUpdate.setTrack(pathTrack3, 3);
+                        songToUpdate.setTrack(pathTrack4, 4);
+
+                        firstSelected = true;
+                        secondSelected = true;
+                        thirdSelected = true;
+                        fourthSelected = true;
+                        break;
+                }
+
+                prefNumberOfTracks.setTitle(getString(R.string.number_of_tracks_title) + ":" + prefNumberOfTracks.getEntry());
+
+                // Setto i titoli di default in base al brano
+                prefSongName.setTitle(getString(R.string.song_name_title_activity_single_song_settings) +
+                        ":" + songToUpdate.getTitle());
+
+                prefAuthorName.setTitle(getString(R.string.song_author_title_activity_single_song_settings) +
+                        ": " + songToUpdate.getAuthor());
+
+                prefYear.setTitle(getString(R.string.song_year_title_activity_single_song_settings) +
+                        ": " + songToUpdate.getYear());
+
+                mTestArray = getResources().getStringArray(R.array.tape_width_list);
+                for (int i = 0; i < mTestArray.length; i++) {
+                    if (songToUpdate.getTapeWidth().compareTo(mTestArray[i]) == 0) {
+                        prefTapeWidth.setValue((String) prefTapeWidth.getEntryValues()[i]);
+                        prefTapeWidth.setTitle(getString(R.string.tape_width_title) + ": " + prefTapeWidth.getEntry());
+                    }
+                }
+
+                prefDescription.setText(songToUpdate.getDescription());
+
+                if (songToUpdate.getPhotos() != null)
+                    prefPhotos.setSummary(songToUpdate.getPhotos().getPath());
+                if (songToUpdate.getVideo() != null)
+                    prefVideo.setSummary(songToUpdate.getVideo().getPath());
+                if (songToUpdate.getPdf() != null)
+                    prefPDFFile.setSummary(songToUpdate.getPdf().getPath());
+
+                isa.songToAdd = songToUpdate;
+                isa.isEditingSong = true;
+            }
 
         } //fine oncreate
 
@@ -1014,13 +1176,22 @@ public class ImportSongActivity extends AppCompatActivity {
                 public void onClick(DialogInterface dialog, int id) {
                     //Salvataggio dei dati su database
                     DatabaseManager db = new DatabaseManager(getActivity());
+
+                    //se l'activity e' avviata in modalita' di modifica, cancella la canzone e la
+                    //aggiunge nuovamente con i nuovi dati
+                    if (((ImportSongActivity) getActivity()).isEditingSong == true)
+                        db.removeSingleSongFromDatabase(((ImportSongActivity) getActivity()).songToAdd);
+
                     //Setto l'id creato dal database per la canzone
                     int result = db.insertSingleSongInDatabase(((ImportSongActivity) getActivity()).songToAdd);
                     if (result >= 0) {
                         ((ImportSongActivity) getActivity()).songToAdd.setId(result);
 
                         //Notifica di avvenuta importazione
-                        Toast.makeText(getActivity(), getString(R.string.toast_activity_second_page_import), Toast.LENGTH_SHORT).show();
+                        if (((ImportSongActivity) getActivity()).isEditingSong == true)
+                            Toast.makeText(getActivity(), getString(R.string.toast_activity_second_page_edit), Toast.LENGTH_SHORT).show();
+                        else
+                            Toast.makeText(getActivity(), getString(R.string.toast_activity_second_page_import), Toast.LENGTH_SHORT).show();
 
                         //Passo alla lista dei brani (esco dall'importazione)
                         ((ImportSongActivity) getActivity()).goToSongsList(true);

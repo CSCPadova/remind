@@ -147,6 +147,7 @@
     <string name="unknown_error">Errore di natura sconosciuta</string>
     <string name="duplicate_error">Errore durante l\'inserimento, forse esiste un duplicato?</string>
     <string name="toast_activity_second_page_import">Importazione avvenuta correttamente</string>
+    <string name="toast_activity_second_page_edit">Modifica avvenuta correttamente</string>
     <string name="import_first_step">Campi obbligatori</string>
     <string name="import_second_step">Impostazioni di riproduzione</string>
     <string name="import_third_step">Informazioni generali</string>

@@ -419,12 +419,13 @@
 
                 <TextView
                     style="@style/listViewPrimaryDetail"
+                    android:id="@+id/info_tape_width"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
                     android:ellipsize="marquee"
                     android:singleLine="false"
-                    android:text="@string/tape_width"
+                    android:text=""
                     android:textIsSelectable="false" />
 
                 <View

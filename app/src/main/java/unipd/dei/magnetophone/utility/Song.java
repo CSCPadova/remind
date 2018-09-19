@@ -204,6 +204,19 @@ public class Song {
                 intent.putExtra("Song_FourthTrack", s.getTrackList().get(3).getPath());
                 break;
         }
+
+        if (s.getPhotos() != null)
+            intent.putExtra("Song_Photos", s.getPhotos().getPath());
+        else
+            intent.putExtra("Song_Photos", "null");
+        if (s.getVideo() != null)
+            intent.putExtra("Song_Video", s.getVideo().getPath());
+        else
+            intent.putExtra("Song_Video", "null");
+        if (s.getPdf() != null)
+            intent.putExtra("Song_PDF", s.getPdf().getPath());
+        else
+            intent.putExtra("Song_PDF", "null");
     }
 
     /**
@@ -240,6 +253,7 @@ public class Song {
 
         String video = intent.getStringExtra("Song_Video");
         String photos = intent.getStringExtra("Song_Photos");
+        String pdf = intent.getStringExtra("Song_PDF");
         String leftPath = intent.getStringExtra("Song_FirstTrack");
 
         // si costruisce la canzone a partire dai dati dell'intent
@@ -275,6 +289,7 @@ public class Song {
 
         s.setVideo(video);
         s.setPhotos(photos);
+        s.setPDF(pdf);
 
         return s;
     }
@@ -506,6 +521,8 @@ public class Song {
     }
 
     public void setVideo(String path) {
+        if (path != null && path.compareTo("null") == 0)
+            path = null;
         video = (path == null) ? null : new Video(path);
     }
 
@@ -517,6 +534,8 @@ public class Song {
     }
 
     public void setPDF(String path) {
+        if (path != null && path.compareTo("null") == 0)
+            path = null;
         filePDF = (path == null) ? null : new FilePDF(path);
     }
 
@@ -525,6 +544,8 @@ public class Song {
     }
 
     public void setPhotos(String path) {
+        if (path != null && path.compareTo("null") == 0)
+            path = null;
         photos = (path == null) ? null : new Photos(path);
     }
 
@@ -576,8 +597,7 @@ public class Song {
      * @param i
      */
     public void deleteTrackOfIndex(int i) {
-        int n = trackList.size();
-        for (int l = 0; l < n; l++) {
+        for (int l = 0; l < trackList.size(); l++) {
             if (trackList.get(l).getIndex() == i)
                 trackList.remove(l);
         }

@@ -577,7 +577,7 @@ public class LibraryActivity extends AppCompatActivity implements
                             Toast.makeText(getActivity().getApplicationContext(), getString(R.string.playing_song_alert), Toast.LENGTH_SHORT).show();
                         else//tutto ok, procediamo
                         {
-                            Intent intent = new Intent(getActivity(), SongEditActivity.class);
+                            Intent intent = new Intent(getActivity(), ImportSongActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); //non si vuole che con back si torni alle opzioni dalla lista dei brani
                             Song.fillIntent(s, intent);
                             startActivity(intent);
