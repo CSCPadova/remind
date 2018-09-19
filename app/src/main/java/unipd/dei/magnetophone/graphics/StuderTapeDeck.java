@@ -22,7 +22,8 @@ import static java.lang.Thread.sleep;
 //import it.unipd.dei.esp1314.magnetophone.R;
 
 public class StuderTapeDeck extends TapeDeck {
-    private final float VIDEO_OFFSET_STEP = 0.1f;
+    private final float VIDEO_OFFSET_STEP = 0.01f;
+    private final float MAX_VALUE_OFFSET = 60 * 9;
     private final PlayerEqualization[] eq_values = {
             PlayerEqualization.CCIR,
             PlayerEqualization.NAB
@@ -245,19 +246,19 @@ public class StuderTapeDeck extends TapeDeck {
         //video offset UI
 
         //lcd: 69x101
-        addComponent(new UIStatic(1796, 310, 3, 590, 110, r.getDrawable(R.raw.background_video_offset)));
-        int wLCD=440;
+        addComponent(new UIStatic(1793, 310, 3, 590, 110, r.getDrawable(R.raw.background_video_offset)));
+        int wLCD = 440;
         lcdOffset = (UILcdCustom) addComponent(
-                new UILcdCustom(1940,
-                        327, 3, wLCD+10, wLCD/6*(101/69),
-                        r.getDrawable(R.raw.lcd), 6));
+                new UILcdCustom(1935,
+                        327, 3, wLCD + 10, wLCD / 6 * (101 / 69),
+                        r.getDrawable(R.raw.lcd)));
 
         final UIButton[] videoSyncButtons = new UIButton[2];
 
-        videoSyncButtons[0] = (UIButton) addComponent(new UIButton(1815,
+        videoSyncButtons[0] = (UIButton) addComponent(new UIButton(1812,
                 320, 4, 90, 90,
                 r.getDrawable(R.raw.btn_minus), r.getDrawable(R.raw.btn_minus)));
-        videoSyncButtons[1] = (UIButton) addComponent(new UIButton(2275,
+        videoSyncButtons[1] = (UIButton) addComponent(new UIButton(2273,
                 320, 4, 90, 90,
                 r.getDrawable(R.raw.btn_plus), r.getDrawable(R.raw.btn_plus)));
 
@@ -304,10 +305,10 @@ public class StuderTapeDeck extends TapeDeck {
         speedKnob.setCallback(new ComponentCallback() {
             @Override
             public void stateChanged(UIComponent obj) {
-                    player.setPlayerSpeed(speed_values[speedKnob.getSelectedStep()]);
+                player.setPlayerSpeed(speed_values[speedKnob.getSelectedStep()]);
 
-                    if (player.isPlaying())
-                        updateRotatingElementSpeed(1);
+                if (player.isPlaying())
+                    updateRotatingElementSpeed(1);
             }
         });
 
@@ -315,7 +316,7 @@ public class StuderTapeDeck extends TapeDeck {
         eqKnob.setCallback(new ComponentCallback() {
             @Override
             public void stateChanged(UIComponent obj) {
-                    player.setEqualization(eq_values[eqKnob.getSelectedStep()]);
+                player.setEqualization(eq_values[eqKnob.getSelectedStep()]);
             }
         });
 
@@ -335,8 +336,11 @@ public class StuderTapeDeck extends TapeDeck {
                 int count = 0;
                 while (isIncrementing()) {
                     video_offset_increment = Math.min(video_offset_increment * 1.05f, 3000);
+                    //float newValue = player.getScaledTime(player.getVideoSyncOffset() + video_offset_increment);
+                    //if (Math.abs(newValue) < MAX_VALUE_OFFSET) {
                     player.setVideoSyncOffset(player.getVideoSyncOffset() + video_offset_increment);
                     lcdOffset.setTime(player.getScaledTime(player.getVideoSyncOffset()));
+                    //}
                     if (count > 5) {
                         try {
                             sleep(50);

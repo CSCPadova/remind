@@ -1,5 +1,6 @@
 package unipd.dei.magnetophone.graphics;
 
+import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
@@ -8,11 +9,9 @@ import java.util.concurrent.TimeUnit;
 
 public class UILcdCustom extends UILcd {
 
-    public UILcdCustom(int x, int y, int zIndex, int w, int h, Drawable res, int numberDigits) {
-        super(x, y, zIndex, w + 1, h + 1, res,0);
-
-        if (numberDigits < 5)
-            return;
+    public UILcdCustom(int x, int y, int zIndex, int w, int h, Drawable res) {
+        super(x, y, zIndex, w + 1, h + 1, res, 0);
+        int numberDigits=6;
 
         // Scalo le dimensioni del tile set all'altezza del compomente
         // e divido per 11 per avere la larghezza scalata di un tile.
@@ -39,6 +38,7 @@ public class UILcdCustom extends UILcd {
 
     @Override
     public void setTime(float seconds) {
+        Log.d("TAG", "TIME: "+ seconds);
         long millis = Math.abs((long) (seconds * 1000));
 
         long days = TimeUnit.MILLISECONDS.toDays(millis);
@@ -52,29 +52,47 @@ public class UILcdCustom extends UILcd {
 
         long sec = TimeUnit.MILLISECONDS.toSeconds(millis);
 
-        if (seconds >= 0)
-            digits[0] = (int) hour;
-        else
+        if (seconds >= 0) {
+            digits[0] = 12;//(int) hour;
+        } else {
             digits[0] = 10;
+        }
+        digits[1] = (int) (min % 10);
 
-        digits[1] = (int) (min / 10);
-        digits[2] = (int) (min % 10);
 
-        digits[3] = (int) (sec / 10);
-        digits[4] = (int) (sec % 10);
+        digits[2] = (int) (sec / 10);
+        digits[3] = (int) (sec % 10);
 
         int i = digits.length - 1;
         millis = millis / 10;//toglie le unita' dei millisecondi
-        millis = millis / 10;//toglie le decine dei millisecondi
-        while (i >= 5) {
+        while (i >= 4) {
             digits[i] = (int) (millis % 10);
             millis = millis / 10;
             i--;
         }
 
-        //Log.d("DEBUG", "DIGITS: " + digits[0] + "|" + digits[1] + "|" + digits[2] + "|"
-        //       + digits[3] + "|" + digits[4] + "|" + digits[5] + "|" + digits[6]);
-
         changed = true;
+    }
+
+    @Override
+    public void draw(Canvas canvas) {
+
+        int offset = digitRect.width();
+
+        //draw the digits
+        for (int i = 1; i < posRects.length; i++) {
+            digitRect.offsetTo(offset * digits[i], 0);
+            canvas.drawBitmap(resource, digitRect, posRects[i], p);
+        }
+        if (digits[0] == 10){
+            digitRect.offsetTo(offset * digits[0], 0);
+            canvas.drawBitmap(resource, digitRect, posRects[0], p);
+        }
+
+        //draw the dots
+        digitRect.offsetTo(offset * 11, 0);
+
+        canvas.drawBitmap(resource, digitRect, posRects[1], p);
+        canvas.drawBitmap(resource, digitRect, posRects[3], p);
     }
 }
