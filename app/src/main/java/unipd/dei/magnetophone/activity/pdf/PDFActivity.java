@@ -39,7 +39,7 @@ public class PDFActivity extends AppCompatActivity implements OnPageChangeListen
         showSupportActionBar(this, null, getWindow().getDecorView());
 
         Bundle p = getIntent().getExtras();
-        String path =p.getString("path");
+        String path = p.getString("path");
         String file =p.getString("file");
         File outFile=null;
 

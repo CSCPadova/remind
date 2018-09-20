@@ -141,18 +141,6 @@ public class SettingsActivity extends AppCompatActivity {
             //super.onCreate(bundle);
             addPreferencesFromResource(R.xml.prefs);
 
-            //PreferenceManager.setDefaultValues(getActivity(),
-            //		R.xml.prefs, false);
-
-            //prendo i riferimenti per le preference
-
-            //per la lingua
-//			final ListPreference prefLanguage = (ListPreference)findPreference("listLanguages");
-
-
-            //mostro un titolo più carino per l'utente, che gli mostra cosa è scelto attualmente
-//			prefLanguage.setTitle(getString(R.string.choose_a_language) + ": " + prefLanguage.getValue());
-
             final PreferenceScreen preferenceScreen = getPreferenceScreen();
             preferenceCategory = (PreferenceCategory) preferenceScreen
                     .findPreference("secondaCategoriaImpostazioni");
@@ -162,14 +150,6 @@ public class SettingsActivity extends AppCompatActivity {
                     .findPreference("OpzioniAvanzateImpostazioni");
             prefMaintenance = (CheckBoxPreference) preferenceCategory
                     .findPreference("Maintenance");
-
-//			final CheckBoxPreference prefImport = (CheckBoxPreference) preferenceCategory
-//					.findPreference("ImportareImpostazioni");
-//			final CheckBoxPreference prefDelete = (CheckBoxPreference) preferenceCategory
-//					.findPreference("EliminareImpostazioni");
-//			final CheckBoxPreference prefModify = (CheckBoxPreference) preferenceCategory
-//					.findPreference("ModificareImpostazioni");
-
 
             prefPath = preferenceCategory
                     .findPreference("ModificaPathImpostazioni");
@@ -186,18 +166,6 @@ public class SettingsActivity extends AppCompatActivity {
             prefXml.setSummary(XmlImport.getCurrentDirectory(getActivity()));
 
             //************ iniziano i listener *******************
-
-
-//			prefLanguage.setOnPreferenceChangeListener(new OnPreferenceChangeListener()
-//			{
-//				public boolean onPreferenceChange(Preference preference, Object newValue)
-//				{
-//					preference.setTitle(getString(R.string.choose_a_language) + ": " + (String)newValue);
-//					prefLanguage.setValue((String)newValue);
-//
-//					return false;
-//				}
-//			});
 
             prefPassword.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
@@ -306,7 +274,6 @@ public class SettingsActivity extends AppCompatActivity {
         public AppCompatDialog onCreateDialog(Bundle savedInstanceState) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setTitle(getString(R.string.text1_subtitle_activity_settings));
-//			builder.setMessage(XmlImport.getCurrentDirectory());
 
             //mi prendo i path e i nomi delle cartelle
             final LinkedList<String> directoriesName = new LinkedList<String>();//lista che conterrà solo i nomi delle cartelle
@@ -359,7 +326,7 @@ public class SettingsActivity extends AppCompatActivity {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setTitle(getString(R.string.where_we_export));
             builder.setMessage(XmlImport.getCurrentDirectory(getActivity()));
-            // Si preme per procedere all'espertazione
+            // Si preme per procedere all'esportazione
             builder.setPositiveButton(
                     getString(R.string.lets_begin_the_import), new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {

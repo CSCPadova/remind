@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.pdf.PdfRenderer;
 import android.net.Uri;
 import android.os.Build;
@@ -26,7 +25,6 @@ import com.bumptech.glide.Glide;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
 
 import unipd.dei.magnetophone.activity.LibraryActivity;
 import unipd.dei.magnetophone.activity.deprecated.SongDetailActivity;
@@ -189,7 +187,7 @@ public class SongDetailFragment extends Fragment {
 
             TextView descriptionText = (TextView) v.findViewById(R.id.effective_description);
 
-            if (s.getDescription() != null && s.getDescription().compareTo(Song.INVALID) != 0) {
+            if ((s.getDescription() != null && s.getDescription().compareTo(Song.INVALID) != 0 && s.getDescription().compareTo("") != 0)) {
                 descriptionText.setText(s.getDescription());
             } else {
                 v.findViewById(R.id.info_description).setVisibility(View.GONE);
@@ -259,9 +257,7 @@ public class SongDetailFragment extends Fragment {
                     //v.findViewById(R.id.item_separator20).setVisibility(View.GONE);
                     //v.findViewById(R.id.pdf_preview).setVisibility(View.GONE);
                 }
-            }
-            else
-            {
+            } else {
                 v.findViewById(R.id.info_pdf_file).setVisibility(View.GONE);
                 v.findViewById(R.id.item_separator20).setVisibility(View.GONE);
                 v.findViewById(R.id.pdf_preview).setVisibility(View.GONE);

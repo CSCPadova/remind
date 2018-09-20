@@ -20,12 +20,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDialog;
 import android.support.v7.app.AppCompatDialogFragment;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -577,6 +575,7 @@ public class LibraryActivity extends AppCompatActivity implements
                             Intent intent = new Intent(getActivity(), ImportSongActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); //non si vuole che con back si torni alle opzioni dalla lista dei brani
                             Song.fillIntent(s, intent);
+                            intent.putExtra("import", false);
                             startActivity(intent);
                         }
                     } else {
@@ -614,6 +613,7 @@ public class LibraryActivity extends AppCompatActivity implements
                 public void onClick(DialogInterface dialog, int id) {
                     //qui si deve chiamare l'activity che permette di fare l'import
                     Intent intent = new Intent(getActivity(), ImportSongActivity.class);
+                    intent.putExtra("import", true);
                     startActivity(intent);
                 }
             });

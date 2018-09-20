@@ -101,7 +101,12 @@ public class ImportSongActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_import_song);
 
-        showSupportActionBar(this, getString(R.string.action_bar_campi_obbligatori_importazione), getWindow().getDecorView());
+        Bundle p = getIntent().getExtras();
+        boolean isImporting = p.getBoolean("import");
+        if (isImporting)
+            showSupportActionBar(this, getString(R.string.action_bar_campi_obbligatori_importazione), getWindow().getDecorView());
+        else
+            showSupportActionBar(this, getString(R.string.action_bar_campi_obbligatori_edit), getWindow().getDecorView());
 
         if (savedInstanceState == null) {
             obligatoryFrag = new ObligatoryFragment();
@@ -243,15 +248,12 @@ public class ImportSongActivity extends AppCompatActivity {
         private Preference prefTrack3;
         private Preference prefTrack4;
         private ListPreference prefTapeWidth;
-        //		private ListPreference prefSampleRate;
-//		private ListPreference prefExtension;
-//		private ListPreference prefBitDepth;
+
         private EditTextPreference prefAuthorName;
         private EditTextPreference prefDescription;
-        private EditTextPreference prefSongName;    //
-        //		private boolean resultFromLeft = true;		//Per capire se devo impostare file audio per canale dx o sx quando si seleziona un brano
-        private boolean firstSelected = false;        //File sx selezionato?
-        private boolean secondSelected = false;        //File dx selezionato?
+        private EditTextPreference prefSongName;
+        private boolean firstSelected = false;
+        private boolean secondSelected = false;
         private boolean thirdSelected = false;
         private boolean fourthSelected = false;
 

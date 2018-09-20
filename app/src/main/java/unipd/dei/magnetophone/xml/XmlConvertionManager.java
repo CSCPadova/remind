@@ -43,7 +43,7 @@ public class XmlConvertionManager {
     private static final String EXTENSION = "extension";
     private static final String BITDEPTH = "bitdepth";
     private static final String SAMPLERATE = "sample rate";
-    private static final String TAPEWIDTH = "tape width";
+    private static final String TAPEWIDTH = "tapewidth";
     private static final String DESCRIPTION = "description";
     private static final String PDF = "pdf";
 

@@ -42,7 +42,7 @@
     <!-- stringhe per il monitor setup -->
     <string name="monitor_setup_option">Refresh list</string>
     <string name="monitor_setup_label">Listening setup</string>
-    <string name="xml_correctly_written">Writing occurred correctly</string>
+    <string name="xml_correctly_written">Success!</string>
 
     <!-- Stringhe per il menu di impostazioni generali -->
     <string name="title_activity_settings">Settings</string>
@@ -123,7 +123,8 @@
     <string name="trackpath_4">Name of the fourth file</string>
     <string name="button_forward_importazione">Continue</string>
     <string name="button_backward_importazione">Back</string>
-    <string name="action_bar_campi_obbligatori_importazione">Track Import</string>
+    <string name="action_bar_campi_obbligatori_importazione">Song Import</string>
+    <string name="action_bar_campi_obbligatori_edit">Song Edit</string>
     <string name="message_alert_activity_importazione">Proceed to import? Press Cancel to return to the current import</string>
     <string name="toast_activity_cancel_import">Import canceled</string>
     <string name="nome_canzone_default_importazione">Enter name</string>
@@ -177,7 +178,7 @@
     <string name="other_settings">Other settings</string>
 
     <!-- stringhe per il detail della lista -->
-    <string name="detail_button">Upload tape</string>
+    <string name="detail_button">Load tape</string>
 
     <!-- stringhe varie -->
     <string name="original_document">ORIGINAL DESCRIPTION OF THE DOCUMENT</string>
