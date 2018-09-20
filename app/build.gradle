@@ -1,6 +1,10 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        config {
+        }
+    }
     compileSdkVersion 28
     defaultConfig {
         applicationId "unipd.dei.magnetophone"
@@ -43,14 +47,11 @@ dependencies {
     implementation 'com.android.support:preference-v7:28.0.0-alpha3'
     implementation 'com.android.support:support-v4:28.0.0-alpha3'
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
-
     implementation project(':android-pdf-viewer')
-
     // Stetho core
     //implementation 'com.facebook.stetho:stetho:1.5.0'
     //If you want to add a network helper
     //implementation 'com.facebook.stetho:stetho-okhttp:1.5.0'
-
     // Libreria per una gestione efficiente delle immagini
     implementation files('libs/glide-full-4.9.0.jar')
 }

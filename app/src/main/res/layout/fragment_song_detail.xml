@@ -642,28 +642,6 @@
                     android:layout_height="@dimen/lvDividerHeight"
                     android:background="@color/lvDividerColor" />
 -->
-				<!-- Side -->
-
-				<TextView
-                    android:id="@+id/side_subtex"
-                    style="@style/listViewSecondaryDetail"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="marquee"
-                    android:singleLine="false"
-                    android:text="@string/side_title"
-                    android:textIsSelectable="false" />
-
-				 <TextView
-                    android:id="@+id/side_value"
-                    style="@style/listViewPrimaryDetail"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:ellipsize="marquee"
-                    android:singleLine="false"
-                    android:text="@string/side"
-                    android:textIsSelectable="false" />
 
 				<View
                     android:id="@+id/item_separator_trackB"

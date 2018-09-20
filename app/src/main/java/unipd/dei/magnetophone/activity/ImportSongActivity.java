@@ -713,7 +713,7 @@ public class ImportSongActivity extends AppCompatActivity {
                             pc.removePreference(prefTrack4);
                             prefNumberOfTracks.setValue((String) prefNumberOfTracks.getEntryValues()[1]);
                         }
-                        prefTrack1.setTitle(getString(R.string.title_canale1_importazione) + ": " + songToUpdate.getTrackAtIndex(0).getPath());
+                        prefTrack1.setTitle(getString(R.string.title_canale1_importazione) + ": " + songToUpdate.getTrackAtIndex(0).getName());
 
                         pathTrack1 = songToUpdate.getTrackAtIndex(0).getPath();
                         songToUpdate.clearTrackList();
@@ -730,8 +730,8 @@ public class ImportSongActivity extends AppCompatActivity {
                         pc.removePreference(prefTrack4);
 
                         prefNumberOfTracks.setValue((String) prefNumberOfTracks.getEntryValues()[2]);
-                        prefTrack1.setTitle(getString(R.string.title_canale1_importazione) + ": " + songToUpdate.getTrackAtIndex(0).getPath());
-                        prefTrack2.setTitle(getString(R.string.title_canale1_importazione) + ": " + songToUpdate.getTrackAtIndex(1).getPath());
+                        prefTrack1.setTitle(getString(R.string.title_canale1_importazione) + ": " + songToUpdate.getTrackAtIndex(0).getName());
+                        prefTrack2.setTitle(getString(R.string.title_canale1_importazione) + ": " + songToUpdate.getTrackAtIndex(1).getName());
 
                         pathTrack1 = songToUpdate.getTrackAtIndex(0).getPath();
                         pathTrack2 = songToUpdate.getTrackAtIndex(1).getPath();
@@ -750,10 +750,10 @@ public class ImportSongActivity extends AppCompatActivity {
                         pc.addPreference(prefTrack3);
                         pc.addPreference(prefTrack4);
                         prefNumberOfTracks.setValue((String) prefNumberOfTracks.getEntryValues()[3]);
-                        prefTrack1.setTitle(getString(R.string.title_canale1_importazione) + ": " + songToUpdate.getTrackAtIndex(0).getPath());
-                        prefTrack2.setTitle(getString(R.string.title_canale1_importazione) + ": " + songToUpdate.getTrackAtIndex(1).getPath());
-                        prefTrack3.setTitle(getString(R.string.title_canale1_importazione) + ": " + songToUpdate.getTrackAtIndex(2).getPath());
-                        prefTrack4.setTitle(getString(R.string.title_canale1_importazione) + ": " + songToUpdate.getTrackAtIndex(3).getPath());
+                        prefTrack1.setTitle(getString(R.string.title_canale1_importazione) + ": " + songToUpdate.getTrackAtIndex(0).getName());
+                        prefTrack2.setTitle(getString(R.string.title_canale1_importazione) + ": " + songToUpdate.getTrackAtIndex(1).getName());
+                        prefTrack3.setTitle(getString(R.string.title_canale1_importazione) + ": " + songToUpdate.getTrackAtIndex(2).getName());
+                        prefTrack4.setTitle(getString(R.string.title_canale1_importazione) + ": " + songToUpdate.getTrackAtIndex(3).getName());
 
                         pathTrack1 = songToUpdate.getTrackAtIndex(0).getPath();
                         pathTrack2 = songToUpdate.getTrackAtIndex(1).getPath();

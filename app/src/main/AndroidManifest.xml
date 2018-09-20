@@ -41,11 +41,6 @@
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".activity.SongEditActivity"
-            android:label="@string/title_activity_single_song_settings"
-            android:screenOrientation="landscape"
-            android:theme="@style/AppTheme" />
-        <activity
             android:name=".activity.ImportSongActivity"
             android:label="@string/title_activity_import_song"
             android:screenOrientation="landscape" />
