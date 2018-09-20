@@ -102,7 +102,6 @@ public class MusicService extends Service {
                 .setContentTitle("Magnetofono")
                 .setContentText("magnetofono in riproduzione")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-
         init();
         MusicService.RUNNING = true;
     }
@@ -279,12 +278,13 @@ public class MusicService extends Service {
             return MusicService.this.getTime();
         }
 
-        public static final String NOTIFICATION_CHANNEL_ID_SERVICE = "dunipd.dei.magnetophone.MusicService";
-        public static final String NOTIFICATION_CHANNEL_ID_INFO = "com.package.download_info";
-
         public void startForeground() {
             NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getBaseContext());
-            notificationManager.notify(ONGOING_NOTIFICATION_ID, mBuilder.build());
+
+            Notification notification = mBuilder.build();
+            notification.flags = Notification.FLAG_ONLY_ALERT_ONCE;
+
+            notificationManager.notify(ONGOING_NOTIFICATION_ID, notification);
         }
 
         public void stopForeground() {
