@@ -543,14 +543,20 @@ void NativePlayer::setupAudioEngine(int playbackDeviceId_,
 
 void NativePlayer::onErrorAfterClose(oboe::AudioStream *audioStream, oboe::Result error) {
     if (error == oboe::Result::ErrorDisconnected) {
-        double time = currentTime;
-        stop();
-        closeOutputStream();
-        setupAudioEngine(currentPlaybackDeviceId, currentSampleFormat, currentSampleChannels,
-                         currentSampleRate);
-        seek(time);
-        play();
+        std::function<void(void)> restartStream = std::bind(&NativePlayer::restartStream, this);
+        std::thread streamRestartThread(restartStream);
+        streamRestartThread.detach();
     }
+}
+
+void NativePlayer::restartStream() {
+    double time = currentTime;
+    stop();
+    closeOutputStream();
+    setupAudioEngine(currentPlaybackDeviceId, currentSampleFormat, currentSampleChannels,
+                     currentSampleRate);
+    seek(time);
+    play();
 }
 
 int NativePlayer::getPlaybackState() {

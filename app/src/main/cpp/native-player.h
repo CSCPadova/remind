@@ -96,6 +96,8 @@ private:
                           int sampleChannels_,
                           int sampleRate_);
 
+    void restartStream();
+
     // Performance options
     void setThreadAffinity();
 
