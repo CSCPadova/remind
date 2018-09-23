@@ -7,7 +7,6 @@
 #include <ckfft.h>
 
 NativePlayer::NativePlayer() {
-    time = 0;
     playbackDeviceId_ = 0;
     intermAudioBufferFillValue = audio::AudioBufferSize;
     threadGo = false;
@@ -540,7 +539,18 @@ void NativePlayer::setupAudioEngine(int playbackDeviceId_,
     } else {
         LOGE("Failed to create stream. Error: %s", oboe::convertToText(result));
     }
+}
 
+void NativePlayer::onErrorAfterClose(oboe::AudioStream *audioStream, oboe::Result error) {
+    if (error == oboe::Result::ErrorDisconnected) {
+        double time = currentTime;
+        stop();
+        closeOutputStream();
+        setupAudioEngine(currentPlaybackDeviceId, currentSampleFormat, currentSampleChannels,
+                         currentSampleRate);
+        seek(time);
+        play();
+    }
 }
 
 int NativePlayer::getPlaybackState() {

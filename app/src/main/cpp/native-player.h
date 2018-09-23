@@ -31,8 +31,6 @@ class NativePlayer : oboe::AudioStreamCallback {
 
     bool songReady;
 
-    double time;
-
     double currentTime = 0; //tempo espresso in centesimi di secondo
 
     SongSpeed songSpeed;
@@ -97,8 +95,6 @@ private:
                           oboe::AudioFormat sampleFormat_,
                           int sampleChannels_,
                           int sampleRate_);
-
-    void threadReadData();
 
     // Performance options
     void setThreadAffinity();
@@ -173,6 +169,8 @@ public:
 
     oboe::DataCallbackResult
     onAudioReady(oboe::AudioStream *audioStream, void *audioData, int32_t numFrames);
+
+    void onErrorAfterClose(oboe::AudioStream *audioStream, oboe::Result error);
 };
 
 #endif
