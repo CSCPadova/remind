@@ -70,3 +70,5 @@ A lot actually.
 To copy files in the Android Emulator or in the real devices you can use the `adb` tool (with `adb push` and `adb pull` commands) or the Device File Explorer in Android Studio.
 
 The folder that will contain the file that the app can use is `/storage/self/primary`.
+
+If the release version of the application fails to install going to `Google Play` and disabling `Play Protect` should fix the problem.
