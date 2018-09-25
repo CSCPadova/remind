@@ -5,7 +5,7 @@
 #include <unistd.h>
 #include "log.h"
 
-#define WAIT_TIMEOUT_USEC (1000)
+#define WAIT_TIMEOUT_USEC (5000)
 
 template<typename T>
 CircularQueue<T>::CircularQueue(int bufferLen)

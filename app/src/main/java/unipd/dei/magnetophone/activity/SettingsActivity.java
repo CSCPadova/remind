@@ -296,7 +296,7 @@ public class SettingsActivity extends AppCompatActivity {
                             SharedPreferences.Editor editor = shared.edit();
                             editor.putString("name", choiceName);
                             editor.putString("path", choicePath);
-                            editor.commit();
+                            editor.apply();
 
                             //cambio quanto si vede nella preference
                             prefPath.setTitle(getString(R.string.text1_title_activity_settings)
@@ -470,7 +470,7 @@ public class SettingsActivity extends AppCompatActivity {
                             SharedPreferences sharedPass = getActivity().getSharedPreferences("password", Context.MODE_PRIVATE);
                             SharedPreferences.Editor editor = sharedPass.edit();
                             editor.putString("password", pa);
-                            editor.commit();
+                            editor.apply();
 
                             int duration = Toast.LENGTH_SHORT;
                             String text = getString(R.string.password_success);

@@ -8,7 +8,7 @@
 
 NativePlayer::NativePlayer() {
     playbackDeviceId_ = 0;
-    intermAudioBufferFillValue = audio::AudioBufferSize;
+    audioBufferFillValue = audio::AudioBufferSize;
     threadGo = false;
 
     currentSampleRate = -1;
@@ -216,8 +216,8 @@ bool NativePlayer::playbackCallback() {
     if (leftStat == audio::Status::OK && rightStat == audio::Status::OK) {
         for (int i = 0; i < audio::AudioBufferSize; i++) {
             //32767 converte da -1.0f < x < 1.0f a -32767 < x < 32767
-            intermediateAudioBuffer.push_back(leftBuffer[i] * 32767);
-            intermediateAudioBuffer.push_back(rightBuffer[i] * 32767);
+            audioBuffer.push_back(leftBuffer[i] * 32767);
+            audioBuffer.push_back(rightBuffer[i] * 32767);
         }
 
         currentTime +=
@@ -283,7 +283,7 @@ void NativePlayer::seek(double timeCentisec) {
 
     stop();
 
-    intermediateAudioBuffer.clear();
+    audioBuffer.clear();
 
     /*
      * ++++++++ NOTA ++++++++++
@@ -406,7 +406,7 @@ void NativePlayer::fastFunction() {
     LOGD("thread partito");
     std::chrono::milliseconds dura(100);
 
-    intermediateAudioBuffer.clear();
+    audioBuffer.clear();
 
     float speedRatio;
     double songDuration = waveReader->getSongDuration();
@@ -489,15 +489,16 @@ oboe::DataCallbackResult NativePlayer::onAudioReady(
         return oboe::DataCallbackResult::Continue;
     }
 
-    intermAudioBufferFillValue = numFrames * 2 * 2;
-    while (intermediateAudioBuffer.size() < intermAudioBufferFillValue && playbackCallback());
+    audioBufferFillValue = numFrames * 2 * 2;
+
+    while (audioBuffer.size() < audioBufferFillValue && playbackCallback());
 
     int i;
     for (i = 0; i < numFrames * currentSampleChannels; i++) {
-        temp[i] = (int16_t) (intermediateAudioBuffer.at(i) * MASTER_VOLUME);
+        temp[i] = (int16_t) (audioBuffer.at(i) * MASTER_VOLUME);
     }
-    intermediateAudioBuffer.erase(intermediateAudioBuffer.begin(),
-                                  intermediateAudioBuffer.begin() + i);
+    audioBuffer.erase(audioBuffer.begin(),
+                      audioBuffer.begin() + i);
 
     return oboe::DataCallbackResult::Continue;
 }

@@ -77,7 +77,7 @@ public class MagnetophoneActivity extends AppCompatActivity {
         }
         SharedPreferences.Editor editor = pref.edit();
         editor.putInt("FirstTime", toReturn + 1);
-        editor.commit();
+        editor.apply();
 
         return toReturn;
     }

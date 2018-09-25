@@ -231,6 +231,7 @@ public class DatabaseManager {
         } catch (IOException e) {
             Log.e("DatabaseManager", "IOException");
         } finally {
+            query.close();
             if (db != null)
                 db.close();
         }

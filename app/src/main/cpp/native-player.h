@@ -80,14 +80,15 @@ class NativePlayer : oboe::AudioStreamCallback {
     int currentSampleChannels;
     int currentSampleRate;
 
-    int32_t framesPerBurst_;
+    //incremental step to make audio buffer bigger in case of problems
+    int32_t framesPerBurst_ = 100;
 
 private:
     int32_t playStreamUnderrunCount_;
-    std::vector<float> intermediateAudioBuffer;
+    std::vector<float> audioBuffer;
 
     //quanto riempire il buffer?
-    int intermAudioBufferFillValue;
+    int audioBufferFillValue;
 
     void closeOutputStream();
 

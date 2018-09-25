@@ -218,7 +218,7 @@ public class ImportSongActivity extends AppCompatActivity {
         else
             editor.putInt("song_id", -1);
 
-        editor.commit();
+        editor.apply();
 
         Intent intent = new Intent(this, LibraryActivity.class);    //Passo alla lista dei brani
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);    //evito che premendo BACK dalla lista dei brani si ritorni all'importazione

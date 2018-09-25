@@ -139,7 +139,7 @@ public class SongDetailActivity extends AppCompatActivity {
             editor.putString("song_track_" + i, s.getTrackAtIndex(i - 1).getPath());
         }
 
-        editor.commit();
+        editor.apply();
     }
 
     /**

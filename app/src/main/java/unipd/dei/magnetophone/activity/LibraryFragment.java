@@ -147,6 +147,7 @@ public class LibraryFragment extends ListFragment {
             //carico nella lista la song ottenuta dal database con id songid
             finalList.add(new_song);
         }
+        cursor.close();
         db.close();
     }
 

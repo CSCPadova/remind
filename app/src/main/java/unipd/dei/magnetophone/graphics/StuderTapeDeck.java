@@ -63,12 +63,12 @@ public class StuderTapeDeck extends TapeDeck {
 
         // Frame del magnetofono: index auto
         // x y z w h resource
-        addComponent(new UIStatic(75, 45, 0, 1542, 0, r.getDrawable(R.raw.background)));
-        addComponent(new UIStatic(1757, 420, 0, 661, 453, r.getDrawable(R.raw.video_frame)));
-        addComponent(new UIStatic(1881, 1056, 1, 612, 485, r.getDrawable(R.raw.project_logo)));
+        addComponent(new UIStatic(75, 45, 0, 1542, 0, r.getDrawable(R.drawable.background)));
+        addComponent(new UIStatic(1757, 420, 0, 661, 453, r.getDrawable(R.drawable.video_frame)));
+        addComponent(new UIStatic(1881, 1056, 1, 612, 485, r.getDrawable(R.drawable.project_logo)));
 
-        addComponent(new UIStatic(419, 419, 3, 400, r.getDrawable(R.raw.reel_center)));
-        addComponent(new UIStatic(1277, 419, 3, 400, r.getDrawable(R.raw.reel_center)));
+        addComponent(new UIStatic(419, 419, 3, 400, r.getDrawable(R.drawable.reel_center)));
+        addComponent(new UIStatic(1277, 419, 3, 400, r.getDrawable(R.drawable.reel_center)));
 
         // OGGETTI ROTANTI
 
@@ -76,17 +76,17 @@ public class StuderTapeDeck extends TapeDeck {
 
         // Bobine z radius outer inner
         // x y index res res
-        rotating[0] = (UIRoundElement) addComponent(new UITapeReel(419, 419, 2, 400, r.getDrawable(R.raw.reel), r.getDrawable(R.raw.tape)));
-        rotating[1] = (UIRoundElement) addComponent(new UITapeReel(1277, 419, 2, 400, r.getDrawable(R.raw.reel), r.getDrawable(R.raw.tape)));
+        rotating[0] = (UIRoundElement) addComponent(new UITapeReel(419, 419, 2, 400, r.getDrawable(R.drawable.reel), r.getDrawable(R.drawable.tape)));
+        rotating[1] = (UIRoundElement) addComponent(new UITapeReel(1277, 419, 2, 400, r.getDrawable(R.drawable.reel), r.getDrawable(R.drawable.tape)));
 
         // Tamburi piccoli z radius
         // x y index resource
-        rotating[2] = (UIRoundElement) addComponent(new UIDrum(250, 1016, 2, 35, 25, r.getDrawable(R.raw.small_drum_bg)));
-        rotating[3] = (UIRoundElement) addComponent(new UIDrum(1438, 1016, 2, 35, 25, r.getDrawable(R.raw.small_drum_bg)));
+        rotating[2] = (UIRoundElement) addComponent(new UIDrum(250, 1016, 2, 35, 25, r.getDrawable(R.drawable.small_drum_bg)));
+        rotating[3] = (UIRoundElement) addComponent(new UIDrum(1438, 1016, 2, 35, 25, r.getDrawable(R.drawable.small_drum_bg)));
 
         // Tamburi grandi
-        rotating[4] = (UIRoundElement) addComponent(new UIDrum(424, 947, 2, 62, 40, r.getDrawable(R.raw.drum_bg)));
-        rotating[5] = (UIRoundElement) addComponent(new UIDrum(1260, 947, 2, 62, 40, r.getDrawable(R.raw.drum_bg)));
+        rotating[4] = (UIRoundElement) addComponent(new UIDrum(424, 947, 2, 62, 40, r.getDrawable(R.drawable.drum_bg)));
+        rotating[5] = (UIRoundElement) addComponent(new UIDrum(1260, 947, 2, 62, 40, r.getDrawable(R.drawable.drum_bg)));
 
         leftReel = (UITapeReel) rotating[0];
         rightReel = (UITapeReel) rotating[1];
@@ -111,25 +111,25 @@ public class StuderTapeDeck extends TapeDeck {
 
         // LCD
         lcd = (UILcd) addComponent(new UILcd(255, 1242, 3, 305, 85,
-                r.getDrawable(R.raw.lcd)));
+                r.getDrawable(R.drawable.lcd)));
 
         // LED PLAYER
         controlLeds = new UILed[4];
 
-        controlLeds[0] = (UILed) addComponent(new UILed(280, 1368, 3, 40, 40, r.getDrawable(R.raw.led_off), r.getDrawable(R.raw.led_on)));
-        controlLeds[1] = (UILed) addComponent(new UILed(390, 1368, 3, 40, 40, r.getDrawable(R.raw.led_off), r.getDrawable(R.raw.led_on)));
-        controlLeds[2] = (UILed) addComponent(new UILed(500, 1368, 3, 40, 40, r.getDrawable(R.raw.led_off), r.getDrawable(R.raw.led_on)));
-        controlLeds[3] = (UILed) addComponent(new UILed(610, 1368, 3, 40, 40, r.getDrawable(R.raw.led_off), r.getDrawable(R.raw.led_on)));
+        controlLeds[0] = (UILed) addComponent(new UILed(280, 1368, 3, 40, 40, r.getDrawable(R.drawable.led_off), r.getDrawable(R.drawable.led_on)));
+        controlLeds[1] = (UILed) addComponent(new UILed(390, 1368, 3, 40, 40, r.getDrawable(R.drawable.led_off), r.getDrawable(R.drawable.led_on)));
+        controlLeds[2] = (UILed) addComponent(new UILed(500, 1368, 3, 40, 40, r.getDrawable(R.drawable.led_off), r.getDrawable(R.drawable.led_on)));
+        controlLeds[3] = (UILed) addComponent(new UILed(610, 1368, 3, 40, 40, r.getDrawable(R.drawable.led_off), r.getDrawable(R.drawable.led_on)));
 
         // PULSANTI PLAYER
 
         final UIButton[] controlButtons = new UIButton[5];
 
-        controlButtons[0] = (UIButton) addComponent(new UIButton(250, 1412, 3, 97, 97, r.getDrawable(R.raw.btn_rew_up), r.getDrawable(R.raw.btn_rew_down)));
-        controlButtons[1] = (UIButton) addComponent(new UIButton(360, 1412, 3, 97, 97, r.getDrawable(R.raw.btn_ff_up), r.getDrawable(R.raw.btn_ff_down)));
-        controlButtons[2] = (UIButton) addComponent(new UIButton(470, 1412, 3, 97, 97, r.getDrawable(R.raw.btn_play_up), r.getDrawable(R.raw.btn_play_down)));
-        controlButtons[3] = (UIButton) addComponent(new UIButton(580, 1412, 3, 97, 97, r.getDrawable(R.raw.btn_stop_up), r.getDrawable(R.raw.btn_stop_down)));
-        controlButtons[4] = (UIButton) addComponent(new UIButton(579, 1235, 3, 97, 97, r.getDrawable(R.raw.btn_reset_up), r.getDrawable(R.raw.btn_reset_down)));
+        controlButtons[0] = (UIButton) addComponent(new UIButton(250, 1412, 3, 97, 97, r.getDrawable(R.drawable.btn_rew_up), r.getDrawable(R.drawable.btn_rew_down)));
+        controlButtons[1] = (UIButton) addComponent(new UIButton(360, 1412, 3, 97, 97, r.getDrawable(R.drawable.btn_ff_up), r.getDrawable(R.drawable.btn_ff_down)));
+        controlButtons[2] = (UIButton) addComponent(new UIButton(470, 1412, 3, 97, 97, r.getDrawable(R.drawable.btn_play_up), r.getDrawable(R.drawable.btn_play_down)));
+        controlButtons[3] = (UIButton) addComponent(new UIButton(580, 1412, 3, 97, 97, r.getDrawable(R.drawable.btn_stop_up), r.getDrawable(R.drawable.btn_stop_down)));
+        controlButtons[4] = (UIButton) addComponent(new UIButton(579, 1235, 3, 97, 97, r.getDrawable(R.drawable.btn_reset_up), r.getDrawable(R.drawable.btn_reset_down)));
 
         // FAST REWIND: Callback del pulsante
         controlButtons[0].setCallback(new ComponentCallback() {
@@ -183,11 +183,11 @@ public class StuderTapeDeck extends TapeDeck {
         //UIButton[] uiButtons = new UIButton[5];
         final UIButton[] uiButtons = new UIButton[4];
 
-        uiButtons[0] = (UIButton) addComponent(new UIButton(1854 - 75, 18, 4, 172, 172, r.getDrawable(R.raw.btn_settings_up), r.getDrawable(R.raw.btn_settings_down))); // -29px per l'ombra
-        uiButtons[1] = (UIButton) addComponent(new UIButton(2074 - 75, 18, 4, 172, 172, r.getDrawable(R.raw.btn_library_up), r.getDrawable(R.raw.btn_library_down)));
-        uiButtons[2] = (UIButton) addComponent(new UIButton(2294 - 75, 18, 4, 172, 172, r.getDrawable(R.raw.btn_setup_mon_up), r.getDrawable(R.raw.btn_setup_mon_down)));
-        //uiButtons[3] = (UIButton) addComponent(new UIButton(2314 - 75, 18, 4, 172, 172, r.getDrawable(R.raw.btn_help_up), r.getDrawable(R.raw.btn_help_down)));
-        //uiButtons[4] = (UIButton) addComponent(new UIButton(2464-75, 18, 4, 172, 172, r.getDrawable(R.raw.btn_whatsnew_up), r.getDrawable(R.raw.btn_whatsnew_down)));
+        uiButtons[0] = (UIButton) addComponent(new UIButton(1854 - 75, 18, 4, 172, 172, r.getDrawable(R.drawable.btn_settings_up), r.getDrawable(R.drawable.btn_settings_down))); // -29px per l'ombra
+        uiButtons[1] = (UIButton) addComponent(new UIButton(2074 - 75, 18, 4, 172, 172, r.getDrawable(R.drawable.btn_library_up), r.getDrawable(R.drawable.btn_library_down)));
+        uiButtons[2] = (UIButton) addComponent(new UIButton(2294 - 75, 18, 4, 172, 172, r.getDrawable(R.drawable.btn_setup_mon_up), r.getDrawable(R.drawable.btn_setup_mon_down)));
+        //uiButtons[3] = (UIButton) addComponent(new UIButton(2314 - 75, 18, 4, 172, 172, r.getDrawable(R.drawable.btn_help_up), r.getDrawable(R.drawable.btn_help_down)));
+        //uiButtons[4] = (UIButton) addComponent(new UIButton(2464-75, 18, 4, 172, 172, r.getDrawable(R.drawable.btn_whatsnew_up), r.getDrawable(R.drawable.btn_whatsnew_down)));
 
         // SETTINGS: Callback del pulsante
         uiButtons[0].setCallback(new ComponentCallback() {
@@ -246,21 +246,21 @@ public class StuderTapeDeck extends TapeDeck {
         //video offset UI
 
         //lcd: 69x101
-        addComponent(new UIStatic(1793, 310, 3, 590, 110, r.getDrawable(R.raw.background_video_offset)));
+        addComponent(new UIStatic(1793, 310, 3, 590, 110, r.getDrawable(R.drawable.background_video_offset)));
         int wLCD = 440;
         lcdOffset = (UILcdCustom) addComponent(
                 new UILcdCustom(1935,
                         327, 3, wLCD + 10, wLCD / 6 * (101 / 69),
-                        r.getDrawable(R.raw.lcd)));
+                        r.getDrawable(R.drawable.lcd)));
 
         final UIButton[] videoSyncButtons = new UIButton[2];
 
         videoSyncButtons[0] = (UIButton) addComponent(new UIButton(1812,
                 320, 4, 90, 90,
-                r.getDrawable(R.raw.btn_minus), r.getDrawable(R.raw.btn_minus)));
+                r.getDrawable(R.drawable.btn_minus), r.getDrawable(R.drawable.btn_minus)));
         videoSyncButtons[1] = (UIButton) addComponent(new UIButton(2273,
                 320, 4, 90, 90,
-                r.getDrawable(R.raw.btn_plus), r.getDrawable(R.raw.btn_plus)));
+                r.getDrawable(R.drawable.btn_plus), r.getDrawable(R.drawable.btn_plus)));
 
         videoSyncButtons[0].setCallback(new ComponentCallback() {
             @Override
@@ -295,8 +295,8 @@ public class StuderTapeDeck extends TapeDeck {
         threadRun = false;
 
         // MANOPOLE MAGNETOFONO
-        speedKnob = (UIKnob) addComponent(new UIKnob(1331, 1296, 5, 40, r.getDrawable(R.raw.knob)));
-        eqKnob = (UIKnob) addComponent(new UIKnob(1331, 1464, 5, 40, r.getDrawable(R.raw.knob)));
+        speedKnob = (UIKnob) addComponent(new UIKnob(1331, 1296, 5, 40, r.getDrawable(R.drawable.knob)));
+        eqKnob = (UIKnob) addComponent(new UIKnob(1331, 1464, 5, 40, r.getDrawable(R.drawable.knob)));
 
         speedKnob.setSteps(4, 135, 225);
         eqKnob.setSteps(2, 140, 220);
@@ -320,7 +320,7 @@ public class StuderTapeDeck extends TapeDeck {
             }
         });
 
-        tapeKnob = (UILed) addComponent(new UILed(955, 1008, 1, 90, 110, r.getDrawable(R.raw.tape_knob_down), r.getDrawable(R.raw.tape_knob_up)));
+        tapeKnob = (UILed) addComponent(new UILed(955, 1008, 1, 90, 110, r.getDrawable(R.drawable.tape_knob_down), r.getDrawable(R.drawable.tape_knob_up)));
 
         songLoaded = false;
         referenceTimestamp = 0;

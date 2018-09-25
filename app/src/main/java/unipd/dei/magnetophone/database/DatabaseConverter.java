@@ -249,7 +249,7 @@ public class DatabaseConverter {
                 serializer.endTag(null, SONG);
 
                 songs.moveToNext();
-
+                photos.close();
             }
             songs.close();
             db.close();
