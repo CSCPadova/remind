@@ -44,6 +44,17 @@ After cloning the repository and some Android Studio automatic config the applic
 
 The application can be installed using the APK file in folder `Application APK`, simply copy the .apk on the device and launch it, it will install the app.
 
+## Authors
+
+This is the second version of the REMIND app described in [1,2].
+Under the supervision of [*Niccolò Pretto*](http://www.dei.unipd.it/~prettoni/)), Carlo Fantozzi and Sergio Canazza, several contributors partecipate to the development of the two version of this app:
+* _Marco Ambrico_*
+* _Luca Bianconi_*
+* _Daniele Colanardi_*
+* _Dennis Dosso_*
+* _Riccardo Gasparini_*
+
+
 ## Credits
 
 This project is based on various works from different researchers and students of the Department of Information Engineering at Padova University’s Engineering Faculty.
@@ -63,7 +74,9 @@ The folllowing libraries are used in the application:
 
 ## References
 
-A lot actually.
+[1] S.Canazza, C.Fantozzi, and N.Pretto. "Accessing tape music documents on mobile devices." *ACM Transactions Multimedia Computing Communications and Applications (TOMM)*, 12 (1s):20:1–20:20, October 2015. ISSN 1551-6857. doi: 10.1145/2808200.
+
+[2] C. Fantozzi, F. Bressan, N. Pretto, and S. Canazza. "Tape music archives: from preservation to access." *International Journal on Digital Libraries*, 18(3):233–249, September 2017. ISSN 1432-1300. doi: 10.1007/s00799-017-0208-8.
 
 ## Notes
 
