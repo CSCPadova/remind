@@ -2,7 +2,7 @@
 
 ## Description
 
-This repository contains an Android application that simulates a magnetophone, specifically the Studer A810.
+This repository contains an Android application that simulates a tape recorder, specifically the Studer A810.
 
 ## Installation
 
